@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Arm\Sql;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\SqlFirewallRulePayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -19,8 +20,7 @@ final class CreateOrUpdateSqlFirewallRule extends Request implements HasBody
         public readonly string $resourceGroupName,
         public readonly string $serverName,
         public readonly string $ruleName,
-        public readonly string $startIpAddress,
-        public readonly string $endIpAddress,
+        public readonly SqlFirewallRulePayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -39,11 +39,6 @@ final class CreateOrUpdateSqlFirewallRule extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            'properties' => [
-                'startIpAddress' => $this->startIpAddress,
-                'endIpAddress' => $this->endIpAddress,
-            ],
-        ];
+        return $this->payload->toAzureBody();
     }
 }

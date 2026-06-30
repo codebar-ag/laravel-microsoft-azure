@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Data\Graph\InvitationData;
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation;
 
 final class InvitationsResource extends Resource
@@ -12,12 +13,12 @@ final class InvitationsResource extends Resource
         string $inviteRedirectUrl,
         bool $sendInvitationMessage = true,
     ): InvitationData {
-        $response = $this->sendGraph(new CreateInvitation(
+        $response = $this->sendGraph(new CreateInvitation(new CreateInvitationPayload(
             $invitedUserEmailAddress,
             $inviteRedirectUrl,
             $sendInvitationMessage,
-        ));
+        )));
 
-        return InvitationData::fromAzure($response->json());
+        return InvitationData::fromAzure($this->jsonArray($response));
     }
 }

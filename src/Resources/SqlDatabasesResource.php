@@ -26,6 +26,6 @@ final class SqlDatabasesResource extends Resource
             $databaseName,
         ));
 
-        return SqlDatabaseData::fromAzure($response->json());
+        return SqlDatabaseData::fromAzure($this->jsonArray($response));
     }
 }

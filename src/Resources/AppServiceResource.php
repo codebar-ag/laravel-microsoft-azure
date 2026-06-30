@@ -20,13 +20,13 @@ final class AppServiceResource extends Resource
     {
         $response = $this->sendKudu(new ZipDeploy($zipFilePath), $this->appName);
 
-        return KuduDeploymentData::fromAzure($response->json());
+        return KuduDeploymentData::fromAzure($this->jsonArray($response));
     }
 
     public function deploymentStatus(string $deploymentId): KuduDeploymentData
     {
         $response = $this->sendKudu(new GetDeploymentStatus($deploymentId), $this->appName);
 
-        return KuduDeploymentData::fromAzure($response->json());
+        return KuduDeploymentData::fromAzure($this->jsonArray($response));
     }
 }

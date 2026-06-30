@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class RoleAssignmentData extends AzureData
 {
@@ -21,15 +21,15 @@ final class RoleAssignmentData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $properties = (array) ($data['properties'] ?? []);
+        $properties = Field::properties($data);
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            scope: (string) Arr::get($properties, 'scope', ''),
-            roleDefinitionId: (string) Arr::get($properties, 'roleDefinitionId', ''),
-            principalId: (string) Arr::get($properties, 'principalId', ''),
-            principalType: Arr::get($properties, 'principalType'),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            scope: Field::arrString($properties, 'scope'),
+            roleDefinitionId: Field::arrString($properties, 'roleDefinitionId'),
+            principalId: Field::arrString($properties, 'principalId'),
+            principalType: Field::nullableString($properties, 'principalType'),
         );
     }
 }

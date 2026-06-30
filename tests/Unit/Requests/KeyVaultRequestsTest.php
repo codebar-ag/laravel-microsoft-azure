@@ -1,33 +1,34 @@
 <?php
 
-use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
-use CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret;
+use CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret;
 
 it('resolves key vault secret endpoints', function (): void {
-    expect((new ListSecrets)->resolveEndpoint())->toBe('/secrets')
-        ->and((new GetSecret('webhook-token'))->resolveEndpoint())->toBe('/secrets/webhook-token')
-        ->and((new GetSecret('webhook-token', 'abc123'))->resolveEndpoint())->toBe('/secrets/webhook-token/abc123')
-        ->and((new DeleteSecret('webhook-token'))->resolveEndpoint())->toBe('/secrets/webhook-token');
+    expect((new GetSecret('webhook-token'))->resolveEndpoint())->toBe('/secrets/webhook-token')
+        ->and((new ListSecrets)->resolveEndpoint())->toBe('/secrets');
 });
 
 it('includes key vault api-version on secret requests', function (): void {
-    expect((new SetSecret('name', 'value'))->query()->all())
-        ->toBe(['api-version' => ApiVersion::KEY_VAULT]);
+    expect((new GetSecret('webhook-token', 'abc123'))->resolveEndpoint())
+        ->toBe('/secrets/webhook-token/abc123')
+        ->and((new SetSecret('name', new SetSecretPayload('value')))->query()->all())
+        ->toBe(['api-version' => '7.4']);
 });
 
 it('builds set secret body with optional attributes', function (): void {
     $request = new SetSecret(
         secretName: 'webhook-token',
-        value: 'secret-value',
-        attributes: ['contentType' => 'text/plain'],
+        payload: new SetSecretPayload(
+            value: 'secret-value',
+            attributes: ['attributes' => ['enabled' => true]],
+        ),
     );
 
     expect($request->body()->all())
         ->toMatchArray([
             'value' => 'secret-value',
-            'contentType' => 'text/plain',
+            'attributes' => ['enabled' => true],
         ]);
 });

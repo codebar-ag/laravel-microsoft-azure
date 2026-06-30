@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class CanceledSubscriptionData extends AzureData
 {
@@ -16,7 +17,7 @@ final class CanceledSubscriptionData extends AzureData
     public static function fromAzure(array $data): self
     {
         return new self(
-            subscriptionId: (string) ($data['subscriptionId'] ?? ''),
+            subscriptionId: Field::optionalString($data, 'subscriptionId'),
         );
     }
 }

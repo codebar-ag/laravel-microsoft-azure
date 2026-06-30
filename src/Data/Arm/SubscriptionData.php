@@ -3,8 +3,8 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\SubscriptionState;
-use Illuminate\Support\Arr;
 
 final class SubscriptionData extends AzureData
 {
@@ -23,15 +23,15 @@ final class SubscriptionData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $state = $data['state'] ?? null;
+        $state = Field::nullableString($data, 'state');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            subscriptionId: (string) ($data['subscriptionId'] ?? ''),
-            displayName: Arr::get($data, 'displayName'),
-            state: is_string($state) ? SubscriptionState::tryFrom($state) : null,
-            tenantId: Arr::get($data, 'tenantId'),
-            tags: (array) ($data['tags'] ?? []),
+            id: Field::optionalString($data, 'id'),
+            subscriptionId: Field::optionalString($data, 'subscriptionId'),
+            displayName: Field::nullableString($data, 'displayName'),
+            state: $state !== null ? SubscriptionState::tryFrom($state) : null,
+            tenantId: Field::nullableString($data, 'tenantId'),
+            tags: Field::mixedArray($data, 'tags'),
         );
     }
 }

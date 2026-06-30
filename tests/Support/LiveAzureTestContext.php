@@ -26,11 +26,9 @@ final class LiveAzureTestContext
         Azure::instance()->resourceGroups($subscriptionId)->createOrUpdate(
             $resourceGroupName,
             $location,
-            [
-                'tags' => [
-                    'purpose' => 'laravel-microsoft-azure-integration-test',
-                    'managed-by' => 'laravel-microsoft-azure',
-                ],
+            tags: [
+                'purpose' => 'laravel-microsoft-azure-integration-test',
+                'managed-by' => 'laravel-microsoft-azure',
             ],
         );
 

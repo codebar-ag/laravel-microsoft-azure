@@ -2,8 +2,8 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
-use CodebarAg\MicrosoftAzure\Enums\SubscriptionWorkload;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -15,18 +15,9 @@ final class CreateOrUpdateSubscriptionAlias extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
-    /**
-     * @param  array<string, mixed>|null  $additionalProperties
-     * @param  array<string, string>|null  $tags
-     */
     public function __construct(
         public readonly string $aliasName,
-        public readonly string $billingScope,
-        public readonly string $displayName,
-        public readonly SubscriptionWorkload $workload = SubscriptionWorkload::Production,
-        public readonly ?string $subscriptionId = null,
-        public readonly ?array $additionalProperties = null,
-        public readonly ?array $tags = null,
+        public readonly SubscriptionAliasPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -39,28 +30,9 @@ final class CreateOrUpdateSubscriptionAlias extends Request implements HasBody
         return ['api-version' => ApiVersion::ARM_SUBSCRIPTION_ALIASES];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        $properties = [
-            'billingScope' => $this->billingScope,
-            'displayName' => $this->displayName,
-            'workload' => $this->workload->value,
-        ];
-
-        if ($this->subscriptionId !== null) {
-            $properties['subscriptionId'] = $this->subscriptionId;
-        }
-
-        if ($this->additionalProperties !== null || $this->tags !== null) {
-            $properties['additionalProperties'] = array_filter([
-                ...($this->additionalProperties ?? []),
-                'tags' => $this->tags,
-            ], fn ($value) => $value !== null);
-        }
-
-        return ['properties' => $properties];
+        return $this->payload->toAzureBody();
     }
 }

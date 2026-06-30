@@ -39,4 +39,4 @@ jobs:
         uses: ramsey/composer-install@4.0.0
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: ./vendor/bin/phpstan analyse --error-format=github

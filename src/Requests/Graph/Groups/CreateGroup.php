@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Graph\Groups;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -13,15 +14,8 @@ final class CreateGroup extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    /**
-     * @param  list<string>  $groupTypes
-     */
     public function __construct(
-        public readonly string $displayName,
-        public readonly string $mailNickname,
-        public readonly bool $mailEnabled = false,
-        public readonly bool $securityEnabled = true,
-        public readonly array $groupTypes = ['Unified'],
+        public readonly CreateGroupPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -32,12 +26,6 @@ final class CreateGroup extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            'displayName' => $this->displayName,
-            'mailNickname' => $this->mailNickname,
-            'mailEnabled' => $this->mailEnabled,
-            'securityEnabled' => $this->securityEnabled,
-            'groupTypes' => $this->groupTypes,
-        ];
+        return $this->payload->toAzureBody();
     }
 }

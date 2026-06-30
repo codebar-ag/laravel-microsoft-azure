@@ -3,8 +3,8 @@
 namespace CodebarAg\MicrosoftAzure\Data\Kudu;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
-use Illuminate\Support\Arr;
 
 final class KuduDeploymentData extends AzureData
 {
@@ -25,18 +25,18 @@ final class KuduDeploymentData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $status = $data['status'] ?? null;
+        $status = Field::nullableString($data, 'status');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            status: is_string($status) ? ProvisioningState::tryFrom($status) : null,
-            author: Arr::get($data, 'author'),
-            deployer: Arr::get($data, 'deployer'),
-            message: Arr::get($data, 'message'),
-            startTime: Arr::get($data, 'start_time'),
-            endTime: Arr::get($data, 'end_time'),
-            complete: Arr::get($data, 'complete'),
-            active: Arr::get($data, 'active'),
+            id: Field::optionalString($data, 'id'),
+            status: $status !== null ? ProvisioningState::tryFrom($status) : null,
+            author: Field::nullableString($data, 'author'),
+            deployer: Field::nullableString($data, 'deployer'),
+            message: Field::nullableString($data, 'message'),
+            startTime: Field::nullableString($data, 'start_time'),
+            endTime: Field::nullableString($data, 'end_time'),
+            complete: array_key_exists('complete', $data) && is_bool($data['complete']) ? $data['complete'] : null,
+            active: array_key_exists('active', $data) && is_bool($data['active']) ? $data['active'] : null,
         );
     }
 }

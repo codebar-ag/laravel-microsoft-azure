@@ -11,6 +11,7 @@ use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -33,24 +34,16 @@ final class EncryptedCacheTokenRepository implements TokenRepository
             return $cached;
         }
 
-        $refresh = function () use ($cache, $key, $config, $fetch): string {
-            $cached = $this->read($cache, $key);
-            if ($cached !== null) {
-                return $cached;
-            }
-
-            $token = $fetch();
-
-            $cache->put($key, Crypt::encrypt($token), max(1, $token->expiresIn - self::EXPIRY_SKEW_SECONDS));
-
-            TokenRefreshed::dispatch($config->name, $config->tenantId, $config->clientId);
-
-            return $token->accessToken;
-        };
+        $refresh = fn (): string => $this->refreshAccessToken($cache, $key, $config, $fetch);
 
         $store = $cache->getStore();
         if ($store instanceof LockProvider) {
-            return $store->lock($key.':refresh', 15)->block(10, $refresh);
+            $result = $store->lock($key.':refresh', 15)->block(10, $refresh);
+            if (! is_string($result)) {
+                throw new RuntimeException('Failed to refresh Azure OAuth token.');
+            }
+
+            return $result;
         }
 
         return $refresh();
@@ -61,14 +54,44 @@ final class EncryptedCacheTokenRepository implements TokenRepository
         Cache::store($config->cacheDriver)->forget($this->key($config, $audience, $scopeHost));
     }
 
+    /**
+     * @param  Closure(): AccessTokenData  $fetch
+     */
+    private function refreshAccessToken(
+        CacheRepository $cache,
+        string $key,
+        ConnectionConfig $config,
+        Closure $fetch,
+    ): string {
+        $cached = $this->read($cache, $key);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $token = $fetch();
+
+        $cache->put($key, Crypt::encrypt($token), max(1, $token->expiresIn - self::EXPIRY_SKEW_SECONDS));
+
+        TokenRefreshed::dispatch($config->name, $config->tenantId, $config->clientId);
+
+        return $token->accessToken;
+    }
+
     private function read(CacheRepository $cache, string $key): ?string
     {
         if (! $cache->has($key)) {
             return null;
         }
 
+        $encrypted = $cache->get($key);
+        if (! is_string($encrypted)) {
+            $cache->forget($key);
+
+            return null;
+        }
+
         try {
-            $token = Crypt::decrypt($cache->get($key));
+            $token = Crypt::decrypt($encrypted);
         } catch (Throwable) {
             $cache->forget($key);
 

@@ -12,13 +12,18 @@
         <testsuite name="integration">
             <directory>tests/Integration</directory>
         </testsuite>
+        <testsuite name="feature">
+            <directory>tests/Integration</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="APP_KEY" value="base64:F+mHMDBbavrsp/I3WYA5lDSwDJJI/0wQG4eM3csq/lo="/>
+        <!-- Fill in gitignored phpunit.xml for local integration, or set via CI/shell env. -->
         <env name="MICROSOFT_AZURE_TENANT_ID" value=""/>
         <env name="MICROSOFT_AZURE_CLIENT_ID" value=""/>
         <env name="MICROSOFT_AZURE_CLIENT_SECRET" value=""/>
         <env name="MICROSOFT_AZURE_SUBSCRIPTION_ID" value=""/>
+        <env name="MICROSOFT_AZURE_TESTS_BILLING_SCOPE" value=""/>
         <env name="MICROSOFT_AZURE_RECORD_FIXTURES" value="false"/>
         <env name="MICROSOFT_AZURE_CACHE_LIFETIME_IN_SECONDS" value="0"/>
     </php>

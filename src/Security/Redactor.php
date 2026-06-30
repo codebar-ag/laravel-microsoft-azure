@@ -28,14 +28,14 @@ final class Redactor
     public function redact(mixed $value): mixed
     {
         if (is_array($value)) {
-            $out = [];
+            $array = [];
             foreach ($value as $key => $item) {
-                $out[$key] = $this->isSecretKey($key)
-                    ? self::PLACEHOLDER
-                    : $this->redact($item);
+                if (is_string($key)) {
+                    $array[$key] = $item;
+                }
             }
 
-            return $out;
+            return $this->redactArray($array);
         }
 
         if (is_string($value)) {
@@ -43,6 +43,22 @@ final class Redactor
         }
 
         return $value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $value
+     * @return array<string, mixed>
+     */
+    public function redactArray(array $value): array
+    {
+        $out = [];
+        foreach ($value as $key => $item) {
+            $out[$key] = $this->isSecretKey($key)
+                ? self::PLACEHOLDER
+                : $this->redact($item);
+        }
+
+        return $out;
     }
 
     public function string(string $value): string

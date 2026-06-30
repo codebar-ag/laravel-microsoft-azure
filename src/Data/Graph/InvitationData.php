@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Graph;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class InvitationData extends AzureData
 {
@@ -20,14 +20,14 @@ final class InvitationData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $invitedUser = Arr::get($data, 'invitedUser');
+        $invitedUser = $data['invitedUser'] ?? null;
 
         return new self(
-            id: Arr::get($data, 'id'),
-            inviteRedeemUrl: Arr::get($data, 'inviteRedeemUrl'),
-            invitedUserEmailAddress: Arr::get($data, 'invitedUserEmailAddress'),
-            status: Arr::get($data, 'status'),
-            invitedUser: is_array($invitedUser) ? UserData::fromAzure($invitedUser) : null,
+            id: Field::nullableString($data, 'id'),
+            inviteRedeemUrl: Field::nullableString($data, 'inviteRedeemUrl'),
+            invitedUserEmailAddress: Field::nullableString($data, 'invitedUserEmailAddress'),
+            status: Field::nullableString($data, 'status'),
+            invitedUser: is_array($invitedUser) ? UserData::fromAzure(Field::stringKeyArray($invitedUser)) : null,
         );
     }
 }

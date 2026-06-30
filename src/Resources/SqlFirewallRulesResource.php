@@ -4,6 +4,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData;
+use CodebarAg\MicrosoftAzure\Data\Payload\SqlFirewallRulePayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlFirewallRule;
 
@@ -28,11 +29,10 @@ final class SqlFirewallRulesResource extends Resource
             $this->resourceGroup,
             $this->server,
             $ruleName,
-            $startIpAddress,
-            $endIpAddress,
+            new SqlFirewallRulePayload($startIpAddress, $endIpAddress),
         ));
 
-        return SqlFirewallRuleData::fromAzure($response->json());
+        return SqlFirewallRuleData::fromAzure($this->jsonArray($response));
     }
 
     public function delete(string $ruleName): void

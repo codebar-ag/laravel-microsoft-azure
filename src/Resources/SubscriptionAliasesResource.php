@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
+use CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload;
 use CodebarAg\MicrosoftAzure\Enums\SubscriptionWorkload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\CreateOrUpdateSubscriptionAlias;
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\DeleteSubscriptionAlias;
@@ -31,22 +32,24 @@ final class SubscriptionAliasesResource extends Resource
     ): SubscriptionAliasData {
         $response = $this->sendArm(new CreateOrUpdateSubscriptionAlias(
             $aliasName,
-            $billingScope,
-            $displayName,
-            $workload,
-            $subscriptionId,
-            $additionalProperties,
-            $tags,
+            new SubscriptionAliasPayload(
+                $billingScope,
+                $displayName,
+                $workload,
+                $subscriptionId,
+                $additionalProperties,
+                $tags,
+            ),
         ));
 
-        return SubscriptionAliasData::fromAzure($response->json());
+        return SubscriptionAliasData::fromAzure($this->jsonArray($response));
     }
 
     public function get(string $aliasName): SubscriptionAliasData
     {
         $response = $this->sendArm(new GetSubscriptionAlias($aliasName));
 
-        return SubscriptionAliasData::fromAzure($response->json());
+        return SubscriptionAliasData::fromAzure($this->jsonArray($response));
     }
 
     public function delete(string $aliasName): void

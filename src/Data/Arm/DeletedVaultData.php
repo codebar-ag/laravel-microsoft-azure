@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class DeletedVaultData extends AzureData
 {
@@ -20,14 +20,14 @@ final class DeletedVaultData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $properties = (array) ($data['properties'] ?? []);
+        $properties = Field::properties($data);
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            location: $data['location'] ?? null,
-            deletionDate: Arr::get($properties, 'deletionDate'),
-            scheduledPurgeDate: Arr::get($properties, 'scheduledPurgeDate'),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            location: Field::nullableString($data, 'location'),
+            deletionDate: Field::nullableString($properties, 'deletionDate'),
+            scheduledPurgeDate: Field::nullableString($properties, 'scheduledPurgeDate'),
         );
     }
 }

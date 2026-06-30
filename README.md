@@ -1,5 +1,10 @@
 # laravel-microsoft-azure
 
+[![Tests](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/run-tests.yml/badge.svg)](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/run-tests.yml)
+[![PHPStan](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/phpstan.yml/badge.svg)](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/phpstan.yml)
+[![Code Style](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/fix-php-code-style-issues.yml/badge.svg)](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/fix-php-code-style-issues.yml)
+[![Composer Audit](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/composer-audit.yml/badge.svg)](https://github.com/codebar-ag/laravel-microsoft-azure/actions/workflows/composer-audit.yml)
+
 Thin Azure and Microsoft 365 REST connector for Laravel — Saloon transport only, no business logic.
 
 Covers **ARM**, **Key Vault**, **Microsoft Graph**, and **Kudu** (zip deploy). Orchestration (provisioning sequences, LRO polling, idempotency) belongs in the consuming app.
@@ -69,17 +74,72 @@ while ($dep->provisioningState && ! $dep->provisioningState->isTerminal()) {
 }
 ```
 
+## API reference
+
+- [API reference](docs/api-reference.md) — requests, response DTOs, write payloads, and resource gateways
+- [Inventory parity](docs/inventory-parity.md) — endpoint coverage vs. Saloon request classes
+
+Regenerate after changing Requests, DTOs, or Resources:
+
+```bash
+composer docs:api
+composer inventory:parity
+```
+
 ## Testing
 
 ```bash
-composer test              # offline Saloon fixtures (CI)
-composer test:live         # live Azure (requires credentials)
+composer test              # offline unit + core tests (CI)
+composer test:coverage     # 100% line coverage on src/ (CI, requires pcov)
+composer test:live         # live Azure integration (requires credentials)
+composer test:record       # live run with fixture recording enabled
 composer inventory:parity  # endpoint coverage report
-composer analyse           # PHPStan
+composer docs:api          # regenerate API reference
+composer analyse           # PHPStan level 10
 composer format            # Pint
 ```
 
-Set `MICROSOFT_AZURE_TENANT_ID`, `MICROSOFT_AZURE_CLIENT_ID`, `MICROSOFT_AZURE_CLIENT_SECRET`, and `MICROSOFT_AZURE_SUBSCRIPTION_ID` (see `phpunit.xml.dist`). For local integration, copy to `phpunit.xml` and fill credentials only — integration tests provision their own resource groups via the API and tear them down after each test. Optionally override the Azure region with `MICROSOFT_AZURE_TESTS_LOCATION` (default: `westeurope`).
+CI runs **PHPStan level 10**, **100% unit test coverage** (offline Saloon fixtures), and **live integration tests** when `MICROSOFT_AZURE_*` GitHub secrets are configured.
+
+Set `MICROSOFT_AZURE_TENANT_ID`, `MICROSOFT_AZURE_CLIENT_ID`, `MICROSOFT_AZURE_CLIENT_SECRET`, and `MICROSOFT_AZURE_SUBSCRIPTION_ID` in gitignored `phpunit.xml` (copy from `phpunit.xml.dist` and fill the empty placeholders — never commit real secrets). CI passes the same vars via GitHub Actions secrets.
+
+Integration tests provision their own resource groups via the API and tear them down after each test. Optionally override the Azure region with `MICROSOFT_AZURE_TESTS_LOCATION` (default: `westeurope`).
+
+The service principal needs **Contributor** (or equivalent write/read roles) on `MICROSOFT_AZURE_SUBSCRIPTION_ID` for standard-tier integration tests. Tests skip gracefully with a clear message when OAuth succeeds but RBAC is insufficient.
+
+### Saloon fixtures
+
+Offline tests replay redacted HTTP fixtures from `tests/Fixtures/saloon/`. After a green live run with Contributor access, record or refresh fixtures:
+
+```bash
+composer test:record
+./vendor/bin/pint
+composer test   # verify offline replay still passes
+```
+
+Set `MICROSOFT_AZURE_RECORD_FIXTURES=true` (as `test:record` does) to write fixtures during integration tests. Secrets in responses are redacted automatically.
+
+### Live integration tiers
+
+| Tier | Required env | Tests |
+|------|----------------|-------|
+| Standard | OAuth + subscription ID | Resource group create/get/list/delete; subscription list/get |
+| Billing | above + `MICROSOFT_AZURE_TESTS_BILLING_SCOPE` | Subscription alias create/update/list/get; cancel on newly created subscription |
+
+### Billing scope setup
+
+Billing scope is the ARM resource ID of your enrollment account. Alias lifecycle tests skip when `MICROSOFT_AZURE_TESTS_BILLING_SCOPE` is unset.
+
+1. Azure Portal → **Cost Management + Billing** → **Billing accounts**
+2. Open your account → **Enrollment accounts** (MCA) or the invoice section path for your agreement type
+3. Copy the **Resource ID** — format like `/providers/Microsoft.Billing/billingAccounts/{id}/enrollmentAccounts/{id}`
+4. Grant the service principal **Enrollment account subscription creator** (or equivalent billing write role)
+
+```env
+MICROSOFT_AZURE_TESTS_BILLING_SCOPE=/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}
+```
+
+Teardown cancels the newly created subscription and deletes the alias (best-effort).
 
 ## Repository
 

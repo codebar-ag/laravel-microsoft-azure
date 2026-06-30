@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Concerns;
 
 use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Events\AzureResponseReceived;
 use CodebarAg\MicrosoftAzure\Security\Redactor;
 use Illuminate\Support\Facades\Cache;
@@ -61,14 +62,14 @@ trait ConfiguresAzureTransport
     private function configureRetries(): void
     {
         /** @var array<string, mixed> $retry */
-        $retry = (array) config('laravel-microsoft-azure.retry', []);
+        $retry = Field::fromJson(config('laravel-microsoft-azure.retry', []));
 
         if (($retry['enabled'] ?? true) === false) {
             return;
         }
 
-        $this->tries = (int) ($retry['times'] ?? 3);
-        $this->retryInterval = (int) ($retry['base_interval_ms'] ?? 250);
+        $this->tries = $this->configInt($retry, 'times', 3);
+        $this->retryInterval = $this->configInt($retry, 'base_interval_ms', 250);
         $this->useExponentialBackoff = true;
         $this->throwOnMaxTries = false;
     }
@@ -78,7 +79,7 @@ trait ConfiguresAzureTransport
         $retryAfter = $response->header('Retry-After');
 
         if (is_numeric($retryAfter)) {
-            $max = (int) config('laravel-microsoft-azure.retry.max_interval_ms', 10000);
+            $max = $this->configInt(Field::fromJson(config('laravel-microsoft-azure.retry', [])), 'max_interval_ms', 10000);
             $this->retryInterval = min($max, (int) ((float) $retryAfter * 1000));
         }
     }
@@ -91,6 +92,7 @@ trait ConfiguresAzureTransport
             $config = $this->connectionConfig();
 
             $captureBodies = (bool) config('laravel-microsoft-azure.debug.capture_bodies', false);
+            $headers = Field::fromJson($response->headers()->all());
 
             AzureResponseReceived::dispatch(
                 $config->name,
@@ -99,7 +101,7 @@ trait ConfiguresAzureTransport
                 $response->status(),
                 null,
                 $this->requestId($response),
-                $redactor->redact($response->headers()->all()),
+                $redactor->redactArray($headers),
                 $captureBodies ? $redactor->string((string) $response->body()) : null,
             );
         });
@@ -142,19 +144,29 @@ trait ConfiguresAzureTransport
     private function rateLimitConfig(): array
     {
         /** @var array<string, mixed> $global */
-        $global = (array) config('laravel-microsoft-azure.rate_limit', []);
+        $global = Field::fromJson(config('laravel-microsoft-azure.rate_limit', []));
         /** @var array<string, mixed> $perConnection */
-        $perConnection = (array) config(
+        $perConnection = Field::fromJson(config(
             'laravel-microsoft-azure.connections.'.$this->connectionConfig()->name.'.rate_limit',
             []
-        );
+        ));
 
         $merged = array_merge($global, $perConnection);
 
         return [
             'enabled' => (bool) ($merged['enabled'] ?? false),
-            'allow' => max(1, (int) ($merged['allow'] ?? 60)),
-            'per_seconds' => max(1, (int) ($merged['per_seconds'] ?? 60)),
+            'allow' => max(1, $this->configInt($merged, 'allow', 60)),
+            'per_seconds' => max(1, $this->configInt($merged, 'per_seconds', 60)),
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $config
+     */
+    private function configInt(array $config, string $key, int $default): int
+    {
+        $value = $config[$key] ?? $default;
+
+        return is_numeric($value) ? (int) $value : $default;
     }
 }

@@ -33,3 +33,21 @@ it('redacts json secret fields in strings', function (): void {
     expect($redactor->string('{"access_token":"super-secret"}'))
         ->toBe('{"access_token":"[REDACTED]"}');
 });
+
+it('returns the original value for non-string scalars', function (): void {
+    $redactor = new Redactor;
+
+    expect($redactor->redact(42))->toBe(42);
+});
+
+it('redacts nested arrays via redactArray', function (): void {
+    $redactor = new Redactor;
+
+    expect($redactor->redactArray([
+        'authorization' => 'Bearer secret',
+        'nested' => ['client_secret' => 'value'],
+    ]))->toBe([
+        'authorization' => '[REDACTED]',
+        'nested' => ['client_secret' => '[REDACTED]'],
+    ]);
+});

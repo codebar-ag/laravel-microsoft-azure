@@ -1,5 +1,8 @@
 <?php
 
+use CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\RoleAssignmentPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\SqlFirewallRulePayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount;
@@ -117,14 +120,17 @@ it('builds create resource group body with location and tags', function (): void
     $request = new CreateOrUpdateResourceGroup(
         subscriptionId: 'sub-1',
         resourceGroupName: 'rg-test',
-        location: 'westeurope',
-        properties: ['tags' => ['project' => 'test']],
+        payload: new ResourceGroupPayload(
+            location: 'westeurope',
+            tags: ['project' => 'test'],
+        ),
     );
 
     expect($request->body()->all())
         ->toMatchArray([
             'location' => 'westeurope',
-            'properties' => ['tags' => ['project' => 'test']],
+            'properties' => [],
+            'tags' => ['project' => 'test'],
         ]);
 });
 
@@ -132,9 +138,11 @@ it('builds role assignment body with optional principal type', function (): void
     $request = new CreateRoleAssignment(
         scope: 'subscriptions/sub-1/resourceGroups/rg-test',
         roleAssignmentName: '00000000-0000-0000-0000-000000000001',
-        roleDefinitionId: '/subscriptions/sub-1/providers/Microsoft.Authorization/roleDefinitions/123',
-        principalId: '00000000-0000-0000-0000-000000000010',
-        principalType: 'ServicePrincipal',
+        payload: new RoleAssignmentPayload(
+            roleDefinitionId: '/subscriptions/sub-1/providers/Microsoft.Authorization/roleDefinitions/123',
+            principalId: '00000000-0000-0000-0000-000000000010',
+            principalType: 'ServicePrincipal',
+        ),
     );
 
     expect($request->body()->all())
@@ -148,8 +156,7 @@ it('builds sql firewall rule body with ip range', function (): void {
         resourceGroupName: 'rg-test',
         serverName: 'sql1',
         ruleName: 'deployer-migrate',
-        startIpAddress: '1.2.3.4',
-        endIpAddress: '1.2.3.4',
+        payload: new SqlFirewallRulePayload('1.2.3.4', '1.2.3.4'),
     );
 
     expect($request->body()->all())
@@ -165,8 +172,10 @@ it('prefixes role assignment scope with a leading slash when missing', function 
     $request = new CreateRoleAssignment(
         scope: 'subscriptions/sub-1',
         roleAssignmentName: 'guid',
-        roleDefinitionId: '/roleDefinitions/123',
-        principalId: 'principal',
+        payload: new RoleAssignmentPayload(
+            roleDefinitionId: '/roleDefinitions/123',
+            principalId: 'principal',
+        ),
     );
 
     expect($request->resolveEndpoint())

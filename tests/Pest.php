@@ -2,9 +2,20 @@
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
+use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData;
+use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
+use CodebarAg\MicrosoftAzure\Exceptions\ForbiddenException;
 use CodebarAg\MicrosoftAzure\Facades\Azure;
 use CodebarAg\MicrosoftAzure\MicrosoftAzureManager;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\ListResourceGroups;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\GetSubscription;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\ListSubscriptions;
+use CodebarAg\MicrosoftAzure\Tests\Support\LiveAzureTestContext;
+use CodebarAg\MicrosoftAzure\Tests\Support\LiveSubscriptionAliasTestContext;
 use CodebarAg\MicrosoftAzure\Tests\Support\MicrosoftAzureFixture;
 use CodebarAg\MicrosoftAzure\Tests\TestCase;
 use Illuminate\Support\Carbon;
@@ -18,6 +29,16 @@ use Saloon\Http\Response;
 uses(TestCase::class)->in(__DIR__);
 
 uses()
+    ->beforeEach(function (): void {
+        Cache::flush();
+        app(MicrosoftAzureManager::class)->forget();
+    })
+    ->afterEach(function (): void {
+        MockClient::destroyGlobal();
+    })
+    ->in('Unit', 'Core');
+
+uses()
     ->group('integration')
     ->beforeEach(function (): void {
         if (! integrationCredentialsConfigured()) {
@@ -25,8 +46,44 @@ uses()
         }
 
         configureIntegrationConnection();
+        configureIntegrationRecording();
     })
     ->in('Integration');
+
+function runAzureIntegration(callable $callback): void
+{
+    try {
+        $callback();
+    } catch (ForbiddenException $e) {
+        $hint = str_contains($e->getMessage(), 'invoice section')
+            || str_contains($e->getMessage(), 'billing')
+            ? 'Grant subscription-creator (or equivalent) permissions on MICROSOFT_AZURE_TESTS_BILLING_SCOPE.'
+            : 'Assign Contributor (or equivalent) on MICROSOFT_AZURE_SUBSCRIPTION_ID.';
+
+        test()->markTestSkipped("Azure RBAC: {$hint} — {$e->getMessage()}");
+    }
+}
+
+function integrationFixturesEnabled(): bool
+{
+    return filter_var(env('MICROSOFT_AZURE_RECORD_FIXTURES', false), FILTER_VALIDATE_BOOLEAN);
+}
+
+function configureIntegrationRecording(): void
+{
+    if (! integrationFixturesEnabled()) {
+        return;
+    }
+
+    Azure::instance()->arm()->withMockClient(new MockClient([
+        ListSubscriptions::class => new MicrosoftAzureFixture('list-subscriptions'),
+        GetSubscription::class => new MicrosoftAzureFixture('get-subscription'),
+        CreateOrUpdateResourceGroup::class => new MicrosoftAzureFixture('create-resource-group'),
+        GetResourceGroup::class => new MicrosoftAzureFixture('get-resource-group'),
+        ListResourceGroups::class => new MicrosoftAzureFixture('list-resource-groups'),
+        DeleteResourceGroup::class => new MicrosoftAzureFixture('delete-resource-group'),
+    ]));
+}
 
 function integrationCredentialsConfigured(): bool
 {
@@ -61,18 +118,74 @@ function integrationLocation(): string
     return (string) env('MICROSOFT_AZURE_TESTS_LOCATION', 'westeurope');
 }
 
+function integrationBillingScopeConfigured(): bool
+{
+    return filled(env('MICROSOFT_AZURE_TESTS_BILLING_SCOPE'));
+}
+
+function integrationBillingScope(): string
+{
+    return (string) env('MICROSOFT_AZURE_TESTS_BILLING_SCOPE');
+}
+
+function skipUnlessBillingScopeConfigured(): void
+{
+    if (! integrationBillingScopeConfigured()) {
+        test()->markTestSkipped('MICROSOFT_AZURE_TESTS_BILLING_SCOPE is not configured.');
+    }
+}
+
+function pollSubscriptionAlias(string $aliasName, int $timeoutSeconds = 300): SubscriptionAliasData
+{
+    $deadline = time() + $timeoutSeconds;
+
+    do {
+        $alias = Azure::instance()->subscriptionAliases()->get($aliasName);
+
+        if ($alias->provisioningState?->isTerminal()) {
+            return $alias;
+        }
+
+        sleep(5);
+    } while (time() < $deadline);
+
+    throw new RuntimeException(
+        "Subscription alias [{$aliasName}] did not reach a terminal provisioning state within {$timeoutSeconds} seconds."
+    );
+}
+
 /**
- * @param  callable(\CodebarAg\MicrosoftAzure\Tests\Support\LiveAzureTestContext): void  $callback
+ * @param  callable(LiveSubscriptionAliasTestContext): void  $callback
+ */
+function withLiveSubscriptionAlias(callable $callback): void
+{
+    skipUnlessBillingScopeConfigured();
+
+    runAzureIntegration(function () use ($callback): void {
+        $context = LiveSubscriptionAliasTestContext::provision();
+
+        try {
+            $callback($context);
+        } finally {
+            $context->teardown();
+        }
+    });
+}
+
+/**
+ * @param  callable(LiveAzureTestContext): void  $callback
  */
 function withLiveResourceGroup(callable $callback): void
 {
-    $context = \CodebarAg\MicrosoftAzure\Tests\Support\LiveAzureTestContext::provisionResourceGroup();
+    runAzureIntegration(function () use ($callback): void {
+        $context = LiveAzureTestContext::provisionResourceGroup();
 
-    try {
-        $callback($context);
-    } finally {
-        $context->teardown();
-    }
+        try {
+            $callback($context);
+        } finally {
+            $context->teardown();
+        }
+    });
 }
 
 function testConnectionConfig(): ConnectionConfig
@@ -133,7 +246,19 @@ function clientWithKeyVaultMock(array $responses, string $vaultName = 'myvault')
     return $client;
 }
 
-function clientWithSeededToken(): AzureClient
+/**
+ * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
+ */
+function clientWithKuduMock(array $responses, string $appName = 'my-func'): AzureClient
+{
+    $client = clientWithSeededToken();
+
+    $client->kudu($appName)->withMockClient(new MockClient($responses));
+
+    return $client;
+}
+
+function clientWithSeededToken(string $kuduAppName = 'my-func'): AzureClient
 {
     $manager = app(MicrosoftAzureManager::class);
     $config = testConnectionConfig();
@@ -145,26 +270,22 @@ function clientWithSeededToken(): AzureClient
         expiresAt: Carbon::now()->addHour(),
     );
 
-    Cache::store($config->cacheDriver)
-        ->put(
-            'microsoft-azure.oauth.'.$config->identifier().'.arm',
-            Crypt::encrypt($token),
-            3600,
-        );
+    $audiences = [
+        TokenAudience::Arm->value => null,
+        TokenAudience::Graph->value => null,
+        TokenAudience::KeyVault->value => null,
+        TokenAudience::Kudu->value => $kuduAppName.'.scm.azurewebsites.net',
+    ];
 
-    Cache::store($config->cacheDriver)
-        ->put(
-            'microsoft-azure.oauth.'.$config->identifier().'.graph',
-            Crypt::encrypt($token),
-            3600,
-        );
-
-    Cache::store($config->cacheDriver)
-        ->put(
-            'microsoft-azure.oauth.'.$config->identifier().'.key_vault',
-            Crypt::encrypt($token),
-            3600,
-        );
+    foreach ($audiences as $audience => $scopeHost) {
+        $suffix = $scopeHost !== null ? '.'.hash('sha256', $scopeHost) : '';
+        Cache::store($config->cacheDriver)
+            ->put(
+                'microsoft-azure.oauth.'.$config->identifier().'.'.$audience.$suffix,
+                Crypt::encrypt($token),
+                3600,
+            );
+    }
 
     return $manager->connection($config);
 }

@@ -3,8 +3,8 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
-use Illuminate\Support\Arr;
 
 final class SqlDatabaseData extends AzureData
 {
@@ -22,16 +22,16 @@ final class SqlDatabaseData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $properties = (array) ($data['properties'] ?? []);
-        $status = $properties['status'] ?? null;
+        $properties = Field::properties($data);
+        $status = Field::nullableString($properties, 'status');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            location: $data['location'] ?? null,
-            status: is_string($status) ? ProvisioningState::tryFrom($status) : null,
-            collation: Arr::get($properties, 'collation'),
-            edition: Arr::get($properties, 'currentServiceObjectiveName'),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            location: Field::nullableString($data, 'location'),
+            status: $status !== null ? ProvisioningState::tryFrom($status) : null,
+            collation: Field::nullableString($properties, 'collation'),
+            edition: Field::nullableString($properties, 'currentServiceObjectiveName'),
         );
     }
 }

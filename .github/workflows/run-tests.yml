@@ -47,16 +47,46 @@ jobs:
       - name: Verify endpoint inventory parity
         run: composer inventory:parity
 
+      - name: Verify API reference documentation
+        run: php tests/bin/generate-api-reference.php --output=docs/api-reference.md --check
+
       - name: Run Pest tests (default suite)
         run: composer test
 
-      - name: Run Azure integration tests
+      - name: Enforce 100% unit test coverage
         if: matrix.php == '8.4' && matrix.stability == 'prefer-stable'
+        run: composer test:coverage
+
+  integration:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    name: Live Azure integration
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Copy PHPUnit configuration
+        run: cp phpunit.xml.dist phpunit.xml
+
+      - name: Run Azure integration tests
         env:
           MICROSOFT_AZURE_TENANT_ID: ${{ secrets.MICROSOFT_AZURE_TENANT_ID }}
           MICROSOFT_AZURE_CLIENT_ID: ${{ secrets.MICROSOFT_AZURE_CLIENT_ID }}
           MICROSOFT_AZURE_CLIENT_SECRET: ${{ secrets.MICROSOFT_AZURE_CLIENT_SECRET }}
           MICROSOFT_AZURE_SUBSCRIPTION_ID: ${{ secrets.MICROSOFT_AZURE_SUBSCRIPTION_ID }}
+          MICROSOFT_AZURE_TESTS_BILLING_SCOPE: ${{ secrets.MICROSOFT_AZURE_TESTS_BILLING_SCOPE }}
         run: |
           if [ -z "$MICROSOFT_AZURE_CLIENT_SECRET" ]; then
             echo "Skipping Azure integration (MICROSOFT_AZURE_* secrets not configured)."
@@ -68,5 +98,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v6
         with:
-          name: Store report artifacts
+          name: integration-log-artifacts
           path: ./vendor/orchestra/testbench-core/laravel/storage/logs

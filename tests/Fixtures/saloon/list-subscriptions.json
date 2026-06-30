@@ -1,0 +1,21 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "47",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-ratelimit-remaining-tenant-reads": "249",
+        "x-ms-request-id": "6f214577-775b-4992-af53-dd204a2fa7e2",
+        "x-ms-correlation-request-id": "6f214577-775b-4992-af53-dd204a2fa7e2",
+        "x-ms-routing-request-id": "SWITZERLANDNORTH:20260630T054918Z:6f214577-775b-4992-af53-dd204a2fa7e2",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: 6A944FCE630446049154E36E629B0BEA Ref B: GVA201070812060 Ref C: 2026-06-30T05:49:18Z",
+        "Date": "Tue, 30 Jun 2026 05:49:18 GMT"
+    },
+    "data": "{\"value\":[],\"count\":{\"type\":\"Total\",\"value\":\"REDACTED\"}}",
+    "context": []
+}

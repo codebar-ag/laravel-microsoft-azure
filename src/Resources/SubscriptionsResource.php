@@ -25,13 +25,13 @@ final class SubscriptionsResource extends Resource
     {
         $response = $this->sendArm(new GetSubscription($subscriptionId));
 
-        return SubscriptionData::fromAzure($response->json());
+        return SubscriptionData::fromAzure($this->jsonArray($response));
     }
 
     public function cancel(string $subscriptionId): CanceledSubscriptionData
     {
         $response = $this->sendArm(new CancelSubscription($subscriptionId));
 
-        return CanceledSubscriptionData::fromAzure($response->json());
+        return CanceledSubscriptionData::fromAzure($this->jsonArray($response));
     }
 }

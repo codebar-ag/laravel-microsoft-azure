@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\KeyVault;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class SecretData extends AzureData
 {
@@ -22,16 +22,17 @@ final class SecretData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $attributes = (array) ($data['attributes'] ?? []);
+        $attributes = Field::mixedArray($data, 'attributes');
+        $id = Field::optionalString($data, 'id');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? basename((string) ($data['id'] ?? ''))),
-            value: Arr::get($data, 'value'),
-            contentType: Arr::get($data, 'contentType'),
-            createdOn: Arr::get($attributes, 'created'),
-            updatedOn: Arr::get($attributes, 'updated'),
-            enabled: Arr::get($attributes, 'enabled'),
+            id: $id,
+            name: Field::optionalString($data, 'name', $id !== '' ? basename($id) : ''),
+            value: Field::nullableString($data, 'value'),
+            contentType: Field::nullableString($data, 'contentType'),
+            createdOn: Field::arrNullableString($attributes, 'created'),
+            updatedOn: Field::arrNullableString($attributes, 'updated'),
+            enabled: array_key_exists('enabled', $attributes) && is_bool($attributes['enabled']) ? $attributes['enabled'] : null,
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Graph\Invitations;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -14,9 +15,7 @@ final class CreateInvitation extends Request implements HasBody
     protected Method $method = Method::POST;
 
     public function __construct(
-        public readonly string $invitedUserEmailAddress,
-        public readonly string $inviteRedirectUrl,
-        public readonly bool $sendInvitationMessage = true,
+        public readonly CreateInvitationPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -27,10 +26,6 @@ final class CreateInvitation extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            'invitedUserEmailAddress' => $this->invitedUserEmailAddress,
-            'inviteRedirectUrl' => $this->inviteRedirectUrl,
-            'sendInvitationMessage' => $this->sendInvitationMessage,
-        ];
+        return $this->payload->toAzureBody();
     }
 }

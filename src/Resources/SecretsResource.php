@@ -5,6 +5,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\KeyVault\SecretData;
 use CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData;
+use CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets;
@@ -27,7 +28,7 @@ final class SecretsResource extends Resource
             $this->vaultHost($this->vaultName),
         );
 
-        return SecretData::fromAzure($response->json());
+        return SecretData::fromAzure($this->jsonArray($response));
     }
 
     /**
@@ -36,11 +37,11 @@ final class SecretsResource extends Resource
     public function set(string $secretName, string $value, array $attributes = []): SecretData
     {
         $response = $this->sendKeyVault(
-            new SetSecret($secretName, $value, $attributes),
+            new SetSecret($secretName, new SetSecretPayload($value, $attributes)),
             $this->vaultHost($this->vaultName),
         );
 
-        return SecretData::fromAzure($response->json());
+        return SecretData::fromAzure($this->jsonArray($response));
     }
 
     /**
@@ -63,6 +64,6 @@ final class SecretsResource extends Resource
             $this->vaultHost($this->vaultName),
         );
 
-        return SecretData::fromAzure($response->json());
+        return SecretData::fromAzure($this->jsonArray($response));
     }
 }

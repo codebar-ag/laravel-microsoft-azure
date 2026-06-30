@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Graph\Groups;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\AddGroupMemberPayload;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -15,7 +16,7 @@ final class AddGroupMember extends Request implements HasBody
 
     public function __construct(
         public readonly string $groupId,
-        public readonly string $memberId,
+        public readonly AddGroupMemberPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -26,8 +27,6 @@ final class AddGroupMember extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            '@odata.id' => 'https://graph.microsoft.com/v1.0/directoryObjects/'.$this->memberId,
-        ];
+        return $this->payload->toAzureBody();
     }
 }

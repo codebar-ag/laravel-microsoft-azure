@@ -2,6 +2,7 @@
 
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData;
+use CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
 use CodebarAg\MicrosoftAzure\Enums\SubscriptionState;
 use CodebarAg\MicrosoftAzure\Enums\SubscriptionWorkload;
@@ -26,15 +27,40 @@ it('resolves subscription cancel endpoint', function (): void {
 it('builds subscription alias create body', function (): void {
     $request = new CreateOrUpdateSubscriptionAlias(
         aliasName: 'tenant-acme',
-        billingScope: '/providers/Microsoft.Billing/billingAccounts/123/enrollmentAccounts/456',
-        displayName: 'Acme Tenant',
-        workload: SubscriptionWorkload::Production,
+        payload: new SubscriptionAliasPayload(
+            billingScope: '/providers/Microsoft.Billing/billingAccounts/123/enrollmentAccounts/456',
+            displayName: 'Acme Tenant',
+            workload: SubscriptionWorkload::Production,
+        ),
     );
 
     expect($request->body()->all())
         ->toHaveKey('properties.billingScope')
         ->toHaveKey('properties.displayName', 'Acme Tenant')
         ->toHaveKey('properties.workload', 'Production');
+});
+
+it('builds subscription alias bodies with optional subscription metadata', function (): void {
+    $payload = new SubscriptionAliasPayload(
+        billingScope: '/billing/scope',
+        displayName: 'Acme Tenant',
+        subscriptionId: '00000000-0000-0000-0000-000000000099',
+        additionalProperties: ['managementGroupId' => 'mg-1'],
+        tags: ['env' => 'prod'],
+    );
+
+    expect($payload->toAzureBody())->toMatchArray([
+        'properties' => [
+            'billingScope' => '/billing/scope',
+            'displayName' => 'Acme Tenant',
+            'workload' => 'Production',
+            'subscriptionId' => '00000000-0000-0000-0000-000000000099',
+            'additionalProperties' => [
+                'managementGroupId' => 'mg-1',
+                'tags' => ['env' => 'prod'],
+            ],
+        ],
+    ]);
 });
 
 it('deserializes subscription data', function (): void {

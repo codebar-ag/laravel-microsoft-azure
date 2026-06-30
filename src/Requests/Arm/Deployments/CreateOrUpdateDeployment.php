@@ -2,8 +2,8 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Arm\Deployments;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
-use CodebarAg\MicrosoftAzure\Enums\DeploymentMode;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -15,17 +15,11 @@ final class CreateOrUpdateDeployment extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
-    /**
-     * @param  array<string, mixed>  $template
-     * @param  array<string, mixed>  $parameters
-     */
     public function __construct(
         public readonly string $subscriptionId,
         public readonly string $resourceGroupName,
         public readonly string $deploymentName,
-        public readonly array $template,
-        public readonly array $parameters = [],
-        public readonly DeploymentMode $mode = DeploymentMode::Incremental,
+        public readonly DeploymentPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -43,12 +37,6 @@ final class CreateOrUpdateDeployment extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            'properties' => [
-                'mode' => $this->mode->value,
-                'template' => $this->template,
-                'parameters' => $this->parameters,
-            ],
-        ];
+        return $this->payload->toAzureBody();
     }
 }

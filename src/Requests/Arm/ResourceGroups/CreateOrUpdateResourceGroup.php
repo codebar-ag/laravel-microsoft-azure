@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -14,14 +15,10 @@ final class CreateOrUpdateResourceGroup extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
-    /**
-     * @param  array<string, mixed>  $properties
-     */
     public function __construct(
         public readonly string $subscriptionId,
         public readonly string $resourceGroupName,
-        public readonly string $location,
-        public readonly array $properties = [],
+        public readonly ResourceGroupPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -37,9 +34,6 @@ final class CreateOrUpdateResourceGroup extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return [
-            'location' => $this->location,
-            'properties' => $this->properties,
-        ];
+        return $this->payload->toAzureBody();
     }
 }

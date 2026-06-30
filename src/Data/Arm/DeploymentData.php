@@ -3,9 +3,9 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\DeploymentMode;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
-use Illuminate\Support\Arr;
 
 final class DeploymentData extends AzureData
 {
@@ -23,17 +23,17 @@ final class DeploymentData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $properties = (array) ($data['properties'] ?? []);
-        $mode = $properties['mode'] ?? null;
-        $state = $properties['provisioningState'] ?? null;
+        $properties = Field::properties($data);
+        $mode = Field::nullableString($properties, 'mode');
+        $state = Field::nullableString($properties, 'provisioningState');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            mode: is_string($mode) ? DeploymentMode::tryFrom($mode) : null,
-            provisioningState: is_string($state) ? ProvisioningState::tryFrom($state) : null,
-            correlationId: Arr::get($properties, 'correlationId'),
-            timestamp: Arr::get($properties, 'timestamp'),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            mode: $mode !== null ? DeploymentMode::tryFrom($mode) : null,
+            provisioningState: $state !== null ? ProvisioningState::tryFrom($state) : null,
+            correlationId: Field::nullableString($properties, 'correlationId'),
+            timestamp: Field::nullableString($properties, 'timestamp'),
         );
     }
 }

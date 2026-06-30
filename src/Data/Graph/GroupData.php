@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Graph;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class GroupData extends AzureData
 {
@@ -24,13 +24,13 @@ final class GroupData extends AzureData
     public static function fromAzure(array $data): self
     {
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            displayName: (string) ($data['displayName'] ?? ''),
-            mailNickname: Arr::get($data, 'mailNickname'),
-            description: Arr::get($data, 'description'),
-            mailEnabled: Arr::get($data, 'mailEnabled'),
-            securityEnabled: Arr::get($data, 'securityEnabled'),
-            groupTypes: (array) ($data['groupTypes'] ?? []),
+            id: Field::optionalString($data, 'id'),
+            displayName: Field::optionalString($data, 'displayName'),
+            mailNickname: Field::nullableString($data, 'mailNickname'),
+            description: Field::nullableString($data, 'description'),
+            mailEnabled: array_key_exists('mailEnabled', $data) && is_bool($data['mailEnabled']) ? $data['mailEnabled'] : null,
+            securityEnabled: array_key_exists('securityEnabled', $data) && is_bool($data['securityEnabled']) ? $data['securityEnabled'] : null,
+            groupTypes: Field::stringList($data, 'groupTypes'),
         );
     }
 }

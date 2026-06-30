@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\RoleAssignmentPayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -17,9 +18,7 @@ final class CreateRoleAssignment extends Request implements HasBody
     public function __construct(
         public readonly string $scope,
         public readonly string $roleAssignmentName,
-        public readonly string $roleDefinitionId,
-        public readonly string $principalId,
-        public readonly ?string $principalType = null,
+        public readonly RoleAssignmentPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -35,17 +34,6 @@ final class CreateRoleAssignment extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        $body = [
-            'properties' => [
-                'roleDefinitionId' => $this->roleDefinitionId,
-                'principalId' => $this->principalId,
-            ],
-        ];
-
-        if ($this->principalType !== null) {
-            $body['properties']['principalType'] = $this->principalType;
-        }
-
-        return $body;
+        return $this->payload->toAzureBody();
     }
 }

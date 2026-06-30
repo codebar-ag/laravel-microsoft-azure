@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\KeyVault;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class SecretIdentifierData extends AzureData
 {
@@ -17,10 +18,13 @@ final class SecretIdentifierData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
+        $attributes = Field::mixedArray($data, 'attributes');
+        $id = Field::optionalString($data, 'id');
+
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: isset($data['id']) ? basename((string) $data['id']) : null,
-            enabled: $data['attributes']['enabled'] ?? null,
+            id: $id,
+            name: $id !== '' ? basename($id) : null,
+            enabled: array_key_exists('enabled', $attributes) && is_bool($attributes['enabled']) ? $attributes['enabled'] : null,
         );
     }
 }

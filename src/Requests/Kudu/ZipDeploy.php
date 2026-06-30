@@ -33,12 +33,27 @@ final class ZipDeploy extends Request implements HasBody
             throw new RuntimeException("Zip file [{$this->zipFilePath}] is not readable.");
         }
 
+        $handle = $this->openReadableStream($this->zipFilePath);
+
         return [
             new MultipartValue(
                 name: 'package',
-                value: fopen($this->zipFilePath, 'r'),
+                value: $handle,
                 filename: basename($this->zipFilePath),
             ),
         ];
+    }
+
+    /**
+     * @return resource
+     */
+    protected function openReadableStream(string $path)
+    {
+        $handle = @fopen($path, 'r');
+        if ($handle === false) {
+            throw new RuntimeException("Zip file [{$path}] could not be opened.");
+        }
+
+        return $handle;
     }
 }

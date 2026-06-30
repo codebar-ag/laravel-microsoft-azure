@@ -3,7 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
-use Illuminate\Support\Arr;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 
 final class SqlFirewallRuleData extends AzureData
 {
@@ -19,13 +19,13 @@ final class SqlFirewallRuleData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $properties = (array) ($data['properties'] ?? []);
+        $properties = Field::properties($data);
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            startIpAddress: (string) Arr::get($properties, 'startIpAddress', ''),
-            endIpAddress: (string) Arr::get($properties, 'endIpAddress', ''),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            startIpAddress: Field::arrString($properties, 'startIpAddress'),
+            endIpAddress: Field::arrString($properties, 'endIpAddress'),
         );
     }
 }

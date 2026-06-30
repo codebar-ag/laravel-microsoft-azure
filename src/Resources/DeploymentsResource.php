@@ -5,6 +5,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeploymentData;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeploymentOperationData;
+use CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload;
 use CodebarAg\MicrosoftAzure\Enums\DeploymentMode;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
 use CodebarAg\MicrosoftAzure\Exceptions\DeploymentFailedException;
@@ -38,12 +39,10 @@ final class DeploymentsResource extends Resource
             $this->subscriptionId,
             $this->resourceGroup,
             $deploymentName,
-            $template,
-            $parameters,
-            $mode,
+            new DeploymentPayload($template, $parameters, $mode),
         ));
 
-        $deployment = DeploymentData::fromAzure($response->json());
+        $deployment = DeploymentData::fromAzure($this->jsonArray($response));
 
         if ($deployment->provisioningState === ProvisioningState::Failed) {
             throw new DeploymentFailedException(
@@ -64,7 +63,7 @@ final class DeploymentsResource extends Resource
             $deploymentName,
         ));
 
-        return DeploymentData::fromAzure($response->json());
+        return DeploymentData::fromAzure($this->jsonArray($response));
     }
 
     /**

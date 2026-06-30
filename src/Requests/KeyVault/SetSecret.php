@@ -2,6 +2,7 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\KeyVault;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -14,13 +15,9 @@ final class SetSecret extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
     public function __construct(
         public readonly string $secretName,
-        public readonly string $value,
-        public readonly array $attributes = [],
+        public readonly SetSecretPayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
@@ -36,6 +33,6 @@ final class SetSecret extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return array_merge(['value' => $this->value], $this->attributes);
+        return $this->payload->toAzureBody();
     }
 }

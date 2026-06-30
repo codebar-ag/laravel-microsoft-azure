@@ -4,6 +4,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData;
+use CodebarAg\MicrosoftAzure\Data\Payload\RoleAssignmentPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment;
 
 final class RoleAssignmentsResource extends Resource
@@ -24,11 +25,9 @@ final class RoleAssignmentsResource extends Resource
         $response = $this->sendArm(new CreateRoleAssignment(
             $this->scope,
             $roleAssignmentName,
-            $roleDefinitionId,
-            $principalId,
-            $principalType,
+            new RoleAssignmentPayload($roleDefinitionId, $principalId, $principalType),
         ));
 
-        return RoleAssignmentData::fromAzure($response->json());
+        return RoleAssignmentData::fromAzure($this->jsonArray($response));
     }
 }

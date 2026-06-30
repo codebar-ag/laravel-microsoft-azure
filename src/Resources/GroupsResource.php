@@ -4,6 +4,8 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Data\Graph\GroupData;
 use CodebarAg\MicrosoftAzure\Data\Graph\UserData;
+use CodebarAg\MicrosoftAzure\Data\Payload\AddGroupMemberPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\DeleteGroup;
@@ -29,7 +31,7 @@ final class GroupsResource extends Resource
     {
         $response = $this->sendGraph(new GetGroup($groupId));
 
-        return GroupData::fromAzure($response->json());
+        return GroupData::fromAzure($this->jsonArray($response));
     }
 
     /**
@@ -42,15 +44,15 @@ final class GroupsResource extends Resource
         bool $securityEnabled = true,
         array $groupTypes = ['Unified'],
     ): GroupData {
-        $response = $this->sendGraph(new CreateGroup(
+        $response = $this->sendGraph(new CreateGroup(new CreateGroupPayload(
             $displayName,
             $mailNickname,
             $mailEnabled,
             $securityEnabled,
             $groupTypes,
-        ));
+        )));
 
-        return GroupData::fromAzure($response->json());
+        return GroupData::fromAzure($this->jsonArray($response));
     }
 
     public function delete(string $groupId): void
@@ -70,7 +72,7 @@ final class GroupsResource extends Resource
 
     public function addMember(string $groupId, string $memberId): void
     {
-        $this->sendGraph(new AddGroupMember($groupId, $memberId));
+        $this->sendGraph(new AddGroupMember($groupId, new AddGroupMemberPayload($memberId)));
     }
 
     public function removeMember(string $groupId, string $memberId): void

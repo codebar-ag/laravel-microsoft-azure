@@ -4,8 +4,11 @@ namespace CodebarAg\MicrosoftAzure\Transport\Auth;
 
 use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
 use CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData;
+use CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest;
+use CodebarAg\MicrosoftAzure\Transport\OAuthConnector;
 use RuntimeException;
 use Saloon\Http\Response;
 
@@ -20,18 +23,20 @@ final class ClientCredentialsTokenFetcher
     {
         $scope = $audience->scope($scopeHost);
 
-        $response = (new ClientCredentialsTokenRequest(
+        $response = (new OAuthConnector)->send(new ClientCredentialsTokenRequest(
             tenantId: $config->tenantId,
-            clientId: $config->clientId,
-            clientSecret: $config->clientSecret,
-            scope: $scope,
-        ))->send();
+            payload: new ClientCredentialsTokenPayload(
+                clientId: $config->clientId,
+                clientSecret: $config->clientSecret,
+                scope: $scope,
+            ),
+        ));
 
         if ($response->failed()) {
             throw new RuntimeException($this->failureMessage($response));
         }
 
-        return AccessTokenData::fromAzure($response->json());
+        return AccessTokenData::fromAzure(Field::fromJson($response->json()));
     }
 
     private function failureMessage(Response $response): string

@@ -1,6 +1,7 @@
 <?php
 
 use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
+use CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment;
@@ -48,8 +49,10 @@ it('builds deployment request body', function (): void {
         subscriptionId: 'sub-1',
         resourceGroupName: 'rg-test',
         deploymentName: 'tenantflow',
-        template: ['$schema' => 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'],
-        parameters: ['location' => ['value' => 'westeurope']],
+        payload: new DeploymentPayload(
+            template: ['$schema' => 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'],
+            parameters: ['location' => ['value' => 'westeurope']],
+        ),
     );
 
     expect($request->body()->all())

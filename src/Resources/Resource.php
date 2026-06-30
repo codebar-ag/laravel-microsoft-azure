@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Transport\ResponseValidator;
 use Illuminate\Support\Collection;
 use Saloon\Http\Connector;
@@ -45,6 +46,16 @@ abstract class Resource
     }
 
     /**
+     * @return array<string, mixed>
+     */
+    protected function jsonArray(Response $response, ?string $key = null): array
+    {
+        $json = $key === null ? $response->json() : $response->json($key);
+
+        return Field::fromJson($json);
+    }
+
+    /**
      * @template TValue
      *
      * @param  callable(array<string, mixed>): TValue  $map
@@ -55,20 +66,27 @@ abstract class Resource
         $raw = $key === null ? $response->json() : $response->json($key);
 
         if (! is_array($raw)) {
-            return collect();
+            return new Collection([]);
         }
 
-        $items = array_is_list($raw) ? $raw : ($raw['value'] ?? []);
+        if (array_is_list($raw)) {
+            $items = $raw;
+        } else {
+            $stringKeyRaw = Field::stringKeyArray($raw);
+            $value = $stringKeyRaw['value'] ?? [];
+            $items = is_array($value) && array_is_list($value) ? $value : [];
+        }
 
+        /** @var list<TValue> $mapped */
         $mapped = [];
 
         foreach ($items as $item) {
             if (is_array($item)) {
-                $mapped[] = $map($item);
+                $mapped[] = $map(Field::stringKeyArray($item));
             }
         }
 
-        return collect($mapped);
+        return new Collection($mapped);
     }
 
     protected function vaultHost(string $vaultName): string

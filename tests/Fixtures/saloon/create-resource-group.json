@@ -1,0 +1,21 @@
+{
+    "statusCode": 403,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "449",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "88774540-520c-479f-adb8-f6c7f6b205aa",
+        "x-ms-correlation-request-id": "88774540-520c-479f-adb8-f6c7f6b205aa",
+        "x-ms-routing-request-id": "SWITZERLANDNORTH:20260630T054917Z:88774540-520c-479f-adb8-f6c7f6b205aa",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: DD269B32C3644A7DBF8D0827D6E5DB31 Ref B: GVA201070812062 Ref C: 2026-06-30T05:49:17Z",
+        "Date": "Tue, 30 Jun 2026 05:49:17 GMT"
+    },
+    "data": "{\"error\":{\"code\":\"AuthorizationFailed\",\"message\":\"The client 'd6965b92-2693-4dc5-b935-14aa36c32d28' with object id '3c5451e6-449b-434e-8855-cda36e2a5130' does not have authorization to perform action 'Microsoft.Resources\\\/subscriptions\\\/resourcegroups\\\/write' over scope '\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourcegroups\\\/rg-lma-ak5iw9skp1z9' or the scope is invalid. If access was recently granted, please refresh your credentials.\"}}",
+    "context": []
+}

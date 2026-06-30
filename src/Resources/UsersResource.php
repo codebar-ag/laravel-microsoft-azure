@@ -23,6 +23,6 @@ final class UsersResource extends Resource
     {
         $response = $this->sendGraph(new GetUser($userId));
 
-        return UserData::fromAzure($response->json());
+        return UserData::fromAzure($this->jsonArray($response));
     }
 }

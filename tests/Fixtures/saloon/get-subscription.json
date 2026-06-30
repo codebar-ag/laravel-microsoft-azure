@@ -1,0 +1,21 @@
+{
+    "statusCode": 403,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "398",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "568bc07f-4e89-4d8b-8ebd-ee27c48777e9",
+        "x-ms-correlation-request-id": "568bc07f-4e89-4d8b-8ebd-ee27c48777e9",
+        "x-ms-routing-request-id": "SWITZERLANDNORTH:20260630T054918Z:568bc07f-4e89-4d8b-8ebd-ee27c48777e9",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: B5471F6E16E04B8AB2E0E57CCC9A415B Ref B: GVA201070812060 Ref C: 2026-06-30T05:49:18Z",
+        "Date": "Tue, 30 Jun 2026 05:49:18 GMT"
+    },
+    "data": "{\"error\":{\"code\":\"AuthorizationFailed\",\"message\":\"The client 'd6965b92-2693-4dc5-b935-14aa36c32d28' with object id '3c5451e6-449b-434e-8855-cda36e2a5130' does not have authorization to perform action 'Microsoft.Resources\\\/subscriptions\\\/read' over scope '\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5' or the scope is invalid. If access was recently granted, please refresh your credentials.\"}}",
+    "context": []
+}

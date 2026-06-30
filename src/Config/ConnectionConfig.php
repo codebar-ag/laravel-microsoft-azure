@@ -60,9 +60,9 @@ final class ConnectionConfig
             clientId: self::required($name, $attrs, 'clientId'),
             clientSecret: self::required($name, $attrs, 'clientSecret'),
             subscriptionId: self::required($name, $attrs, 'subscriptionId'),
-            cacheDriver: (string) ($attrs['cacheDriver'] ?? self::DEFAULT_CACHE_DRIVER),
-            cacheLifetimeInSeconds: (int) ($attrs['cacheLifetimeInSeconds'] ?? self::DEFAULT_CACHE_LIFETIME_IN_SECONDS),
-            requestTimeoutInSeconds: (int) ($attrs['requestTimeoutInSeconds'] ?? self::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS),
+            cacheDriver: self::optionalString($attrs, 'cacheDriver', self::DEFAULT_CACHE_DRIVER),
+            cacheLifetimeInSeconds: self::optionalInt($attrs, 'cacheLifetimeInSeconds', self::DEFAULT_CACHE_LIFETIME_IN_SECONDS),
+            requestTimeoutInSeconds: self::optionalInt($attrs, 'requestTimeoutInSeconds', self::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS),
         );
     }
 
@@ -80,5 +80,25 @@ final class ConnectionConfig
         }
 
         return $value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $attrs
+     */
+    private static function optionalString(array $attrs, string $key, string $default): string
+    {
+        $value = $attrs[$key] ?? null;
+
+        return is_string($value) ? $value : $default;
+    }
+
+    /**
+     * @param  array<string, mixed>  $attrs
+     */
+    private static function optionalInt(array $attrs, string $key, int $default): int
+    {
+        $value = $attrs[$key] ?? null;
+
+        return is_numeric($value) ? (int) $value : $default;
     }
 }

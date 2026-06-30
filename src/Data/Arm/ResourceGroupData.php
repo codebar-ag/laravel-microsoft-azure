@@ -3,8 +3,8 @@
 namespace CodebarAg\MicrosoftAzure\Data\Arm;
 
 use CodebarAg\MicrosoftAzure\Data\AzureData;
+use CodebarAg\MicrosoftAzure\Data\Support\Field;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
-use Illuminate\Support\Arr;
 
 final class ResourceGroupData extends AzureData
 {
@@ -22,14 +22,14 @@ final class ResourceGroupData extends AzureData
      */
     public static function fromAzure(array $data): self
     {
-        $state = Arr::get($data, 'properties.provisioningState');
+        $state = Field::arrNullableString($data, 'properties.provisioningState');
 
         return new self(
-            id: (string) ($data['id'] ?? ''),
-            name: (string) ($data['name'] ?? ''),
-            location: (string) ($data['location'] ?? ''),
-            provisioningState: is_string($state) ? ProvisioningState::tryFrom($state) : null,
-            tags: (array) ($data['tags'] ?? []),
+            id: Field::optionalString($data, 'id'),
+            name: Field::optionalString($data, 'name'),
+            location: Field::optionalString($data, 'location'),
+            provisioningState: $state !== null ? ProvisioningState::tryFrom($state) : null,
+            tags: Field::mixedArray($data, 'tags'),
         );
     }
 }

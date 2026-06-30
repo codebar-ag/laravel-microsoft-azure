@@ -37,3 +37,15 @@ it('uses default cache and timeout values', function (): void {
         ->and($config->cacheLifetimeInSeconds)->toBe(ConnectionConfig::DEFAULT_CACHE_LIFETIME_IN_SECONDS)
         ->and($config->requestTimeoutInSeconds)->toBe(ConnectionConfig::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS);
 });
+
+it('builds configs through the for alias', function (): void {
+    $config = ConnectionConfig::for('alias', [
+        'tenantId' => 't',
+        'clientId' => 'c',
+        'clientSecret' => 's',
+        'subscriptionId' => 'sub',
+    ]);
+
+    expect($config->name)->toBe('alias')
+        ->and($config->tenantId)->toBe('t');
+});

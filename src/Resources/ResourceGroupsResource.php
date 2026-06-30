@@ -4,6 +4,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData;
+use CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup;
@@ -23,22 +24,26 @@ final class ResourceGroupsResource extends Resource
     {
         $response = $this->sendArm(new GetResourceGroup($this->subscriptionId, $resourceGroupName));
 
-        return ResourceGroupData::fromAzure($response->json());
+        return ResourceGroupData::fromAzure($this->jsonArray($response));
     }
 
     /**
      * @param  array<string, mixed>  $properties
+     * @param  array<string, string>  $tags
      */
-    public function createOrUpdate(string $resourceGroupName, string $location, array $properties = []): ResourceGroupData
-    {
+    public function createOrUpdate(
+        string $resourceGroupName,
+        string $location,
+        array $properties = [],
+        array $tags = [],
+    ): ResourceGroupData {
         $response = $this->sendArm(new CreateOrUpdateResourceGroup(
             $this->subscriptionId,
             $resourceGroupName,
-            $location,
-            $properties,
+            new ResourceGroupPayload($location, $properties, $tags),
         ));
 
-        return ResourceGroupData::fromAzure($response->json());
+        return ResourceGroupData::fromAzure($this->jsonArray($response));
     }
 
     public function delete(string $resourceGroupName): void

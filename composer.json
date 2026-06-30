@@ -58,12 +58,15 @@
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M",
         "test": "vendor/bin/pest --no-coverage --testsuite=default",
         "test:live": "vendor/bin/pest --no-coverage --testsuite=integration",
-        "test-coverage": "vendor/bin/pest --coverage --testsuite=default",
+        "test:record": "MICROSOFT_AZURE_RECORD_FIXTURES=true vendor/bin/pest --no-coverage --testsuite=integration",
+        "test:coverage": "vendor/bin/pest --coverage --min=100 --testsuite=default",
+        "test-coverage": "@test:coverage",
         "format": "vendor/bin/pint",
-        "inventory:parity": "php tests/bin/inventory-parity.php --output=docs/inventory-parity.md --check"
+        "inventory:parity": "php tests/bin/inventory-parity.php --output=docs/inventory-parity.md --check",
+        "docs:api": "php tests/bin/generate-api-reference.php --output=docs/api-reference.md"
     },
     "config": {
         "sort-packages": true,

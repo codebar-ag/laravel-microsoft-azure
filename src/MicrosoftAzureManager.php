@@ -45,7 +45,9 @@ final class MicrosoftAzureManager
 
     public function getDefaultConnection(): string
     {
-        return (string) $this->config->get('laravel-microsoft-azure.default', 'default');
+        $default = $this->config->get('laravel-microsoft-azure.default', 'default');
+
+        return is_string($default) && $default !== '' ? $default : 'default';
     }
 
     protected function resourceClient(): AzureClient
@@ -74,27 +76,34 @@ final class MicrosoftAzureManager
      */
     private function connectionAttributes(string $name): array
     {
-        $connections = (array) $this->config->get('laravel-microsoft-azure.connections', []);
-        $c = (array) ($connections[$name] ?? []);
-
-        if ($c === []) {
+        $connections = $this->config->get('laravel-microsoft-azure.connections', []);
+        if (! is_array($connections)) {
             throw new InvalidArgumentException("Azure connection [{$name}] is not configured.");
         }
 
-        return array_merge($c, [
-            'cacheDriver' => $c['cache_driver']
-                ?? $this->config->get('laravel-microsoft-azure.cache.driver')
-                ?? ConnectionConfig::DEFAULT_CACHE_DRIVER,
-            'cacheLifetimeInSeconds' => $c['cache_lifetime']
-                ?? $this->config->get('laravel-microsoft-azure.cache.lifetime_in_seconds')
-                ?? ConnectionConfig::DEFAULT_CACHE_LIFETIME_IN_SECONDS,
-            'requestTimeoutInSeconds' => $c['timeout']
-                ?? $this->config->get('laravel-microsoft-azure.request.timeout_in_seconds')
-                ?? ConnectionConfig::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS,
+        $c = $connections[$name] ?? null;
+        if (! is_array($c) || $c === []) {
+            throw new InvalidArgumentException("Azure connection [{$name}] is not configured.");
+        }
+
+        $cacheDriver = $c['cache_driver']
+            ?? $this->config->get('laravel-microsoft-azure.cache.driver')
+            ?? ConnectionConfig::DEFAULT_CACHE_DRIVER;
+        $cacheLifetime = $c['cache_lifetime']
+            ?? $this->config->get('laravel-microsoft-azure.cache.lifetime_in_seconds')
+            ?? ConnectionConfig::DEFAULT_CACHE_LIFETIME_IN_SECONDS;
+        $timeout = $c['timeout']
+            ?? $this->config->get('laravel-microsoft-azure.request.timeout_in_seconds')
+            ?? ConnectionConfig::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS;
+
+        return [
+            'cacheDriver' => is_string($cacheDriver) ? $cacheDriver : ConnectionConfig::DEFAULT_CACHE_DRIVER,
+            'cacheLifetimeInSeconds' => is_numeric($cacheLifetime) ? (int) $cacheLifetime : ConnectionConfig::DEFAULT_CACHE_LIFETIME_IN_SECONDS,
+            'requestTimeoutInSeconds' => is_numeric($timeout) ? (int) $timeout : ConnectionConfig::DEFAULT_REQUEST_TIMEOUT_IN_SECONDS,
             'tenantId' => $c['tenant_id'] ?? $c['tenantId'] ?? null,
             'clientId' => $c['client_id'] ?? $c['clientId'] ?? null,
             'clientSecret' => $c['client_secret'] ?? $c['clientSecret'] ?? null,
             'subscriptionId' => $c['subscription_id'] ?? $c['subscriptionId'] ?? null,
-        ]);
+        ];
     }
 }

@@ -2,12 +2,13 @@
 
 namespace CodebarAg\MicrosoftAzure\Requests\Auth;
 
+use CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
-use Saloon\Http\SoloRequest;
+use Saloon\Http\Request;
 use Saloon\Traits\Body\HasFormBody;
 
-final class ClientCredentialsTokenRequest extends SoloRequest implements HasBody
+final class ClientCredentialsTokenRequest extends Request implements HasBody
 {
     use HasFormBody;
 
@@ -15,15 +16,8 @@ final class ClientCredentialsTokenRequest extends SoloRequest implements HasBody
 
     public function __construct(
         public readonly string $tenantId,
-        public readonly string $clientId,
-        public readonly string $clientSecret,
-        public readonly string $scope,
+        public readonly ClientCredentialsTokenPayload $payload,
     ) {}
-
-    public function resolveBaseUrl(): string
-    {
-        return 'https://login.microsoftonline.com';
-    }
 
     public function resolveEndpoint(): string
     {
@@ -37,16 +31,9 @@ final class ClientCredentialsTokenRequest extends SoloRequest implements HasBody
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function defaultBody(): array
+    /** @return array<string, mixed> */
+    protected function defaultBody(): array
     {
-        return [
-            'grant_type' => 'client_credentials',
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
-            'scope' => $this->scope,
-        ];
+        return $this->payload->toFormBody();
     }
 }

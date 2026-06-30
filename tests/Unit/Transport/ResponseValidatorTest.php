@@ -2,6 +2,7 @@
 
 use CodebarAg\MicrosoftAzure\Exceptions\AuthenticationException;
 use CodebarAg\MicrosoftAzure\Exceptions\BadRequestException;
+use CodebarAg\MicrosoftAzure\Exceptions\ConflictException;
 use CodebarAg\MicrosoftAzure\Exceptions\ForbiddenException;
 use CodebarAg\MicrosoftAzure\Exceptions\MicrosoftAzureException;
 use CodebarAg\MicrosoftAzure\Exceptions\NotFoundException;
@@ -14,6 +15,7 @@ dataset('http error statuses', [
     'bad request' => [400, BadRequestException::class],
     'unauthorized' => [401, AuthenticationException::class],
     'forbidden' => [403, ForbiddenException::class],
+    'conflict' => [409, ConflictException::class],
     'not found' => [404, NotFoundException::class],
     'rate limited' => [429, RateLimitException::class],
     'client error' => [418, RequestException::class],
@@ -31,6 +33,62 @@ it('maps non-success responses to typed azure exceptions', function (int $status
     expect(fn () => $client->resourceGroups('sub-1')->get('rg-test'))
         ->toThrow($exceptionClass);
 })->with('http error statuses');
+
+it('extracts messages from html error bodies and nested error objects', function (): void {
+    $client = clientWithArmMock([
+        GetResourceGroup::class => MockResponse::make(
+            body: '<html><body>  Service   unavailable  </body></html>',
+            status: 503,
+        ),
+    ]);
+
+    try {
+        $client->resourceGroups('sub-1')->get('rg-test');
+    } catch (MicrosoftAzureException $exception) {
+        expect($exception->azureMessage)->toContain('Service unavailable');
+
+        return;
+    }
+
+    test()->fail('Expected MicrosoftAzureException was not thrown.');
+});
+
+it('extracts nested azure error messages', function (): void {
+    $client = clientWithArmMock([
+        GetResourceGroup::class => MockResponse::make(
+            body: ['error' => ['message' => 'Nested failure']],
+            status: 409,
+        ),
+    ]);
+
+    expect(fn () => $client->resourceGroups('sub-1')->get('rg-test'))
+        ->toThrow(ConflictException::class, 'Nested failure');
+});
+
+it('handles empty error bodies gracefully', function (): void {
+    $client = clientWithArmMock([
+        GetResourceGroup::class => MockResponse::make(body: '', status: 404),
+    ]);
+
+    expect(fn () => $client->resourceGroups('sub-1')->get('rg-test'))
+        ->toThrow(NotFoundException::class);
+});
+
+it('returns null azure messages for unrecognized json error shapes', function (): void {
+    $client = clientWithArmMock([
+        GetResourceGroup::class => MockResponse::make(body: ['details' => ['code' => 'Invalid']], status: 404),
+    ]);
+
+    try {
+        $client->resourceGroups('sub-1')->get('rg-test');
+    } catch (NotFoundException $exception) {
+        expect($exception->azureMessage)->toBeNull();
+
+        return;
+    }
+
+    test()->fail('Expected NotFoundException was not thrown.');
+});
 
 it('includes azure error context on exceptions', function (): void {
     $client = clientWithArmMock([
