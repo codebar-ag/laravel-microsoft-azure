@@ -4,6 +4,7 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Data\Support\Field;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Support\GetNextPage;
 use CodebarAg\MicrosoftAzure\Transport\ResponseValidator;
 use Illuminate\Support\Collection;
 use Saloon\Http\Connector;
@@ -106,6 +107,52 @@ abstract class Resource
         }
 
         return new Collection($mapped);
+    }
+
+    /**
+     * Map a paginated ARM/Graph list, following `nextLink` / `@odata.nextLink`
+     * until exhausted (or $maxPages is reached, as a runaway safeguard).
+     *
+     * @template TValue
+     *
+     * @param  callable(array<string, mixed>): TValue  $map
+     * @return Collection<int, TValue>
+     */
+    protected function mapPaginated(
+        Response $response,
+        string $key,
+        callable $map,
+        int $maxPages = 100,
+    ): Collection {
+        /** @var list<TValue> $all */
+        $all = [];
+        $current = $response;
+        $page = 0;
+
+        while (true) {
+            $json = Field::fromJson($current->json());
+
+            $value = $json[$key] ?? [];
+            if (is_array($value) && array_is_list($value)) {
+                foreach ($value as $item) {
+                    if (is_array($item)) {
+                        $all[] = $map(Field::stringKeyArray($item));
+                    }
+                }
+            }
+
+            $page++;
+
+            $next = $json['nextLink'] ?? $json['@odata.nextLink'] ?? null;
+
+            if (! is_string($next) || $next === '' || $page >= $maxPages) {
+                break;
+            }
+
+            $current = $this->send(new GetNextPage($next), $this->client->arm());
+        }
+
+        return new Collection($all);
     }
 
     protected function vaultHost(string $vaultName): string

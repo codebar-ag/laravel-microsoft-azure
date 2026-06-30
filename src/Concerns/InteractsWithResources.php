@@ -3,8 +3,11 @@
 namespace CodebarAg\MicrosoftAzure\Concerns;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Resources\ApplicationInsightsResource;
 use CodebarAg\MicrosoftAzure\Resources\AppServiceResource;
 use CodebarAg\MicrosoftAzure\Resources\CognitiveServicesResource;
+use CodebarAg\MicrosoftAzure\Resources\ConsumptionResource;
+use CodebarAg\MicrosoftAzure\Resources\CostManagementResource;
 use CodebarAg\MicrosoftAzure\Resources\DeletedCognitiveServicesResource;
 use CodebarAg\MicrosoftAzure\Resources\DeletedVaultsResource;
 use CodebarAg\MicrosoftAzure\Resources\DeploymentsResource;
@@ -12,12 +15,18 @@ use CodebarAg\MicrosoftAzure\Resources\FoundryResource;
 use CodebarAg\MicrosoftAzure\Resources\FunctionAppsResource;
 use CodebarAg\MicrosoftAzure\Resources\FunctionRuntimeResource;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
+use CodebarAg\MicrosoftAzure\Resources\KeyVaultsResource;
+use CodebarAg\MicrosoftAzure\Resources\LogAnalyticsWorkspacesResource;
+use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
+use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceGroupsResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
 use CodebarAg\MicrosoftAzure\Resources\SecretsResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlDatabasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlFirewallRulesResource;
+use CodebarAg\MicrosoftAzure\Resources\SqlServersResource;
+use CodebarAg\MicrosoftAzure\Resources\StorageAccountsResource;
 use CodebarAg\MicrosoftAzure\Resources\SubscriptionAliasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SubscriptionsResource;
 use CodebarAg\MicrosoftAzure\Resources\VaultResource;
@@ -114,5 +123,50 @@ trait InteractsWithResources
     public function functionRuntime(string $appName, ?string $hostKey = null): FunctionRuntimeResource
     {
         return new FunctionRuntimeResource($this->resourceClient(), $appName, $hostKey);
+    }
+
+    public function storageAccounts(string $subscriptionId, string $resourceGroup): StorageAccountsResource
+    {
+        return new StorageAccountsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function vaults(string $subscriptionId, string $resourceGroup): KeyVaultsResource
+    {
+        return new KeyVaultsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function managedIdentities(string $subscriptionId, string $resourceGroup): ManagedIdentitiesResource
+    {
+        return new ManagedIdentitiesResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function sqlServers(string $subscriptionId, string $resourceGroup): SqlServersResource
+    {
+        return new SqlServersResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function logAnalyticsWorkspaces(string $subscriptionId, string $resourceGroup): LogAnalyticsWorkspacesResource
+    {
+        return new LogAnalyticsWorkspacesResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function applicationInsights(string $subscriptionId, string $resourceGroup): ApplicationInsightsResource
+    {
+        return new ApplicationInsightsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function costManagement(string $scope): CostManagementResource
+    {
+        return new CostManagementResource($this->resourceClient(), $scope);
+    }
+
+    public function consumption(string $scope): ConsumptionResource
+    {
+        return new ConsumptionResource($this->resourceClient(), $scope);
+    }
+
+    public function metrics(string $resourceId): MetricsResource
+    {
+        return new MetricsResource($this->resourceClient(), $resourceId);
     }
 }

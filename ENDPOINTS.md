@@ -192,7 +192,33 @@ Microsoft docs: [Durable workflows in Agent Framework](https://learn.microsoft.c
 
 ---
 
-## 7. Key Vault, Graph, Kudu
+## 7. Resource provisioning, monitoring & cost (ARM)
+
+Full per-resource CRUD so the base stack can be composed via REST (no Bicep), plus
+read surfaces for billing and metrics. All ARM-scoped (`management.azure.com`).
+
+| Surface | Gateway |
+| --- | --- |
+| Storage accounts + keys | `storageAccounts($sub, $rg)->account($name)` → `get / createOrUpdate / delete / listKeys / regenerateKey` |
+| Blob containers + lifecycle | `storageAccounts($sub, $rg)->account($name)->blobContainers()` → `createOrUpdate / setManagementPolicy` |
+| Key Vault vaults (control plane) | `vaults($sub, $rg)->vault($name)` → `get / createOrUpdate / delete` |
+| SQL servers | `sqlServers($sub, $rg)->server($name)` → `get / createOrUpdate / delete` |
+| SQL databases | `sqlDatabases($sub, $rg, $server)` → `get / createOrUpdate / delete` |
+| Log Analytics workspaces | `logAnalyticsWorkspaces($sub, $rg)->workspace($name)` → `get / createOrUpdate / delete` |
+| Application Insights | `applicationInsights($sub, $rg)->component($name)` → `get / createOrUpdate / delete` |
+| User-assigned managed identity | `managedIdentities($sub, $rg)->identity($name)` → `get / createOrUpdate / delete` |
+| Cost Management (actual spend) | `costManagement($scope)->query($from, $to, $grouping)` |
+| Consumption usage details | `consumption($scope)->usageDetails($filter)` *(paginated)* |
+| Azure Monitor metrics | `metrics($resourceId)->get($names, $timespan, $interval, $aggregation)` / `definitions()` |
+
+Long-running operations: `deployments($sub, $rg)->await($name)` and
+`subscriptionAliases()->await($name)` poll provisioning state until terminal
+(see `HandlesLongRunningOperations`). Deployment template outputs are exposed via
+`DeploymentData::output($name)`.
+
+---
+
+## 8. Key Vault, Graph, Kudu
 
 Unchanged from prior releases — see [README](README.md) usage examples.
 

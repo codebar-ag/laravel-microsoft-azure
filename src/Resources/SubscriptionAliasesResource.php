@@ -2,9 +2,11 @@
 
 namespace CodebarAg\MicrosoftAzure\Resources;
 
+use CodebarAg\MicrosoftAzure\Concerns\HandlesLongRunningOperations;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload;
 use CodebarAg\MicrosoftAzure\Enums\SubscriptionWorkload;
+use CodebarAg\MicrosoftAzure\Exceptions\LongRunningOperationException;
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\CreateOrUpdateSubscriptionAlias;
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\DeleteSubscriptionAlias;
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\GetSubscriptionAlias;
@@ -13,6 +15,8 @@ use Illuminate\Support\Collection;
 
 final class SubscriptionAliasesResource extends Resource
 {
+    use HandlesLongRunningOperations;
+
     /**
      * Create a new subscription under a billing scope (MCA, EA enrollment account, invoice section).
      *
@@ -50,6 +54,30 @@ final class SubscriptionAliasesResource extends Resource
         $response = $this->sendArm(new GetSubscriptionAlias($aliasName));
 
         return SubscriptionAliasData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Poll the alias until its provisioningState is terminal (subscription vended).
+     *
+     * @param  (callable(SubscriptionAliasData): void)|null  $onTick
+     *
+     * @throws LongRunningOperationException
+     */
+    public function await(
+        string $aliasName,
+        int $timeoutSeconds = 600,
+        int $intervalSeconds = 5,
+        ?callable $onTick = null,
+    ): SubscriptionAliasData {
+        /** @var SubscriptionAliasData $alias */
+        $alias = $this->awaitProvisioningState(
+            fn (): SubscriptionAliasData => $this->get($aliasName),
+            $timeoutSeconds,
+            $intervalSeconds,
+            $onTick,
+        );
+
+        return $alias;
     }
 
     public function delete(string $aliasName): void

@@ -16,6 +16,22 @@ final class ApiVersion
 
     public const ARM_SQL = '2021-11-01';
 
+    public const ARM_STORAGE = '2023-05-01';
+
+    public const ARM_KEY_VAULT_VAULTS = '2023-07-01';
+
+    public const ARM_LOG_ANALYTICS = '2022-10-01';
+
+    public const ARM_APP_INSIGHTS = '2020-02-02';
+
+    public const ARM_MANAGED_IDENTITY = '2023-01-31';
+
+    public const ARM_COST_MANAGEMENT = '2023-11-01';
+
+    public const ARM_CONSUMPTION = '2023-05-01';
+
+    public const ARM_MONITOR_METRICS = '2018-01-01';
+
     public const ARM_SUBSCRIPTIONS = '2022-12-01';
 
     public const ARM_SUBSCRIPTION_ALIASES = '2021-10-01';

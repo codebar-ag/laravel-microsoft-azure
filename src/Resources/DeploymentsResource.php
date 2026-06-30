@@ -3,12 +3,14 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\HandlesLongRunningOperations;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeploymentData;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeploymentOperationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload;
 use CodebarAg\MicrosoftAzure\Enums\DeploymentMode;
 use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
 use CodebarAg\MicrosoftAzure\Exceptions\DeploymentFailedException;
+use CodebarAg\MicrosoftAzure\Exceptions\LongRunningOperationException;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CancelDeployment;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\GetDeployment;
@@ -17,12 +19,38 @@ use Illuminate\Support\Collection;
 
 final class DeploymentsResource extends Resource
 {
+    use HandlesLongRunningOperations;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
         private readonly string $resourceGroup,
     ) {
         parent::__construct($client);
+    }
+
+    /**
+     * Poll the deployment until its provisioningState is terminal.
+     *
+     * @param  (callable(DeploymentData): void)|null  $onTick
+     *
+     * @throws LongRunningOperationException
+     */
+    public function await(
+        string $deploymentName,
+        int $timeoutSeconds = 600,
+        int $intervalSeconds = 5,
+        ?callable $onTick = null,
+    ): DeploymentData {
+        /** @var DeploymentData $deployment */
+        $deployment = $this->awaitProvisioningState(
+            fn (): DeploymentData => $this->get($deploymentName),
+            $timeoutSeconds,
+            $intervalSeconds,
+            $onTick,
+        );
+
+        return $deployment;
     }
 
     /**

@@ -9,6 +9,10 @@ use CodebarAg\MicrosoftAzure\Enums\ProvisioningState;
 
 final class DeploymentData extends AzureData
 {
+    /**
+     * @param  array<string, mixed>  $outputs  template outputs keyed by name (each `{ type, value }`)
+     * @param  array<string, mixed>  $error  ARM error detail when provisioning failed
+     */
     public function __construct(
         public string $id,
         public string $name,
@@ -16,6 +20,8 @@ final class DeploymentData extends AzureData
         public ?ProvisioningState $provisioningState = null,
         public ?string $correlationId = null,
         public ?string $timestamp = null,
+        public array $outputs = [],
+        public array $error = [],
     ) {}
 
     /**
@@ -34,6 +40,18 @@ final class DeploymentData extends AzureData
             provisioningState: $state !== null ? ProvisioningState::tryFrom($state) : null,
             correlationId: Field::nullableString($properties, 'correlationId'),
             timestamp: Field::nullableString($properties, 'timestamp'),
+            outputs: Field::mixedArray($properties, 'outputs'),
+            error: Field::mixedArray($properties, 'error'),
         );
+    }
+
+    /**
+     * Read a single template output's `value` by name (e.g. webhook URL, SQL FQDN).
+     */
+    public function output(string $name): mixed
+    {
+        $output = $this->outputs[$name] ?? null;
+
+        return is_array($output) ? ($output['value'] ?? null) : null;
     }
 }

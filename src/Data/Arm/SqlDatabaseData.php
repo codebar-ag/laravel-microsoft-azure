@@ -15,6 +15,8 @@ final class SqlDatabaseData extends AzureData
         public ?ProvisioningState $status = null,
         public ?string $collation = null,
         public ?string $edition = null,
+        public ?string $currentServiceObjectiveName = null,
+        public ?int $autoPauseDelay = null,
     ) {}
 
     /**
@@ -32,6 +34,10 @@ final class SqlDatabaseData extends AzureData
             status: $status !== null ? ProvisioningState::tryFrom($status) : null,
             collation: Field::nullableString($properties, 'collation'),
             edition: Field::nullableString($properties, 'currentServiceObjectiveName'),
+            currentServiceObjectiveName: Field::nullableString($properties, 'currentServiceObjectiveName'),
+            autoPauseDelay: isset($properties['autoPauseDelay']) && is_numeric($properties['autoPauseDelay'])
+                ? (int) $properties['autoPauseDelay']
+                : null,
         );
     }
 }
