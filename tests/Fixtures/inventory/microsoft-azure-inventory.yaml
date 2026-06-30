@@ -1,0 +1,46 @@
+surfaces:
+  arm:
+    - { method: GET, path: "/subscriptions", request: ListSubscriptions, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}", request: GetSubscription, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/cancel", request: CancelSubscription, tier: required }
+    - { method: PUT, path: "/providers/Microsoft.Subscription/aliases/{aliasName}", request: CreateOrUpdateSubscriptionAlias, tier: required }
+    - { method: GET, path: "/providers/Microsoft.Subscription/aliases/{aliasName}", request: GetSubscriptionAlias, tier: required }
+    - { method: DELETE, path: "/providers/Microsoft.Subscription/aliases/{aliasName}", request: DeleteSubscriptionAlias, tier: required }
+    - { method: GET, path: "/providers/Microsoft.Subscription/aliases", request: ListSubscriptionAliases, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{name}", request: GetResourceGroup, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{name}", request: CreateOrUpdateResourceGroup, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{name}", request: DeleteResourceGroup, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups", request: ListResourceGroups, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Resources/deployments/{name}", request: CreateOrUpdateDeployment, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Resources/deployments/{name}", request: GetDeployment, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Resources/deployments/{name}/operations", request: ListDeploymentOperations, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Resources/deployments/{name}/cancel", request: CancelDeployment, tier: required }
+    - { method: PUT, path: "/{scope}/providers/Microsoft.Authorization/roleAssignments/{name}", request: CreateRoleAssignment, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults", request: ListDeletedVaults, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{loc}/deletedVaults/{name}/purge", request: PurgeDeletedVault, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts", request: ListDeletedCognitiveServicesAccounts, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts/{name}/purge", request: PurgeDeletedCognitiveServicesAccount, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: CreateOrUpdateSqlFirewallRule, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: DeleteSqlFirewallRule, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}", request: GetSqlDatabase, tier: required }
+  keyvault:
+    - { method: GET, path: "/secrets/{name}", request: GetSecret, tier: required }
+    - { method: PUT, path: "/secrets/{name}", request: SetSecret, tier: required }
+    - { method: GET, path: "/secrets", request: ListSecrets, tier: required }
+    - { method: DELETE, path: "/secrets/{name}", request: DeleteSecret, tier: required }
+  graph:
+    - { method: GET, path: "/groups", request: ListGroups, tier: required }
+    - { method: GET, path: "/groups/{id}", request: GetGroup, tier: required }
+    - { method: POST, path: "/groups", request: CreateGroup, tier: required }
+    - { method: DELETE, path: "/groups/{id}", request: DeleteGroup, tier: required }
+    - { method: GET, path: "/groups/{id}/members", request: ListGroupMembers, tier: required }
+    - { method: POST, path: "/groups/{id}/members/$ref", request: AddGroupMember, tier: required }
+    - { method: DELETE, path: "/groups/{id}/members/{memberId}/$ref", request: RemoveGroupMember, tier: required }
+    - { method: GET, path: "/users/{id}", request: GetUser, tier: required }
+    - { method: GET, path: "/users", request: ListUsers, tier: required }
+    - { method: POST, path: "/invitations", request: CreateInvitation, tier: required }
+  kudu:
+    - { method: POST, path: "/api/zipdeploy", request: ZipDeploy, tier: required }
+    - { method: GET, path: "/api/deployments/{id}", request: GetDeploymentStatus, tier: required }
+  auth:
+    - { method: POST, path: "/oauth2/v2.0/token", request: ClientCredentialsTokenRequest, tier: internal }

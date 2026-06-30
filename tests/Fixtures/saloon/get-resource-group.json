@@ -1,0 +1,8 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json; charset=utf-8"]
+    },
+    "data": "{\"id\":\"/subscriptions/sub-1/resourceGroups/rg-test\",\"name\":\"rg-test\",\"location\":\"westeurope\",\"properties\":{\"provisioningState\":\"Succeeded\"},\"tags\":{\"project\":\"test\"}}",
+    "context": []
+}

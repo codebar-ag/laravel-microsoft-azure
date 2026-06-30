@@ -1,0 +1,87 @@
+{
+    "name": "codebar-ag/laravel-microsoft-azure",
+    "description": "Thin Azure and Microsoft 365 REST connector for Laravel (ARM, Key Vault, Graph, Kudu)",
+    "keywords": [
+        "laravel",
+        "azure",
+        "microsoft-365",
+        "graph",
+        "key-vault",
+        "saloon",
+        "codebar-ag"
+    ],
+    "homepage": "https://github.com/codebar-ag/laravel-microsoft-azure",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Bürgin-Fix",
+            "email": "helpdesk@codebar.ch",
+            "homepage": "https://www.codebar.ch",
+            "role": "Software-Engineer"
+        }
+    ],
+    "require": {
+        "php": "8.4.*|8.5.*",
+        "guzzlehttp/guzzle": "^7.11.1",
+        "illuminate/contracts": "^13.0",
+        "illuminate/support": "^13.0",
+        "nesbot/carbon": "^3.11.4",
+        "saloonphp/cache-plugin": "^3.1",
+        "saloonphp/laravel-plugin": "^4.3.0",
+        "saloonphp/rate-limit-plugin": "^2.0",
+        "saloonphp/saloon": "^4.0",
+        "spatie/laravel-data": "^4.0",
+        "spatie/laravel-package-tools": "^1.93.1"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.10.0",
+        "laravel/pint": "^1.29.1",
+        "nunomaduro/collision": "^8.9.4",
+        "orchestra/testbench": "^11.1.0",
+        "pestphp/pest": "^4.7.2",
+        "phpdocumentor/reflection-docblock": "^6.0",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan-deprecation-rules": "^2.0.4",
+        "phpstan/phpstan-phpunit": "^2.0.16",
+        "rector/rector": "^2.0",
+        "symfony/yaml": "^7.2|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodebarAg\\MicrosoftAzure\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodebarAg\\MicrosoftAzure\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest --no-coverage --testsuite=default",
+        "test:live": "vendor/bin/pest --no-coverage --testsuite=integration",
+        "test-coverage": "vendor/bin/pest --coverage --testsuite=default",
+        "format": "vendor/bin/pint",
+        "inventory:parity": "php tests/bin/inventory-parity.php --output=docs/inventory-parity.md --check"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodebarAg\\MicrosoftAzure\\MicrosoftAzureServiceProvider"
+            ],
+            "aliases": {
+                "Azure": "CodebarAg\\MicrosoftAzure\\Facades\\Azure"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

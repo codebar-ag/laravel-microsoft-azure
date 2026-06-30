@@ -1,0 +1,72 @@
+name: run-tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ 8.4, 8.5 ]
+        laravel: [ 13.* ]
+        stability: [ prefer-lowest, prefer-stable ]
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: pcov
+
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: Copy PHPUnit configuration
+        run: cp phpunit.xml.dist phpunit.xml
+
+      - name: Verify endpoint inventory parity
+        run: composer inventory:parity
+
+      - name: Run Pest tests (default suite)
+        run: composer test
+
+      - name: Run Azure integration tests
+        if: matrix.php == '8.4' && matrix.stability == 'prefer-stable'
+        env:
+          MICROSOFT_AZURE_TENANT_ID: ${{ secrets.MICROSOFT_AZURE_TENANT_ID }}
+          MICROSOFT_AZURE_CLIENT_ID: ${{ secrets.MICROSOFT_AZURE_CLIENT_ID }}
+          MICROSOFT_AZURE_CLIENT_SECRET: ${{ secrets.MICROSOFT_AZURE_CLIENT_SECRET }}
+          MICROSOFT_AZURE_SUBSCRIPTION_ID: ${{ secrets.MICROSOFT_AZURE_SUBSCRIPTION_ID }}
+        run: |
+          if [ -z "$MICROSOFT_AZURE_CLIENT_SECRET" ]; then
+            echo "Skipping Azure integration (MICROSOFT_AZURE_* secrets not configured)."
+            exit 0
+          fi
+          composer test:live
+
+      - name: Store Log Artifacts
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: Store report artifacts
+          path: ./vendor/orchestra/testbench-core/laravel/storage/logs

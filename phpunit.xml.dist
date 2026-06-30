@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests/Unit</directory>
+            <directory>tests/Core</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_KEY" value="base64:F+mHMDBbavrsp/I3WYA5lDSwDJJI/0wQG4eM3csq/lo="/>
+        <env name="MICROSOFT_AZURE_TENANT_ID" value=""/>
+        <env name="MICROSOFT_AZURE_CLIENT_ID" value=""/>
+        <env name="MICROSOFT_AZURE_CLIENT_SECRET" value=""/>
+        <env name="MICROSOFT_AZURE_SUBSCRIPTION_ID" value=""/>
+        <env name="MICROSOFT_AZURE_RECORD_FIXTURES" value="false"/>
+        <env name="MICROSOFT_AZURE_CACHE_LIFETIME_IN_SECONDS" value="0"/>
+    </php>
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+</phpunit>
