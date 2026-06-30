@@ -20,6 +20,16 @@ final class ApiVersion
 
     public const ARM_SUBSCRIPTION_ALIASES = '2021-10-01';
 
+    public const ARM_COGNITIVE_SERVICES = '2025-06-01';
+
+    public const ARM_WEB = '2023-12-01';
+
+    public const OPENAI = '2024-10-21';
+
+    public const OPENAI_PREVIEW = '2025-04-01-preview';
+
+    public const FOUNDRY_AGENTS = 'v1';
+
     public const KEY_VAULT = '7.4';
 
     public const GRAPH = 'v1.0';

@@ -7,6 +7,7 @@ use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
+use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 
@@ -52,7 +53,7 @@ abstract class AzureConnector extends Connector
         ];
     }
 
-    protected function defaultAuth(): TokenAuthenticator
+    protected function defaultAuth(): Authenticator
     {
         return new TokenAuthenticator(
             $this->tokens->accessToken(

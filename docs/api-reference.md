@@ -31,6 +31,78 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule` |
 | arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlFirewallRule` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\GetSqlDatabase` |
+| arm | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccounts` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountsByResourceGroup` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\GetCognitiveServicesAccount` |
+| arm | PATCH | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\UpdateCognitiveServicesAccount` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\DeleteCognitiveServicesAccount` |
+| arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/listKeys` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountKeys` |
+| arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/regenerateKey` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/models` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountModels` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/skus` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountSkus` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\ListFoundryProjects` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\CreateOrUpdateFoundryProject` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\GetFoundryProject` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\DeleteFoundryProject` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeployments` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\DeleteModelDeployment` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeploymentSkus` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\ListSitesByResourceGroup` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSite` |
+| functions_arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\DeleteSite` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/restart` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/start` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StartSite` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/stop` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StopSite` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/web` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSiteConfig` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/web` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSiteConfig` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/appsettings/list` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListApplicationSettings` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/appsettings` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListConnectionStrings` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\ListFunctions` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/listkeys` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListHostKeys` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/keys/{keyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateHostKey` |
+| functions_arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/keys/{keyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteHostKey` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listkeys` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListFunctionKeys` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateFunctionKey` |
+| functions_arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteFunctionKey` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers` |
+| functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers/status` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus` |
+| openai | POST | `/openai/deployments/{deployment}/chat/completions` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions` |
+| openai | POST | `/openai/deployments/{deployment}/embeddings` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\Embeddings` |
+| openai | GET | `/openai/models` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ListModels` |
+| openai | POST | `/openai/responses` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateResponses` |
+| openai | POST | `/openai/deployments/{deployment}/audio/speech` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateSpeech` |
+| openai | POST | `/openai/deployments/{deployment}/audio/transcriptions` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateTranscription` |
+| openai | POST | `/openai/deployments/{deployment}/images/generations` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateImageGeneration` |
+| openai | GET | `/openai/files` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ListFiles` |
+| openai | POST | `/openai/files` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\UploadFile` |
+| openai | DELETE | `/openai/files/{fileId}` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\DeleteFile` |
+| openai | POST | `/openai/fine_tuning/jobs` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateFineTuningJob` |
+| foundry | GET | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgents` |
+| foundry | POST | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` |
+| foundry | GET | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent` |
+| foundry | DELETE | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgent` |
+| foundry | POST | `/agents/{name}/versions` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgentVersion` |
+| foundry | GET | `/agents/{name}/versions/{version}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgentVersion` |
+| foundry | POST | `/conversations` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation` |
+| foundry | GET | `/conversations/{id}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\GetConversation` |
+| foundry | POST | `/conversations/{id}/items` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversationItems` |
+| foundry | POST | `/responses` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Responses\CreateProjectResponse` |
+| foundry | POST | `/threads` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThread` |
+| foundry | GET | `/threads/{id}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\GetThread` |
+| foundry | POST | `/threads/{id}/messages` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThreadMessage` |
+| foundry | GET | `/threads/{id}/messages` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\ListThreadMessages` |
+| foundry | POST | `/threads/{id}/runs` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThreadRun` |
+| foundry | GET | `/threads/{id}/runs/{runId}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\GetThreadRun` |
+| foundry | POST | `/threads/{id}/runs/{runId}/submit_tool_outputs` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\SubmitThreadToolOutputs` |
+| function_runtime | POST | `/api/workflows/{workflowName}/run` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` |
+| function_runtime | GET | `/api/workflows/{workflowName}/status/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` |
+| function_runtime | POST | `/api/workflows/{workflowName}/respond/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RespondToWorkflow` |
 | keyvault | GET | `/secrets/{name}` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret` |
 | keyvault | PUT | `/secrets/{name}` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` |
 | keyvault | GET | `/secrets` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets` |
@@ -53,17 +125,25 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 
 | Class | Key fields |
 | --- | --- |
+| `CodebarAg\MicrosoftAzure\Data\Arm\ApiKeysData` | `key1`, `key2` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\CanceledSubscriptionData` | `subscriptionId` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesAccountData` | `id`, `name`, `location`, `kind`, `skuName`, `endpoint`, `provisioningState`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesModelData` | `name`, `version`, `format` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData` | `id`, `name`, `location`, `deletionDate`, `scheduledPurgeDate` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeletedVaultData` | `id`, `name`, `location`, `deletionDate`, `scheduledPurgeDate` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeploymentData` | `id`, `name`, `mode`, `provisioningState`, `correlationId`, `timestamp` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeploymentOperationData` | `id`, `operationId`, `provisioningState`, `statusMessage`, `targetResource` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\FoundryProjectData` | `id`, `name`, `location`, `provisioningState` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\FunctionData` | `id`, `name`, `language`, `isDisabled`, `scriptHref`, `testData` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\HostKeysData` | `properties` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\ModelDeploymentData` | `id`, `name`, `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity`, `provisioningState` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData` | `id`, `name`, `location`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData` | `id`, `name`, `scope`, `roleDefinitionId`, `principalId`, `principalType` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlDatabaseData` | `id`, `name`, `location`, `status`, `collation`, `edition` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData` | `id`, `name`, `startIpAddress`, `endIpAddress` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData` | `id`, `name`, `subscriptionId`, `provisioningState`, `billingScope`, `displayName`, `workload` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData` | `id`, `subscriptionId`, `displayName`, `state`, `tenantId`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData` | `id`, `name`, `location`, `kind`, `defaultHostName`, `state`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData` | `accessToken`, `tokenType`, `expiresIn`, `expiresAt` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\GroupData` | `id`, `displayName`, `mailNickname`, `description`, `mailEnabled`, `securityEnabled`, `groupTypes` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\InvitationData` | `id`, `inviteRedeemUrl`, `invitedUserEmailAddress`, `status`, `invitedUser` |
@@ -71,6 +151,10 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretData` | `id`, `name`, `value`, `contentType`, `createdOn`, `updatedOn`, `enabled` |
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData` | `id`, `name`, `enabled` |
 | `CodebarAg\MicrosoftAzure\Data\Kudu\KuduDeploymentData` | `id`, `status`, `author`, `deployer`, `message`, `startTime`, `endTime`, `complete`, `active` |
+| `CodebarAg\MicrosoftAzure\Data\OpenAi\ChatCompletionUsageData` | `promptTokens`, `completionTokens`, `totalTokens`, `id`, `model`, `choices`, `usage` |
+| `CodebarAg\MicrosoftAzure\Data\OpenAi\EmbeddingData` | `model`, `data`, `promptTokens`, `totalTokens` |
+| `CodebarAg\MicrosoftAzure\Data\OpenAi\ModelListData` | `data` |
+| `CodebarAg\MicrosoftAzure\Data\OpenAi\OpenAiResponseData` | `id`, `model`, `status`, `output`, `usage` |
 
 ## Request payloads
 
@@ -79,15 +163,23 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | Payload DTO | Request | Fields |
 | --- | --- | --- |
 | `CodebarAg\MicrosoftAzure\Data\Payload\AddGroupMemberPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember` | `memberId` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\AppSettingsPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings` | `properties` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload` | `CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest` | `clientId`, `clientSecret`, `scope` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\CognitiveServicesAccountPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `location`, `kind`, `skuName`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup` | `displayName`, `mailNickname`, `mailEnabled`, `securityEnabled`, `groupTypes` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` | `invitedUserEmailAddress`, `inviteRedirectUrl`, `sendInvitationMessage` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment` | `template`, `parameters`, `mode` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\FoundryProjectPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\CreateOrUpdateFoundryProject` | `location`, `properties` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\FunctionKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateFunctionKey` | `value` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\GenericJsonPayload` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateSpeech` | `body` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\ModelDeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` | `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `location`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RoleAssignmentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment` | `roleDefinitionId`, `principalId`, `principalType` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` | `value`, `attributes` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SqlFirewallRulePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule` | `startIpAddress`, `endIpAddress` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\CreateOrUpdateSubscriptionAlias` | `billingScope`, `displayName`, `workload`, `subscriptionId`, `additionalProperties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` | `location`, `kind`, `properties`, `tags` |
 
 **Note:** `ZipDeploy` sends a binary stream body and has no payload DTO.
 
@@ -97,6 +189,19 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | --- | --- | --- | --- |
 | `AppServiceResource` | `deploymentStatus()` | `CodebarAg\MicrosoftAzure\Requests\Kudu\GetDeploymentStatus` | `KuduDeploymentData` |
 | `AppServiceResource` | `zipDeploy()` | `CodebarAg\MicrosoftAzure\Requests\Kudu\ZipDeploy` | `KuduDeploymentData` |
+| `CognitiveServicesAccountResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `CognitiveServicesAccountData` |
+| `CognitiveServicesAccountResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\DeleteCognitiveServicesAccount` | `—` |
+| `CognitiveServicesAccountResource` | `deployments()` | `ModelDeploymentsResource` | `ModelDeploymentsResource` |
+| `CognitiveServicesAccountResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\GetCognitiveServicesAccount` | `CognitiveServicesAccountData` |
+| `CognitiveServicesAccountResource` | `listKeys()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountKeys` | `ApiKeysData` |
+| `CognitiveServicesAccountResource` | `listModels()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountModels` | `Collection` |
+| `CognitiveServicesAccountResource` | `listSkus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountSkus` | `Collection` |
+| `CognitiveServicesAccountResource` | `projects()` | `FoundryProjectsResource` | `FoundryProjectsResource` |
+| `CognitiveServicesAccountResource` | `regenerateKey()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `ApiKeysData` |
+| `CognitiveServicesAccountResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\UpdateCognitiveServicesAccount` | `CognitiveServicesAccountData` |
+| `CognitiveServicesResource` | `account()` | `CognitiveServicesAccountResource` | `CognitiveServicesAccountResource` |
+| `CognitiveServicesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountsByResourceGroup` | `Collection` |
+| `CognitiveServicesResource` | `listAllInSubscription()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccounts` | `Collection` |
 | `DeletedCognitiveServicesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts` | `Collection` |
 | `DeletedCognitiveServicesResource` | `purge()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount` | `—` |
 | `DeletedVaultsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\ListDeletedVaults` | `Collection` |
@@ -105,6 +210,58 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `DeploymentsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment` | `DeploymentData` |
 | `DeploymentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\GetDeployment` | `DeploymentData` |
 | `DeploymentsResource` | `operations()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\ListDeploymentOperations` | `Collection` |
+| `FoundryAgentsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` | `array` |
+| `FoundryAgentsResource` | `createVersion()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgentVersion` | `array` |
+| `FoundryAgentsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgent` | `—` |
+| `FoundryAgentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent` | `array` |
+| `FoundryAgentsResource` | `getVersion()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgentVersion` | `array` |
+| `FoundryConversationsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation` | `array` |
+| `FoundryConversationsResource` | `createItems()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversationItems` | `array` |
+| `FoundryConversationsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\GetConversation` | `array` |
+| `FoundryProjectsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\CreateOrUpdateFoundryProject` | `FoundryProjectData` |
+| `FoundryProjectsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\DeleteFoundryProject` | `—` |
+| `FoundryProjectsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\GetFoundryProject` | `FoundryProjectData` |
+| `FoundryProjectsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\ListFoundryProjects` | `Collection` |
+| `FoundryResource` | `agents()` | `FoundryAgentsResource` | `FoundryAgentsResource` |
+| `FoundryResource` | `conversations()` | `FoundryConversationsResource` | `FoundryConversationsResource` |
+| `FoundryResource` | `responses()` | `FoundryResponsesResource` | `FoundryResponsesResource` |
+| `FoundryResource` | `threads()` | `FoundryThreadsResource` | `FoundryThreadsResource` |
+| `FoundryResponsesResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Responses\CreateProjectResponse` | `array` |
+| `FoundryThreadsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThread` | `array` |
+| `FoundryThreadsResource` | `createMessage()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThreadMessage` | `array` |
+| `FoundryThreadsResource` | `createRun()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThreadRun` | `array` |
+| `FoundryThreadsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\GetThread` | `array` |
+| `FoundryThreadsResource` | `getRun()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\GetThreadRun` | `array` |
+| `FoundryThreadsResource` | `listMessages()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\ListThreadMessages` | `Collection` |
+| `FoundryThreadsResource` | `submitToolOutputs()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\SubmitThreadToolOutputs` | `array` |
+| `FunctionAppHostKeysResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateHostKey` | `HostKeysData` |
+| `FunctionAppHostKeysResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteHostKey` | `—` |
+| `FunctionAppHostKeysResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListHostKeys` | `HostKeysData` |
+| `FunctionAppResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` | `WebSiteData` |
+| `FunctionAppResource` | `createOrUpdateConfig()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSiteConfig` | `array` |
+| `FunctionAppResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\DeleteSite` | `—` |
+| `FunctionAppResource` | `functions()` | `FunctionResource` | `FunctionResource` |
+| `FunctionAppResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSite` | `WebSiteData` |
+| `FunctionAppResource` | `getConfig()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSiteConfig` | `array` |
+| `FunctionAppResource` | `hostKeys()` | `FunctionAppHostKeysResource` | `FunctionAppHostKeysResource` |
+| `FunctionAppResource` | `listFunctions()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\ListFunctions` | `Collection` |
+| `FunctionAppResource` | `restart()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite` | `—` |
+| `FunctionAppResource` | `settings()` | `FunctionAppSettingsResource` | `FunctionAppSettingsResource` |
+| `FunctionAppResource` | `start()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StartSite` | `—` |
+| `FunctionAppResource` | `stop()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StopSite` | `—` |
+| `FunctionAppResource` | `syncTriggers()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers` | `—` |
+| `FunctionAppResource` | `syncTriggersStatus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus` | `array` |
+| `FunctionAppSettingsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListApplicationSettings` | `array` |
+| `FunctionAppSettingsResource` | `listConnectionStrings()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListConnectionStrings` | `array` |
+| `FunctionAppSettingsResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings` | `array` |
+| `FunctionAppsResource` | `app()` | `FunctionAppResource` | `FunctionAppResource` |
+| `FunctionAppsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\ListSitesByResourceGroup` | `Collection` |
+| `FunctionKeysResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateFunctionKey` | `HostKeysData` |
+| `FunctionKeysResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteFunctionKey` | `—` |
+| `FunctionKeysResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListFunctionKeys` | `HostKeysData` |
+| `FunctionResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction` | `FunctionData` |
+| `FunctionResource` | `keys()` | `FunctionKeysResource` | `FunctionKeysResource` |
+| `FunctionRuntimeResource` | `workflows()` | `WorkflowRuntimeResource` | `WorkflowRuntimeResource` |
 | `GraphResource` | `groups()` | `GroupsResource` | `GroupsResource` |
 | `GraphResource` | `invitations()` | `InvitationsResource` | `InvitationsResource` |
 | `GraphResource` | `users()` | `UsersResource` | `UsersResource` |
@@ -116,6 +273,28 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `GroupsResource` | `members()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\ListGroupMembers` | `Collection` |
 | `GroupsResource` | `removeMember()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\RemoveGroupMember` | `—` |
 | `InvitationsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` | `InvitationData` |
+| `ModelDeploymentsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` | `ModelDeploymentData` |
+| `ModelDeploymentsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\DeleteModelDeployment` | `—` |
+| `ModelDeploymentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` | `ModelDeploymentData` |
+| `ModelDeploymentsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeployments` | `Collection` |
+| `ModelDeploymentsResource` | `listSkus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeploymentSkus` | `Collection` |
+| `OpenAiAudioResource` | `speech()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateSpeech` | `array` |
+| `OpenAiAudioResource` | `transcription()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateTranscription` | `array` |
+| `OpenAiChatResource` | `completions()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions` | `ChatCompletionData` |
+| `OpenAiEmbeddingsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\Embeddings` | `EmbeddingData` |
+| `OpenAiFilesResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\DeleteFile` | `array` |
+| `OpenAiFilesResource` | `upload()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\UploadFile` | `array` |
+| `OpenAiFineTuningResource` | `createJob()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateFineTuningJob` | `array` |
+| `OpenAiImagesResource` | `generate()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateImageGeneration` | `array` |
+| `OpenAiResource` | `audio()` | `OpenAiAudioResource` | `OpenAiAudioResource` |
+| `OpenAiResource` | `chat()` | `OpenAiChatResource` | `OpenAiChatResource` |
+| `OpenAiResource` | `embeddings()` | `OpenAiEmbeddingsResource` | `OpenAiEmbeddingsResource` |
+| `OpenAiResource` | `files()` | `OpenAiFilesResource` | `OpenAiFilesResource` |
+| `OpenAiResource` | `fineTuning()` | `OpenAiFineTuningResource` | `OpenAiFineTuningResource` |
+| `OpenAiResource` | `images()` | `OpenAiImagesResource` | `OpenAiImagesResource` |
+| `OpenAiResource` | `models()` | `OpenAiModelsResource` | `OpenAiModelsResource` |
+| `OpenAiResource` | `responses()` | `OpenAiResponsesResource` | `OpenAiResponsesResource` |
+| `OpenAiResponsesResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateResponses` | `OpenAiResponseData` |
 | `ResourceGroupsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `ResourceGroupData` |
 | `ResourceGroupsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup` | `—` |
 | `ResourceGroupsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup` | `ResourceGroupData` |
@@ -135,5 +314,8 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `UsersResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\GetUser` | `UserData` |
 | `UsersResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\ListUsers` | `Collection` |
 | `VaultResource` | `secrets()` | `SecretsResource` | `SecretsResource` |
+| `WorkflowRuntimeResource` | `respond()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RespondToWorkflow` | `array` |
+| `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
+| `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-06-30T05:51:16+00:00
+Generated at: 2026-06-30T06:50:56+00:00

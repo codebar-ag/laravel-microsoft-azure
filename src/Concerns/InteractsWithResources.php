@@ -4,10 +4,15 @@ namespace CodebarAg\MicrosoftAzure\Concerns;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Resources\AppServiceResource;
+use CodebarAg\MicrosoftAzure\Resources\CognitiveServicesResource;
 use CodebarAg\MicrosoftAzure\Resources\DeletedCognitiveServicesResource;
 use CodebarAg\MicrosoftAzure\Resources\DeletedVaultsResource;
 use CodebarAg\MicrosoftAzure\Resources\DeploymentsResource;
+use CodebarAg\MicrosoftAzure\Resources\FoundryResource;
+use CodebarAg\MicrosoftAzure\Resources\FunctionAppsResource;
+use CodebarAg\MicrosoftAzure\Resources\FunctionRuntimeResource;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
+use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceGroupsResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
 use CodebarAg\MicrosoftAzure\Resources\SecretsResource;
@@ -84,5 +89,30 @@ trait InteractsWithResources
     public function subscriptionAliases(): SubscriptionAliasesResource
     {
         return new SubscriptionAliasesResource($this->resourceClient());
+    }
+
+    public function cognitiveServices(string $subscriptionId, string $resourceGroup): CognitiveServicesResource
+    {
+        return new CognitiveServicesResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function functionApps(string $subscriptionId, string $resourceGroup): FunctionAppsResource
+    {
+        return new FunctionAppsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function openAi(string $accountName, ?string $apiKey = null): OpenAiResource
+    {
+        return new OpenAiResource($this->resourceClient(), $accountName, $apiKey);
+    }
+
+    public function foundry(string $accountName, string $projectName, ?string $apiKey = null): FoundryResource
+    {
+        return new FoundryResource($this->resourceClient(), $accountName, $projectName, $apiKey);
+    }
+
+    public function functionRuntime(string $appName, ?string $hostKey = null): FunctionRuntimeResource
+    {
+        return new FunctionRuntimeResource($this->resourceClient(), $appName, $hostKey);
     }
 }

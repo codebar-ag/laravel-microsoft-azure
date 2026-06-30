@@ -3,16 +3,23 @@
 use CodebarAg\MicrosoftAzure\Data\Arm\CanceledSubscriptionData;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData;
 use CodebarAg\MicrosoftAzure\Data\Arm\DeletedVaultData;
+use CodebarAg\MicrosoftAzure\Data\Arm\FunctionData;
+use CodebarAg\MicrosoftAzure\Data\Arm\HostKeysData;
 use CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData;
 use CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SqlDatabaseData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData;
+use CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData;
 use CodebarAg\MicrosoftAzure\Data\Graph\GroupData;
 use CodebarAg\MicrosoftAzure\Data\Graph\InvitationData;
 use CodebarAg\MicrosoftAzure\Data\Graph\UserData;
 use CodebarAg\MicrosoftAzure\Data\Kudu\KuduDeploymentData;
+use CodebarAg\MicrosoftAzure\Data\OpenAi\ChatCompletionData;
+use CodebarAg\MicrosoftAzure\Data\OpenAi\EmbeddingData;
+use CodebarAg\MicrosoftAzure\Data\OpenAi\ModelListData;
+use CodebarAg\MicrosoftAzure\Data\OpenAi\OpenAiResponseData;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\ListDeletedVaults;
@@ -31,6 +38,21 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\DeleteSubscription
 use CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\ListSubscriptionAliases;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\CancelSubscription;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\GetSubscription;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\ListFunctions;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListFunctionKeys;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListHostKeys;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListApplicationSettings;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSite;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\ListSitesByResourceGroup;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers;
+use CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent;
+use CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgents;
+use CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation;
+use CodebarAg\MicrosoftAzure\Requests\Foundry\Responses\CreateProjectResponse;
+use CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus;
+use CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\DeleteGroup;
@@ -43,6 +65,10 @@ use CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret;
 use CodebarAg\MicrosoftAzure\Requests\Kudu\GetDeploymentStatus;
 use CodebarAg\MicrosoftAzure\Requests\Kudu\ZipDeploy;
+use CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions;
+use CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateResponses;
+use CodebarAg\MicrosoftAzure\Requests\OpenAi\Embeddings;
+use CodebarAg\MicrosoftAzure\Requests\OpenAi\ListModels;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
 use Illuminate\Support\Collection;
 use Saloon\Http\Faking\MockResponse;
@@ -212,4 +238,95 @@ it('reads secrets from an fqdn vault host without duplicating the domain', funct
 
     expect($client->secrets('myvault.vault.azure.net')->get('webhook-token', 'abc123')->name)
         ->toBe('webhook-token');
+});
+
+it('covers web, openai, foundry, and function runtime resource gateways', function (): void {
+    $webClient = clientWithArmMock([
+        ListSitesByResourceGroup::class => MockResponse::make(body: ['value' => [[
+            'id' => '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/sites/my-func',
+            'name' => 'my-func',
+            'location' => 'westeurope',
+            'kind' => 'functionapp',
+            'properties' => ['defaultHostName' => 'my-func.azurewebsites.net', 'state' => 'Running'],
+        ]]]),
+        GetSite::class => MockResponse::make(body: [
+            'id' => '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/sites/my-func',
+            'name' => 'my-func',
+            'location' => 'westeurope',
+        ]),
+        ListFunctions::class => MockResponse::make(body: ['value' => [[
+            'id' => 'func-id',
+            'name' => 'HttpTrigger',
+            'properties' => ['language' => 'node'],
+        ]]]),
+        GetFunction::class => MockResponse::make(body: [
+            'id' => 'func-id',
+            'name' => 'HttpTrigger',
+            'properties' => ['language' => 'node'],
+        ]),
+        ListApplicationSettings::class => MockResponse::make(body: ['properties' => ['KEY' => 'value']]),
+        ListHostKeys::class => MockResponse::make(body: ['properties' => ['masterKey' => 'abc']]),
+        ListFunctionKeys::class => MockResponse::make(body: ['properties' => ['default' => 'abc']]),
+        RestartSite::class => MockResponse::make(status: 200),
+        SyncFunctionTriggers::class => MockResponse::make(status: 200),
+    ]);
+
+    $app = $webClient->functionApps('sub-1', 'rg-test')->app('my-func');
+
+    expect($webClient->functionApps('sub-1', 'rg-test')->list())->toHaveCount(1)
+        ->and($app->get())->toBeInstanceOf(WebSiteData::class)
+        ->and($app->listFunctions()->first())->toBeInstanceOf(FunctionData::class)
+        ->and($app->functions('HttpTrigger')->get())->toBeInstanceOf(FunctionData::class)
+        ->and($app->settings()->list())->toHaveKey('KEY')
+        ->and($app->hostKeys()->list())->toBeInstanceOf(HostKeysData::class)
+        ->and($app->functions('HttpTrigger')->keys()->list())->toBeInstanceOf(HostKeysData::class);
+
+    $app->restart();
+    $app->syncTriggers();
+
+    $openAiClient = clientWithOpenAiMock([
+        ChatCompletions::class => MockResponse::make(body: [
+            'id' => 'chat-1',
+            'model' => 'gpt-4o',
+            'choices' => [],
+            'usage' => ['prompt_tokens' => 1, 'completion_tokens' => 2, 'total_tokens' => 3],
+        ]),
+        Embeddings::class => MockResponse::make(body: [
+            'model' => 'embed',
+            'data' => [['embedding' => [0.1]]],
+            'usage' => ['prompt_tokens' => 1, 'total_tokens' => 1],
+        ]),
+        ListModels::class => MockResponse::make(body: ['data' => [['id' => 'gpt-4o']]]),
+        CreateResponses::class => MockResponse::make(body: ['id' => 'resp-1', 'status' => 'completed']),
+    ]);
+
+    expect($openAiClient->openAi('my-openai')->chat()->completions('gpt-4o', ['messages' => []]))
+        ->toBeInstanceOf(ChatCompletionData::class)
+        ->and($openAiClient->openAi('my-openai')->embeddings()->create('embed', ['input' => 'hi']))
+        ->toBeInstanceOf(EmbeddingData::class)
+        ->and($openAiClient->openAi('my-openai')->models()->list())->toBeInstanceOf(ModelListData::class)
+        ->and($openAiClient->openAi('my-openai')->responses()->create(['input' => 'hi']))
+        ->toBeInstanceOf(OpenAiResponseData::class);
+
+    $foundryClient = clientWithFoundryMock([
+        ListAgents::class => MockResponse::make(body: ['data' => [['id' => 'agent-1']]]),
+        GetAgent::class => MockResponse::make(body: ['id' => 'agent-1', 'name' => 'Agent']),
+        CreateConversation::class => MockResponse::make(body: ['id' => 'conv-1']),
+        CreateProjectResponse::class => MockResponse::make(body: ['id' => 'resp-1']),
+    ]);
+
+    expect($foundryClient->foundry('my-foundry', 'default')->agents()->list())->toHaveCount(1)
+        ->and($foundryClient->foundry('my-foundry', 'default')->agents()->get('agent-1'))->toHaveKey('id')
+        ->and($foundryClient->foundry('my-foundry', 'default')->conversations()->create([]))->toHaveKey('id')
+        ->and($foundryClient->foundry('my-foundry', 'default')->responses()->create([]))->toHaveKey('id');
+
+    $runtimeClient = clientWithFunctionRuntimeMock([
+        RunWorkflow::class => MockResponse::make(body: ['id' => 'instance-1']),
+        GetWorkflowStatus::class => MockResponse::make(body: ['runtimeStatus' => 'Running']),
+    ]);
+
+    expect($runtimeClient->functionRuntime('my-func')->workflows()->run('FlowRunner', ['input' => 'test']))
+        ->toHaveKey('id')
+        ->and($runtimeClient->functionRuntime('my-func')->workflows()->status('FlowRunner', 'run-1'))
+        ->toHaveKey('runtimeStatus');
 });

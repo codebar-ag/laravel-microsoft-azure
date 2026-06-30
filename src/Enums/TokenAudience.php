@@ -9,6 +9,10 @@ enum TokenAudience: string
     case Graph = 'graph';
     case Kudu = 'kudu';
 
+    case CognitiveServicesDataPlane = 'cognitive_services_data_plane';
+
+    case FunctionRuntime = 'function_runtime';
+
     public function scope(?string $host = null): string
     {
         return match ($this) {
@@ -16,6 +20,8 @@ enum TokenAudience: string
             self::KeyVault => 'https://vault.azure.net/.default',
             self::Graph => 'https://graph.microsoft.com/.default',
             self::Kudu => 'https://'.rtrim((string) $host, '/').'/.default',
+            self::CognitiveServicesDataPlane => 'https://cognitiveservices.azure.com/.default',
+            self::FunctionRuntime => 'https://'.rtrim((string) $host, '/').'/.default',
         };
     }
 }

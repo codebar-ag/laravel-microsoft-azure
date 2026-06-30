@@ -7,9 +7,12 @@ use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
 use CodebarAg\MicrosoftAzure\Transport\ArmConnector;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
+use CodebarAg\MicrosoftAzure\Transport\FoundryConnector;
+use CodebarAg\MicrosoftAzure\Transport\FunctionRuntimeConnector;
 use CodebarAg\MicrosoftAzure\Transport\GraphConnector;
 use CodebarAg\MicrosoftAzure\Transport\KeyVaultConnector;
 use CodebarAg\MicrosoftAzure\Transport\KuduConnector;
+use CodebarAg\MicrosoftAzure\Transport\OpenAiConnector;
 
 final class AzureClient
 {
@@ -24,6 +27,15 @@ final class AzureClient
 
     /** @var array<string, KuduConnector> */
     private array $kuduConnectors = [];
+
+    /** @var array<string, OpenAiConnector> */
+    private array $openAiConnectors = [];
+
+    /** @var array<string, FoundryConnector> */
+    private array $foundryConnectors = [];
+
+    /** @var array<string, FunctionRuntimeConnector> */
+    private array $functionRuntimeConnectors = [];
 
     public function __construct(
         public readonly ConnectionConfig $config,
@@ -68,6 +80,46 @@ final class AzureClient
             $this->tokens,
             $this->fetcher,
             $appName,
+        );
+    }
+
+    public function openAiConnector(string $accountName, ?string $apiKey = null): OpenAiConnector
+    {
+        $cacheKey = $accountName.':'.($apiKey ?? '');
+
+        return $this->openAiConnectors[$cacheKey] ??= new OpenAiConnector(
+            $this->config,
+            $this->tokens,
+            $this->fetcher,
+            $accountName,
+            $apiKey,
+        );
+    }
+
+    public function foundryConnector(string $accountName, string $projectName, ?string $apiKey = null): FoundryConnector
+    {
+        $cacheKey = $accountName.':'.$projectName.':'.($apiKey ?? '');
+
+        return $this->foundryConnectors[$cacheKey] ??= new FoundryConnector(
+            $this->config,
+            $this->tokens,
+            $this->fetcher,
+            $accountName,
+            $projectName,
+            $apiKey,
+        );
+    }
+
+    public function functionRuntimeConnector(string $appName, ?string $hostKey = null): FunctionRuntimeConnector
+    {
+        $cacheKey = $appName.':'.($hostKey ?? '');
+
+        return $this->functionRuntimeConnectors[$cacheKey] ??= new FunctionRuntimeConnector(
+            $this->config,
+            $this->tokens,
+            $this->fetcher,
+            $appName,
+            $hostKey,
         );
     }
 }

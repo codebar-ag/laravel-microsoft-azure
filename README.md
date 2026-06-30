@@ -7,7 +7,7 @@
 
 Thin Azure and Microsoft 365 REST connector for Laravel — Saloon transport only, no business logic.
 
-Covers **ARM**, **Key Vault**, **Microsoft Graph**, and **Kudu** (zip deploy). Orchestration (provisioning sequences, LRO polling, idempotency) belongs in the consuming app.
+Covers **ARM**, **Azure AI Foundry** (control + data plane), **Azure Functions** (ARM + runtime), **Key Vault**, **Microsoft Graph**, and **Kudu**. Orchestration (provisioning sequences, LRO polling, idempotency) belongs in the consuming app.
 
 ## Install
 
@@ -62,6 +62,29 @@ Azure::instance()->graph()->groups()->addMember($groupId, $userId);
 
 // Kudu zip deploy (artifact built in CI)
 Azure::instance()->appService('my-func')->zipDeploy('/path/to/intake.zip');
+
+// Foundry control plane — deploy gpt-5-mini, rotate keys
+$cs = Azure::instance()->cognitiveServices($subscriptionId, 'my-rg');
+$cs->account('my-aif')->deployments()->createOrUpdate(
+    'gpt-5-mini', 'OpenAI', 'gpt-5-mini', '2025-08-07', 'GlobalStandard', 10,
+);
+$cs->account('my-aif')->regenerateKey('Key1');
+
+// Azure OpenAI inference (Entra or pass API key as 2nd argument)
+Azure::instance()->openAi('my-aif')->chat()->create('gpt-5-mini', [
+    'messages' => [['role' => 'user', 'content' => 'Hello']],
+]);
+
+// Foundry Agent Service
+Azure::instance()->foundry('my-aif', 'my-prj')->responses()->create([
+    'model' => 'gpt-5-mini',
+    'input' => 'Summarize this document',
+]);
+
+// Function App ARM — restart, sync triggers, read host keys
+$func = Azure::instance()->functionApps($subscriptionId, 'my-rg')->app('my-func');
+$func->restart();
+$func->syncTriggers();
 ```
 
 Polling example (app-side — not in the package):
@@ -76,6 +99,7 @@ while ($dep->provisioningState && ! $dep->provisioningState->isTerminal()) {
 
 ## API reference
 
+- [Endpoint catalog](ENDPOINTS.md) — human-readable index grouped by Azure service
 - [API reference](docs/api-reference.md) — requests, response DTOs, write payloads, and resource gateways
 - [Inventory parity](docs/inventory-parity.md) — endpoint coverage vs. Saloon request classes
 

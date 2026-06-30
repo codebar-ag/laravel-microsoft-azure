@@ -45,6 +45,25 @@ abstract class Resource
         return $this->send($request, $this->client->kudu($appName));
     }
 
+    protected function sendOpenAi(Request $request, string $accountName, ?string $apiKey = null): Response
+    {
+        return $this->send($request, $this->client->openAiConnector($accountName, $apiKey));
+    }
+
+    protected function sendFoundry(
+        Request $request,
+        string $accountName,
+        string $projectName,
+        ?string $apiKey = null,
+    ): Response {
+        return $this->send($request, $this->client->foundryConnector($accountName, $projectName, $apiKey));
+    }
+
+    protected function sendFunctionRuntime(Request $request, string $appName, ?string $hostKey = null): Response
+    {
+        return $this->send($request, $this->client->functionRuntimeConnector($appName, $hostKey));
+    }
+
     /**
      * @return array<string, mixed>
      */

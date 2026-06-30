@@ -23,6 +23,82 @@ surfaces:
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: CreateOrUpdateSqlFirewallRule, tier: required }
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: DeleteSqlFirewallRule, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}", request: GetSqlDatabase, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts", request: ListCognitiveServicesAccounts, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts", request: ListCognitiveServicesAccountsByResourceGroup, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}", request: CreateOrUpdateCognitiveServicesAccount, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}", request: GetCognitiveServicesAccount, tier: required }
+    - { method: PATCH, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}", request: UpdateCognitiveServicesAccount, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}", request: DeleteCognitiveServicesAccount, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/listKeys", request: ListCognitiveServicesAccountKeys, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/regenerateKey", request: RegenerateCognitiveServicesAccountKey, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/models", request: ListCognitiveServicesAccountModels, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/skus", request: ListCognitiveServicesAccountSkus, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects", request: ListFoundryProjects, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}", request: CreateOrUpdateFoundryProject, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}", request: GetFoundryProject, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}", request: DeleteFoundryProject, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments", request: ListModelDeployments, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: CreateOrUpdateModelDeployment, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: GetModelDeployment, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: DeleteModelDeployment, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus", request: ListModelDeploymentSkus, tier: required }
+  functions_arm:
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites", request: ListSitesByResourceGroup, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}", request: CreateOrUpdateSite, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}", request: GetSite, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}", request: DeleteSite, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/restart", request: RestartSite, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/start", request: StartSite, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/stop", request: StopSite, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/web", request: GetSiteConfig, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/web", request: CreateOrUpdateSiteConfig, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/appsettings/list", request: ListApplicationSettings, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/appsettings", request: UpdateApplicationSettings, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list", request: ListConnectionStrings, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions", request: ListFunctions, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}", request: GetFunction, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/listkeys", request: ListHostKeys, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/keys/{keyName}", request: CreateOrUpdateHostKey, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/host/default/keys/{keyName}", request: DeleteHostKey, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listkeys", request: ListFunctionKeys, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", request: CreateOrUpdateFunctionKey, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", request: DeleteFunctionKey, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers", request: SyncFunctionTriggers, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers/status", request: ListSyncFunctionTriggersStatus, tier: required }
+  openai:
+    - { method: POST, path: "/openai/deployments/{deployment}/chat/completions", request: ChatCompletions, tier: required }
+    - { method: POST, path: "/openai/deployments/{deployment}/embeddings", request: Embeddings, tier: required }
+    - { method: GET, path: "/openai/models", request: ListModels, tier: required }
+    - { method: POST, path: "/openai/responses", request: CreateResponses, tier: required }
+    - { method: POST, path: "/openai/deployments/{deployment}/audio/speech", request: CreateSpeech, tier: extended }
+    - { method: POST, path: "/openai/deployments/{deployment}/audio/transcriptions", request: CreateTranscription, tier: extended }
+    - { method: POST, path: "/openai/deployments/{deployment}/images/generations", request: CreateImageGeneration, tier: extended }
+    - { method: GET, path: "/openai/files", request: ListFiles, tier: extended }
+    - { method: POST, path: "/openai/files", request: UploadFile, tier: extended }
+    - { method: DELETE, path: "/openai/files/{fileId}", request: DeleteFile, tier: extended }
+    - { method: POST, path: "/openai/fine_tuning/jobs", request: CreateFineTuningJob, tier: extended }
+  foundry:
+    - { method: GET, path: "/agents", request: ListAgents, tier: required }
+    - { method: POST, path: "/agents", request: CreateAgent, tier: required }
+    - { method: GET, path: "/agents/{name}", request: GetAgent, tier: required }
+    - { method: DELETE, path: "/agents/{name}", request: DeleteAgent, tier: required }
+    - { method: POST, path: "/agents/{name}/versions", request: CreateAgentVersion, tier: required }
+    - { method: GET, path: "/agents/{name}/versions/{version}", request: GetAgentVersion, tier: required }
+    - { method: POST, path: "/conversations", request: CreateConversation, tier: required }
+    - { method: GET, path: "/conversations/{id}", request: GetConversation, tier: required }
+    - { method: POST, path: "/conversations/{id}/items", request: CreateConversationItems, tier: required }
+    - { method: POST, path: "/responses", request: CreateProjectResponse, tier: required }
+    - { method: POST, path: "/threads", request: CreateThread, tier: deprecated }
+    - { method: GET, path: "/threads/{id}", request: GetThread, tier: deprecated }
+    - { method: POST, path: "/threads/{id}/messages", request: CreateThreadMessage, tier: deprecated }
+    - { method: GET, path: "/threads/{id}/messages", request: ListThreadMessages, tier: deprecated }
+    - { method: POST, path: "/threads/{id}/runs", request: CreateThreadRun, tier: deprecated }
+    - { method: GET, path: "/threads/{id}/runs/{runId}", request: GetThreadRun, tier: deprecated }
+    - { method: POST, path: "/threads/{id}/runs/{runId}/submit_tool_outputs", request: SubmitThreadToolOutputs, tier: deprecated }
+  function_runtime:
+    - { method: POST, path: "/api/workflows/{workflowName}/run", request: RunWorkflow, tier: required }
+    - { method: GET, path: "/api/workflows/{workflowName}/status/{runId}", request: GetWorkflowStatus, tier: required }
+    - { method: POST, path: "/api/workflows/{workflowName}/respond/{runId}", request: RespondToWorkflow, tier: required }
   keyvault:
     - { method: GET, path: "/secrets/{name}", request: GetSecret, tier: required }
     - { method: PUT, path: "/secrets/{name}", request: SetSecret, tier: required }

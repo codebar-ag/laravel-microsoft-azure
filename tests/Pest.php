@@ -258,7 +258,47 @@ function clientWithKuduMock(array $responses, string $appName = 'my-func'): Azur
     return $client;
 }
 
-function clientWithSeededToken(string $kuduAppName = 'my-func'): AzureClient
+/**
+ * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
+ */
+function clientWithOpenAiMock(array $responses, string $accountName = 'my-openai', ?string $apiKey = null): AzureClient
+{
+    $client = clientWithSeededToken();
+
+    $client->openAiConnector($accountName, $apiKey)->withMockClient(new MockClient($responses));
+
+    return $client;
+}
+
+/**
+ * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
+ */
+function clientWithFoundryMock(
+    array $responses,
+    string $accountName = 'my-foundry',
+    string $projectName = 'default',
+    ?string $apiKey = null,
+): AzureClient {
+    $client = clientWithSeededToken();
+
+    $client->foundryConnector($accountName, $projectName, $apiKey)->withMockClient(new MockClient($responses));
+
+    return $client;
+}
+
+/**
+ * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
+ */
+function clientWithFunctionRuntimeMock(array $responses, string $appName = 'my-func', ?string $hostKey = null): AzureClient
+{
+    $client = clientWithSeededToken(functionRuntimeAppName: $appName);
+
+    $client->functionRuntimeConnector($appName, $hostKey)->withMockClient(new MockClient($responses));
+
+    return $client;
+}
+
+function clientWithSeededToken(string $kuduAppName = 'my-func', string $functionRuntimeAppName = 'my-func'): AzureClient
 {
     $manager = app(MicrosoftAzureManager::class);
     $config = testConnectionConfig();
@@ -275,6 +315,8 @@ function clientWithSeededToken(string $kuduAppName = 'my-func'): AzureClient
         TokenAudience::Graph->value => null,
         TokenAudience::KeyVault->value => null,
         TokenAudience::Kudu->value => $kuduAppName.'.scm.azurewebsites.net',
+        TokenAudience::CognitiveServicesDataPlane->value => null,
+        TokenAudience::FunctionRuntime->value => $functionRuntimeAppName.'.azurewebsites.net',
     ];
 
     foreach ($audiences as $audience => $scopeHost) {
