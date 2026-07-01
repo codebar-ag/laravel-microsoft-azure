@@ -176,7 +176,14 @@ function mapPayloadsToRequests(string $requestsPath): array
             continue;
         }
 
-        $map[$payloadMatch[1]] = $requestMatch[1];
+        $payload = $payloadMatch[1];
+        $request = $requestMatch[1];
+
+        // A payload DTO (e.g. GenericJsonPayload) may be imported by many requests; keep the
+        // alphabetically-first request so output is independent of filesystem iteration order.
+        if (! isset($map[$payload]) || $request < $map[$payload]) {
+            $map[$payload] = $request;
+        }
     }
 
     ksort($map);

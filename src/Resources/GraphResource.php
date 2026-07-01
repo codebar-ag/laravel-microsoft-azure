@@ -26,4 +26,14 @@ final class GraphResource extends Resource
     {
         return new InvitationsResource($this->client);
     }
+
+    public function applications(): ApplicationsResource
+    {
+        return new ApplicationsResource($this->client);
+    }
+
+    public function servicePrincipals(): ServicePrincipalsResource
+    {
+        return new ServicePrincipalsResource($this->client);
+    }
 }

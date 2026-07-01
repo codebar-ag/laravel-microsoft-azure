@@ -23,7 +23,7 @@ final class CreateRoleAssignment extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/'.$this->scope.'/providers/Microsoft.Authorization/roleAssignments/'.$this->roleAssignmentName;
+        return '/'.ltrim($this->scope, '/').'/providers/Microsoft.Authorization/roleAssignments/'.$this->roleAssignmentName;
     }
 
     protected function defaultQuery(): array
