@@ -3,7 +3,6 @@
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
-use RuntimeException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 

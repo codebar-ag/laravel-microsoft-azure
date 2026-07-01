@@ -4,7 +4,6 @@ use CodebarAg\MicrosoftAzure\Facades\Azure;
 use CodebarAg\MicrosoftAzure\MicrosoftAzureManager;
 use CodebarAg\MicrosoftAzure\Transport\Auth\EncryptedCacheTokenRepository;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
-use InvalidArgumentException;
 
 it('binds token repository and manager services', function (): void {
     expect(app(TokenRepository::class))->toBeInstanceOf(EncryptedCacheTokenRepository::class)

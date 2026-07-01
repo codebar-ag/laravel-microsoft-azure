@@ -4,7 +4,6 @@ use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Facades\Azure;
 use CodebarAg\MicrosoftAzure\MicrosoftAzureManager;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
-use InvalidArgumentException;
 
 it('registers the manager singleton', function (): void {
     expect(app(MicrosoftAzureManager::class))->toBeInstanceOf(MicrosoftAzureManager::class)

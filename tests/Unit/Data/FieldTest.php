@@ -1,7 +1,6 @@
 <?php
 
 use CodebarAg\MicrosoftAzure\Data\Support\Field;
-use InvalidArgumentException;
 
 it('reads required string and int fields', function (): void {
     expect(Field::string(['name' => 'rg-test'], 'name', 'Test'))->toBe('rg-test')
