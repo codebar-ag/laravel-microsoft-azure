@@ -11,7 +11,7 @@ use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-final class CreateAgent extends Request implements FoundryFeatureRequest, HasBody
+final class UpdateAgent extends Request implements FoundryFeatureRequest, HasBody
 {
     use HasFoundryFeatures;
     use HasJsonBody;
@@ -19,12 +19,13 @@ final class CreateAgent extends Request implements FoundryFeatureRequest, HasBod
     protected Method $method = Method::POST;
 
     public function __construct(
+        public readonly string $agentName,
         public readonly AzurePayload $payload,
     ) {}
 
     public function resolveEndpoint(): string
     {
-        return '/agents';
+        return '/agents/'.$this->agentName;
     }
 
     protected function defaultQuery(): array

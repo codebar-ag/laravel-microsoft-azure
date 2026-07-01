@@ -86,9 +86,14 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | foundry | GET | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgents` |
 | foundry | POST | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` |
 | foundry | GET | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent` |
+| foundry | POST | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\UpdateAgent` |
 | foundry | DELETE | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgent` |
 | foundry | POST | `/agents/{name}/versions` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgentVersion` |
+| foundry | GET | `/agents/{name}/versions` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgentVersions` |
 | foundry | GET | `/agents/{name}/versions/{version}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgentVersion` |
+| foundry | DELETE | `/agents/{name}/versions/{version}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgentVersion` |
+| foundry | POST | `/agents/{name}/endpoint/protocols/openai/responses` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointResponse` |
+| foundry | POST | `/agents/{name}/endpoint/protocols/invocations` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointInvocation` |
 | foundry | POST | `/conversations` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation` |
 | foundry | GET | `/conversations/{id}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\GetConversation` |
 | foundry | POST | `/conversations/{id}/items` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversationItems` |
@@ -100,6 +105,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | foundry | POST | `/threads/{id}/runs` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\CreateThreadRun` |
 | foundry | GET | `/threads/{id}/runs/{runId}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\GetThreadRun` |
 | foundry | POST | `/threads/{id}/runs/{runId}/submit_tool_outputs` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Threads\SubmitThreadToolOutputs` |
+| function_runtime | POST | `/api/agents/{agentName}/run` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunDurableAgent` |
 | function_runtime | POST | `/api/workflows/{workflowName}/run` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` |
 | function_runtime | GET | `/api/workflows/{workflowName}/status/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` |
 | function_runtime | POST | `/api/workflows/{workflowName}/respond/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RespondToWorkflow` |
@@ -150,7 +156,9 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\MetricResultData` | `name`, `unit`, `points` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ModelDeploymentData` | `id`, `name`, `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity`, `provisioningState` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData` | `id`, `name`, `location`, `provisioningState`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\ResourceProviderData` | `namespace`, `registrationState`, `id` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData` | `id`, `name`, `scope`, `roleDefinitionId`, `principalId`, `principalType` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\RoleDefinitionData` | `id`, `name`, `roleName`, `type` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlDatabaseData` | `id`, `name`, `location`, `status`, `collation`, `edition`, `currentServiceObjectiveName`, `autoPauseDelay` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData` | `id`, `name`, `startIpAddress`, `endIpAddress` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlServerData` | `id`, `name`, `location`, `fullyQualifiedDomainName`, `state`, `provisioningState` |
@@ -191,6 +199,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload` | `CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest` | `clientId`, `clientSecret`, `scope` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CognitiveServicesAccountPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `location`, `kind`, `skuName`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CostQueryPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CostManagement\QueryCost` | `from`, `to`, `grouping` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\CreateAgentPayload` | `—` | `name`, `definition`, `description`, `metadata` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateApplicationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` | `displayName`, `signInAudience` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup` | `displayName`, `mailNickname`, `mailEnabled`, `securityEnabled`, `groupTypes` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` | `invitedUserEmailAddress`, `inviteRedirectUrl`, `sendInvitationMessage` |
@@ -199,9 +208,11 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\FoundryProjectPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\CreateOrUpdateFoundryProject` | `location`, `properties` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\FunctionKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateFunctionKey` | `value` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\GenericJsonPayload` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions` | `body` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\HostedAgentDefinitionPayload` | `—` | `containerProtocolVersions`, `cpu`, `memory`, `image`, `environmentVariables`, `tools`, `raiConfig` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\KeyVaultPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\CreateOrUpdateVault` | `location`, `tenantId`, `skuName`, `enableRbacAuthorization`, `enablePurgeProtection`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\LogAnalyticsWorkspacePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\CreateOrUpdateWorkspace` | `location`, `skuName`, `retentionInDays`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ModelDeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` | `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\RaiConfigPayload` | `—` | `raiPolicyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateStorageKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `location`, `properties`, `tags` |
@@ -212,8 +223,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\SqlServerPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlServer` | `location`, `administratorLogin`, `version`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\StorageAccountPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageAccount` | `location`, `skuName`, `kind`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\CreateOrUpdateSubscriptionAlias` | `billingScope`, `displayName`, `workload`, `subscriptionId`, `additionalProperties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\UpdateAgentPayload` | `—` | `definition`, `description`, `metadata` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\UserAssignedIdentityPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\CreateOrUpdateUserAssignedIdentity` | `location`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` | `location`, `kind`, `properties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\WorkflowAgentDefinitionPayload` | `—` | `workflow`, `raiConfig` |
 
 **Note:** `ZipDeploy` sends a binary stream body and has no payload DTO.
 
@@ -256,11 +269,21 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `DeploymentsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment` | `DeploymentData` |
 | `DeploymentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\GetDeployment` | `DeploymentData` |
 | `DeploymentsResource` | `operations()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\ListDeploymentOperations` | `Collection` |
+| `DurableAgentRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunDurableAgent` | `array` |
+| `FoundryAgentEndpointResource` | `createInvocation()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointInvocation` | `array` |
+| `FoundryAgentEndpointResource` | `createResponse()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointResponse` | `array` |
+| `FoundryAgentEndpointResource` | `withFoundryFeatures()` | `self` | `static` |
+| `FoundryAgentResource` | `endpoint()` | `FoundryAgentEndpointResource` | `FoundryAgentEndpointResource` |
+| `FoundryAgentResource` | `withFoundryFeatures()` | `self` | `static` |
 | `FoundryAgentsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` | `array` |
-| `FoundryAgentsResource` | `createVersion()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgentVersion` | `array` |
+| `FoundryAgentsResource` | `createVersion()` | `GenericJsonPayload` | `array` |
 | `FoundryAgentsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgent` | `—` |
+| `FoundryAgentsResource` | `deleteVersion()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgentVersion` | `—` |
 | `FoundryAgentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent` | `array` |
 | `FoundryAgentsResource` | `getVersion()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgentVersion` | `array` |
+| `FoundryAgentsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgents` | `Collection` |
+| `FoundryAgentsResource` | `listVersions()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgentVersions` | `Collection` |
+| `FoundryAgentsResource` | `update()` | `GenericJsonPayload` | `array` |
 | `FoundryConversationsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation` | `array` |
 | `FoundryConversationsResource` | `createItems()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversationItems` | `array` |
 | `FoundryConversationsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\GetConversation` | `array` |
@@ -268,6 +291,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FoundryProjectsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\DeleteFoundryProject` | `—` |
 | `FoundryProjectsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\GetFoundryProject` | `FoundryProjectData` |
 | `FoundryProjectsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\ListFoundryProjects` | `Collection` |
+| `FoundryResource` | `agent()` | `FoundryAgentResource` | `FoundryAgentResource` |
 | `FoundryResource` | `agents()` | `FoundryAgentsResource` | `FoundryAgentsResource` |
 | `FoundryResource` | `conversations()` | `FoundryConversationsResource` | `FoundryConversationsResource` |
 | `FoundryResource` | `responses()` | `FoundryResponsesResource` | `FoundryResponsesResource` |
@@ -307,6 +331,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FunctionKeysResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListFunctionKeys` | `HostKeysData` |
 | `FunctionResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction` | `FunctionData` |
 | `FunctionResource` | `keys()` | `FunctionKeysResource` | `FunctionKeysResource` |
+| `FunctionRuntimeResource` | `agents()` | `DurableAgentRuntimeResource` | `DurableAgentRuntimeResource` |
 | `FunctionRuntimeResource` | `workflows()` | `WorkflowRuntimeResource` | `WorkflowRuntimeResource` |
 | `GraphResource` | `applications()` | `ApplicationsResource` | `ApplicationsResource` |
 | `GraphResource` | `groups()` | `GroupsResource` | `GroupsResource` |
@@ -361,7 +386,11 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ResourceGroupsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup` | `—` |
 | `ResourceGroupsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup` | `ResourceGroupData` |
 | `ResourceGroupsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\ListResourceGroups` | `Collection` |
+| `ResourceProvidersResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\GetResourceProvider` | `ResourceProviderData` |
+| `ResourceProvidersResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\ListResourceProviders` | `Collection` |
+| `ResourceProvidersResource` | `register()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\RegisterResourceProvider` | `ResourceProviderData` |
 | `RoleAssignmentsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment` | `RoleAssignmentData` |
+| `RoleDefinitionsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\RoleDefinitions\ListRoleDefinitions` | `Collection` |
 | `SecretsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret` | `SecretData` |
 | `SecretsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret` | `SecretData` |
 | `SecretsResource` | `set()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` | `SecretData` |
@@ -404,4 +433,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-07-01T11:09:54+00:00
+Generated at: 2026-07-01T12:44:40+00:00

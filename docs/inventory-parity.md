@@ -80,9 +80,14 @@
 | foundry | GET | /agents | ListAgents | required | Parity |
 | foundry | POST | /agents | CreateAgent | required | Parity |
 | foundry | GET | /agents/{name} | GetAgent | required | Parity |
+| foundry | POST | /agents/{name} | UpdateAgent | required | Parity |
 | foundry | DELETE | /agents/{name} | DeleteAgent | required | Parity |
 | foundry | POST | /agents/{name}/versions | CreateAgentVersion | required | Parity |
+| foundry | GET | /agents/{name}/versions | ListAgentVersions | required | Parity |
 | foundry | GET | /agents/{name}/versions/{version} | GetAgentVersion | required | Parity |
+| foundry | DELETE | /agents/{name}/versions/{version} | DeleteAgentVersion | required | Parity |
+| foundry | POST | /agents/{name}/endpoint/protocols/openai/responses | CreateAgentEndpointResponse | required | Parity |
+| foundry | POST | /agents/{name}/endpoint/protocols/invocations | CreateAgentEndpointInvocation | required | Parity |
 | foundry | POST | /conversations | CreateConversation | required | Parity |
 | foundry | GET | /conversations/{id} | GetConversation | required | Parity |
 | foundry | POST | /conversations/{id}/items | CreateConversationItems | required | Parity |
@@ -94,6 +99,7 @@
 | foundry | POST | /threads/{id}/runs | CreateThreadRun | deprecated | Parity |
 | foundry | GET | /threads/{id}/runs/{runId} | GetThreadRun | deprecated | Parity |
 | foundry | POST | /threads/{id}/runs/{runId}/submit_tool_outputs | SubmitThreadToolOutputs | deprecated | Parity |
+| function_runtime | POST | /api/agents/{agentName}/run | RunDurableAgent | required | Parity |
 | function_runtime | POST | /api/workflows/{workflowName}/run | RunWorkflow | required | Parity |
 | function_runtime | GET | /api/workflows/{workflowName}/status/{runId} | GetWorkflowStatus | required | Parity |
 | function_runtime | POST | /api/workflows/{workflowName}/respond/{runId} | RespondToWorkflow | required | Parity |
@@ -121,4 +127,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-07-01T11:10:04+00:00
+Generated at: 2026-07-01T12:44:40+00:00

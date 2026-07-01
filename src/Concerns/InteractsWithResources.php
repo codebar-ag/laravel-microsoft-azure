@@ -21,7 +21,9 @@ use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
 use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceGroupsResource;
+use CodebarAg\MicrosoftAzure\Resources\ResourceProvidersResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
+use CodebarAg\MicrosoftAzure\Resources\RoleDefinitionsResource;
 use CodebarAg\MicrosoftAzure\Resources\SecretsResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlDatabasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlFirewallRulesResource;
@@ -48,6 +50,16 @@ trait InteractsWithResources
     public function roleAssignments(string $scope): RoleAssignmentsResource
     {
         return new RoleAssignmentsResource($this->resourceClient(), $scope);
+    }
+
+    public function roleDefinitions(string $subscriptionId): RoleDefinitionsResource
+    {
+        return new RoleDefinitionsResource($this->resourceClient(), $subscriptionId);
+    }
+
+    public function resourceProviders(string $subscriptionId): ResourceProvidersResource
+    {
+        return new ResourceProvidersResource($this->resourceClient(), $subscriptionId);
     }
 
     public function deletedVaults(string $subscriptionId): DeletedVaultsResource

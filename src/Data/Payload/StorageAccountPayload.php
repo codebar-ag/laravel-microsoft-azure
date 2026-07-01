@@ -22,8 +22,11 @@ final class StorageAccountPayload extends AzurePayload
             'sku' => ['name' => $this->skuName],
             'kind' => $this->kind,
             'location' => $this->location,
-            'properties' => $this->properties,
         ];
+
+        if ($this->properties !== []) {
+            $body['properties'] = $this->properties;
+        }
 
         if ($this->tags !== []) {
             $body['tags'] = $this->tags;

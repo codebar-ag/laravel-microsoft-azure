@@ -78,7 +78,6 @@ it('builds create storage account body with sku, kind, location and tags', funct
         'sku' => ['name' => 'Standard_LRS'],
         'kind' => 'StorageV2',
         'location' => 'westeurope',
-        'properties' => [],
         'tags' => ['project' => 'test'],
     ]);
 });

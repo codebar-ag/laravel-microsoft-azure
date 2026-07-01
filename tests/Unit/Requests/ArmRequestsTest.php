@@ -15,6 +15,9 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceG
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\ListResourceGroups;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\GetResourceProvider;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\ListResourceProviders;
+use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\RegisterResourceProvider;
 use CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlFirewallRule;
@@ -105,6 +108,21 @@ dataset('arm request endpoints', [
         fn () => new DeleteSqlFirewallRule('sub-1', 'rg-test', 'sql1', 'deployer-migrate'),
         '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Sql/servers/sql1/firewallRules/deployer-migrate',
         ApiVersion::ARM_SQL,
+    ],
+    'GetResourceProvider' => [
+        fn () => new GetResourceProvider('sub-1', 'Microsoft.Storage'),
+        '/subscriptions/sub-1/providers/Microsoft.Storage',
+        ApiVersion::ARM_RESOURCE_PROVIDERS,
+    ],
+    'RegisterResourceProvider' => [
+        fn () => new RegisterResourceProvider('sub-1', 'Microsoft.Storage'),
+        '/subscriptions/sub-1/providers/Microsoft.Storage/register',
+        ApiVersion::ARM_RESOURCE_PROVIDERS,
+    ],
+    'ListResourceProviders' => [
+        fn () => new ListResourceProviders('sub-1'),
+        '/subscriptions/sub-1/providers',
+        ApiVersion::ARM_RESOURCE_PROVIDERS,
     ],
 ]);
 

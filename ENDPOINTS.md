@@ -152,7 +152,17 @@ Project-scoped agents, conversations, and Responses API. Legacy Assistants (thre
 ```php
 $foundry = Azure::instance()->foundry('my-aif', 'my-prj');
 
+$foundry->withFoundryFeatures([FoundryFeature::WorkflowAgents])
+    ->agents()
+    ->create(new CreateAgentPayload(
+        name: 'doc-workflow',
+        definition: new WorkflowAgentDefinitionPayload($csdlYaml),
+    ));
+
 $foundry->agents()->create(['name' => 'doc-agent', 'definition' => [...]]);
+$foundry->agent('hosted-agent')->withFoundryFeatures([FoundryFeature::AgentEndpoints])
+    ->endpoint()
+    ->createResponse(['model' => 'gpt-5-mini', 'input' => 'Run step']);
 $foundry->conversations()->create([]);
 $foundry->responses()->create(['model' => 'gpt-5-mini', 'input' => 'Run step']);
 ```
@@ -160,6 +170,8 @@ $foundry->responses()->create(['model' => 'gpt-5-mini', 'input' => 'Run step']);
 | Operation | Path | Tier |
 | --- | --- | --- |
 | Agents CRUD + versions | `/agents`, `/agents/{name}/versions` | required |
+| Agent update | `POST /agents/{name}` | required |
+| Agent endpoint protocols | `/agents/{name}/endpoint/protocols/openai/responses`, `.../invocations` | required |
 | Conversations | `/conversations`, `/conversations/{id}/items` | required |
 | Project responses | `/responses` | required |
 | Threads / runs (legacy) | `/threads`, `/threads/{id}/runs` | deprecated |
@@ -177,6 +189,7 @@ HTTP endpoints auto-generated when a Function App uses `ConfigureDurableWorkflow
 ```php
 $runtime = Azure::instance()->functionRuntime('my-func', hostKey: $key);
 
+$runtime->agents()->run('MyDurableAgent', ['input' => $payload]);
 $runtime->workflows()->run('FlowRunner', ['input' => $payload]);
 $runtime->workflows()->status('FlowRunner', $runId);
 $runtime->workflows()->respond('FlowRunner', $runId, ['approved' => true]);
@@ -184,6 +197,7 @@ $runtime->workflows()->respond('FlowRunner', $runId, ['approved' => true]);
 
 | Method | Path |
 | --- | --- |
+| POST | `/api/agents/{agentName}/run` |
 | POST | `/api/workflows/{workflowName}/run` |
 | GET | `/api/workflows/{workflowName}/status/{runId}` |
 | POST | `/api/workflows/{workflowName}/respond/{runId}` |

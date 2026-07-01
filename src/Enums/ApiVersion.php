@@ -10,6 +10,10 @@ final class ApiVersion
 
     public const ARM_ROLE_ASSIGNMENTS = '2022-04-01';
 
+    public const ARM_ROLE_DEFINITIONS = '2022-04-01';
+
+    public const ARM_RESOURCE_PROVIDERS = '2022-12-01';
+
     public const ARM_DELETED_VAULTS = '2023-02-01';
 
     public const ARM_DELETED_COGNITIVE_SERVICES = '2023-05-01';

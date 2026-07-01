@@ -28,8 +28,11 @@ final class SqlDatabasePayload extends AzurePayload
                 'family' => $this->family,
                 'capacity' => $this->capacity,
             ], fn ($value) => $value !== null),
-            'properties' => $this->properties,
         ];
+
+        if ($this->properties !== []) {
+            $body['properties'] = $this->properties;
+        }
 
         if ($this->tags !== []) {
             $body['tags'] = $this->tags;
