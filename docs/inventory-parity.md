@@ -111,8 +111,14 @@
 | graph | GET | /users/{id} | GetUser | required | Parity |
 | graph | GET | /users | ListUsers | required | Parity |
 | graph | POST | /invitations | CreateInvitation | required | Parity |
+| graph | POST | /applications | CreateApplication | required | Parity |
+| graph | POST | /applications/{id}/addPassword | AddApplicationPassword | required | Parity |
+| graph | DELETE | /applications/{id} | DeleteApplication | required | Parity |
+| graph | GET | /servicePrincipals | ListServicePrincipals | required | Parity |
+| graph | POST | /servicePrincipals | CreateServicePrincipal | required | Parity |
+| graph | DELETE | /servicePrincipals/{id} | DeleteServicePrincipal | required | Parity |
 | kudu | POST | /api/zipdeploy | ZipDeploy | required | Parity |
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-06-30T14:47:47+00:00
+Generated at: 2026-07-01T11:10:04+00:00

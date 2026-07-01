@@ -9,8 +9,11 @@ use CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SqlDatabaseData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData;
 use CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData;
+use CodebarAg\MicrosoftAzure\Data\Graph\ApplicationData;
 use CodebarAg\MicrosoftAzure\Data\Graph\GroupData;
 use CodebarAg\MicrosoftAzure\Data\Graph\InvitationData;
+use CodebarAg\MicrosoftAzure\Data\Graph\PasswordCredentialData;
+use CodebarAg\MicrosoftAzure\Data\Graph\ServicePrincipalData;
 use CodebarAg\MicrosoftAzure\Data\Graph\UserData;
 use CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData;
 use CodebarAg\MicrosoftAzure\Enums\DeploymentMode;
@@ -53,6 +56,17 @@ it('deserializes graph dto payloads', function (): void {
 
     $invitation = InvitationData::fromAzure(invitationFixture());
     expect($invitation->invitedUser?->id)->toBe('user-1');
+
+    $application = ApplicationData::fromAzure(applicationFixture());
+    expect($application->displayName)->toBe('My App')
+        ->and($application->appId)->toBe('00000000-0000-0000-0000-000000000010');
+
+    $password = PasswordCredentialData::fromAzure(passwordCredentialFixture());
+    expect($password->secretText)->toBe('generated-secret')
+        ->and($password->displayName)->toBe('default');
+
+    $servicePrincipal = ServicePrincipalData::fromAzure(servicePrincipalFixture());
+    expect($servicePrincipal->displayName)->toBe('My App Service Principal');
 });
 
 it('deserializes key vault secret identifier payload', function (): void {

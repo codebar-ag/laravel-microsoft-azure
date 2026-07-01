@@ -1,8 +1,14 @@
 <?php
 
+use CodebarAg\MicrosoftAzure\Data\Payload\AddApplicationPasswordPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\AddGroupMemberPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateApplicationPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\CreateServicePrincipalPayload;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\DeleteGroup;
@@ -11,6 +17,9 @@ use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\ListGroupMembers;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\ListGroups;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\RemoveGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\DeleteServicePrincipal;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\ListServicePrincipals;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Users\GetUser;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Users\ListUsers;
 
@@ -65,5 +74,54 @@ it('builds create invitation body', function (): void {
             'invitedUserEmailAddress' => 'guest@example.test',
             'inviteRedirectUrl' => 'https://portal.azure.com',
             'sendInvitationMessage' => false,
+        ]);
+});
+it('resolves graph application and service principal endpoints', function (): void {
+    expect((new CreateApplication(new CreateApplicationPayload('My App')))->resolveEndpoint())->toBe('/applications')
+        ->and((new AddApplicationPassword('app-1', new AddApplicationPasswordPayload('default')))->resolveEndpoint())->toBe('/applications/app-1/addPassword')
+        ->and((new DeleteApplication('app-1'))->resolveEndpoint())->toBe('/applications/app-1')
+        ->and((new ListServicePrincipals)->resolveEndpoint())->toBe('/servicePrincipals')
+        ->and((new CreateServicePrincipal(new CreateServicePrincipalPayload('00000000-0000-0000-0000-000000000001')))->resolveEndpoint())->toBe('/servicePrincipals')
+        ->and((new DeleteServicePrincipal('sp-1'))->resolveEndpoint())->toBe('/servicePrincipals/sp-1');
+});
+
+it('applies graph list service principals filter query', function (): void {
+    $request = new ListServicePrincipals(filter: "appId eq '00000000-0000-0000-0000-000000000001'");
+
+    expect($request->query()->all())->toBe(['$filter' => "appId eq '00000000-0000-0000-0000-000000000001'"]);
+});
+
+it('returns empty query when list service principals filter is blank', function (): void {
+    expect((new ListServicePrincipals(filter: ''))->query()->all())->toBe([]);
+});
+
+it('builds create application body', function (): void {
+    $request = new CreateApplication(new CreateApplicationPayload(
+        displayName: 'My App',
+        signInAudience: 'AzureADMyOrg',
+    ));
+
+    expect($request->body()->all())
+        ->toMatchArray([
+            'displayName' => 'My App',
+            'signInAudience' => 'AzureADMyOrg',
+        ]);
+});
+
+it('builds add application password body', function (): void {
+    $request = new AddApplicationPassword('app-1', new AddApplicationPasswordPayload('default'));
+
+    expect($request->body()->all())
+        ->toMatchArray([
+            'passwordCredential' => ['displayName' => 'default'],
+        ]);
+});
+
+it('builds create service principal body', function (): void {
+    $request = new CreateServicePrincipal(new CreateServicePrincipalPayload('00000000-0000-0000-0000-000000000001'));
+
+    expect($request->body()->all())
+        ->toMatchArray([
+            'appId' => '00000000-0000-0000-0000-000000000001',
         ]);
 });

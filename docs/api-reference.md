@@ -117,6 +117,12 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | graph | GET | `/users/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\GetUser` |
 | graph | GET | `/users` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\ListUsers` |
 | graph | POST | `/invitations` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` |
+| graph | POST | `/applications` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` |
+| graph | POST | `/applications/{id}/addPassword` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword` |
+| graph | DELETE | `/applications/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication` |
+| graph | GET | `/servicePrincipals` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\ListServicePrincipals` |
+| graph | POST | `/servicePrincipals` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal` |
+| graph | DELETE | `/servicePrincipals/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\DeleteServicePrincipal` |
 | kudu | POST | `/api/zipdeploy` | `CodebarAg\MicrosoftAzure\Requests\Kudu\ZipDeploy` |
 | kudu | GET | `/api/deployments/{id}` | `CodebarAg\MicrosoftAzure\Requests\Kudu\GetDeploymentStatus` |
 | auth | POST | `/oauth2/v2.0/token` | `CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest` |
@@ -156,8 +162,11 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\UserAssignedIdentityData` | `id`, `name`, `location`, `principalId`, `clientId`, `tenantId`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData` | `id`, `name`, `location`, `kind`, `defaultHostName`, `state`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData` | `accessToken`, `tokenType`, `expiresIn`, `expiresAt` |
+| `CodebarAg\MicrosoftAzure\Data\Graph\ApplicationData` | `id`, `appId`, `displayName` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\GroupData` | `id`, `displayName`, `mailNickname`, `description`, `mailEnabled`, `securityEnabled`, `groupTypes` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\InvitationData` | `id`, `inviteRedeemUrl`, `invitedUserEmailAddress`, `status`, `invitedUser` |
+| `CodebarAg\MicrosoftAzure\Data\Graph\PasswordCredentialData` | `secretText`, `keyId`, `displayName` |
+| `CodebarAg\MicrosoftAzure\Data\Graph\ServicePrincipalData` | `id`, `appId`, `displayName` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\UserData` | `id`, `displayName`, `userPrincipalName`, `mail`, `givenName`, `surname` |
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretData` | `id`, `name`, `value`, `contentType`, `createdOn`, `updatedOn`, `enabled` |
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData` | `id`, `name`, `enabled` |
@@ -173,6 +182,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 
 | Payload DTO | Request | Fields |
 | --- | --- | --- |
+| `CodebarAg\MicrosoftAzure\Data\Payload\AddApplicationPasswordPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword` | `displayName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\AddGroupMemberPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember` | `memberId` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\AppSettingsPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings` | `properties` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ApplicationInsightsComponentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\CreateOrUpdateComponent` | `location`, `applicationType`, `kind`, `workspaceResourceId`, `properties`, `tags` |
@@ -181,8 +191,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload` | `CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest` | `clientId`, `clientSecret`, `scope` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CognitiveServicesAccountPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `location`, `kind`, `skuName`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CostQueryPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CostManagement\QueryCost` | `from`, `to`, `grouping` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\CreateApplicationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` | `displayName`, `signInAudience` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup` | `displayName`, `mailNickname`, `mailEnabled`, `securityEnabled`, `groupTypes` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateInvitationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` | `invitedUserEmailAddress`, `inviteRedirectUrl`, `sendInvitationMessage` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\CreateServicePrincipalPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal` | `appId` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\DeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CreateOrUpdateDeployment` | `template`, `parameters`, `mode` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\FoundryProjectPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\CreateOrUpdateFoundryProject` | `location`, `properties` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\FunctionKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateFunctionKey` | `value` |
@@ -216,6 +228,9 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ApplicationInsightsComponentResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\GetComponent` | `ApplicationInsightsComponentData` |
 | `ApplicationInsightsResource` | `component()` | `ApplicationInsightsComponentResource` | `ApplicationInsightsComponentResource` |
 | `ApplicationInsightsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\ListComponentsByResourceGroup` | `Collection` |
+| `ApplicationsResource` | `addPassword()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword` | `PasswordCredentialData` |
+| `ApplicationsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` | `ApplicationData` |
+| `ApplicationsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication` | `—` |
 | `BlobContainersResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateBlobContainer` | `BlobContainerData` |
 | `BlobContainersResource` | `setManagementPolicy()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\SetBlobManagementPolicy` | `—` |
 | `CognitiveServicesAccountResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `CognitiveServicesAccountData` |
@@ -293,8 +308,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FunctionResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction` | `FunctionData` |
 | `FunctionResource` | `keys()` | `FunctionKeysResource` | `FunctionKeysResource` |
 | `FunctionRuntimeResource` | `workflows()` | `WorkflowRuntimeResource` | `WorkflowRuntimeResource` |
+| `GraphResource` | `applications()` | `ApplicationsResource` | `ApplicationsResource` |
 | `GraphResource` | `groups()` | `GroupsResource` | `GroupsResource` |
 | `GraphResource` | `invitations()` | `InvitationsResource` | `InvitationsResource` |
+| `GraphResource` | `servicePrincipals()` | `ServicePrincipalsResource` | `ServicePrincipalsResource` |
 | `GraphResource` | `users()` | `UsersResource` | `UsersResource` |
 | `GroupsResource` | `addMember()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember` | `—` |
 | `GroupsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup` | `GroupData` |
@@ -348,6 +365,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `SecretsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret` | `SecretData` |
 | `SecretsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret` | `SecretData` |
 | `SecretsResource` | `set()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` | `SecretData` |
+| `ServicePrincipalsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal` | `ServicePrincipalData` |
+| `ServicePrincipalsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\DeleteServicePrincipal` | `—` |
+| `ServicePrincipalsResource` | `findByAppIdOrFail()` | `RuntimeException` | `ServicePrincipalData` |
+| `ServicePrincipalsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\ListServicePrincipals` | `Collection` |
 | `SqlDatabasesResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlDatabase` | `SqlDatabaseData` |
 | `SqlDatabasesResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlDatabase` | `—` |
 | `SqlDatabasesResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\GetSqlDatabase` | `SqlDatabaseData` |
@@ -383,4 +404,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-06-30T19:51:11+00:00
+Generated at: 2026-07-01T11:09:54+00:00

@@ -12,8 +12,11 @@ use CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData;
 use CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData;
+use CodebarAg\MicrosoftAzure\Data\Graph\ApplicationData;
 use CodebarAg\MicrosoftAzure\Data\Graph\GroupData;
 use CodebarAg\MicrosoftAzure\Data\Graph\InvitationData;
+use CodebarAg\MicrosoftAzure\Data\Graph\PasswordCredentialData;
+use CodebarAg\MicrosoftAzure\Data\Graph\ServicePrincipalData;
 use CodebarAg\MicrosoftAzure\Data\Graph\UserData;
 use CodebarAg\MicrosoftAzure\Data\Kudu\KuduDeploymentData;
 use CodebarAg\MicrosoftAzure\Data\OpenAi\ChatCompletionData;
@@ -53,12 +56,18 @@ use CodebarAg\MicrosoftAzure\Requests\Foundry\Conversations\CreateConversation;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Responses\CreateProjectResponse;
 use CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus;
 use CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\DeleteGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\ListGroupMembers;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\RemoveGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\DeleteServicePrincipal;
+use CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\ListServicePrincipals;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Users\GetUser;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Users\ListUsers;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret;
@@ -135,6 +144,12 @@ it('covers graph, key vault, and kudu resource gateways', function (): void {
         AddGroupMember::class => MockResponse::make(status: 204),
         RemoveGroupMember::class => MockResponse::make(status: 204),
         CreateInvitation::class => MockResponse::make(body: invitationFixture()),
+        CreateApplication::class => MockResponse::make(body: applicationFixture()),
+        AddApplicationPassword::class => MockResponse::make(body: passwordCredentialFixture()),
+        DeleteApplication::class => MockResponse::make(status: 204),
+        CreateServicePrincipal::class => MockResponse::make(body: servicePrincipalFixture()),
+        ListServicePrincipals::class => MockResponse::make(body: ['value' => [servicePrincipalFixture()]]),
+        DeleteServicePrincipal::class => MockResponse::make(status: 204),
     ]);
 
     $graph = new GraphResource($client);
@@ -143,9 +158,17 @@ it('covers graph, key vault, and kudu resource gateways', function (): void {
         ->and($graph->users()->get('user-1'))->toBeInstanceOf(UserData::class)
         ->and($graph->groups()->create('Readers', 'readers'))->toBeInstanceOf(GroupData::class)
         ->and($graph->groups()->members('group-1')->first())->toBeInstanceOf(UserData::class)
-        ->and($graph->invitations()->create('guest@example.test', 'https://redirect.test'))->toBeInstanceOf(InvitationData::class);
+        ->and($graph->invitations()->create('guest@example.test', 'https://redirect.test'))->toBeInstanceOf(InvitationData::class)
+        ->and($graph->applications()->create('My App'))->toBeInstanceOf(ApplicationData::class)
+        ->and($graph->applications()->addPassword('app-object-1'))->toBeInstanceOf(PasswordCredentialData::class)
+        ->and($graph->servicePrincipals()->create('00000000-0000-0000-0000-000000000010'))->toBeInstanceOf(ServicePrincipalData::class)
+        ->and($graph->servicePrincipals()->list())->toHaveCount(1)
+        ->and($graph->servicePrincipals()->findByAppId('00000000-0000-0000-0000-000000000010'))->toBeInstanceOf(ServicePrincipalData::class)
+        ->and($graph->servicePrincipals()->findByAppIdOrFail('00000000-0000-0000-0000-000000000010'))->toBeInstanceOf(ServicePrincipalData::class);
 
     $graph->groups()->delete('group-1');
+    $graph->applications()->delete('app-object-1');
+    $graph->servicePrincipals()->delete('sp-object-1');
     $graph->groups()->addMember('group-1', 'user-1');
     $graph->groups()->removeMember('group-1', 'user-1');
 
@@ -329,4 +352,12 @@ it('covers web, openai, foundry, and function runtime resource gateways', functi
         ->toHaveKey('id')
         ->and($runtimeClient->functionRuntime('my-func')->workflows()->status('FlowRunner', 'run-1'))
         ->toHaveKey('runtimeStatus');
+});
+it('findByAppIdOrFail throws when service principal is missing', function (): void {
+    $client = clientWithGraphMock([
+        ListServicePrincipals::class => MockResponse::make(body: ['value' => []]),
+    ]);
+
+    expect(fn () => (new GraphResource($client))->servicePrincipals()->findByAppIdOrFail('00000000-0000-0000-0000-000000000099'))
+        ->toThrow(RuntimeException::class, 'Service principal for app id [00000000-0000-0000-0000-000000000099] was not found.');
 });

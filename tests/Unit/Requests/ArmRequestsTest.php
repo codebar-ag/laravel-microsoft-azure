@@ -129,7 +129,6 @@ it('builds create resource group body with location and tags', function (): void
     expect($request->body()->all())
         ->toMatchArray([
             'location' => 'westeurope',
-            'properties' => [],
             'tags' => ['project' => 'test'],
         ]);
 });

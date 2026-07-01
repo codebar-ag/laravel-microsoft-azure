@@ -115,6 +115,12 @@ surfaces:
     - { method: GET, path: "/users/{id}", request: GetUser, tier: required }
     - { method: GET, path: "/users", request: ListUsers, tier: required }
     - { method: POST, path: "/invitations", request: CreateInvitation, tier: required }
+    - { method: POST, path: "/applications", request: CreateApplication, tier: required }
+    - { method: POST, path: "/applications/{id}/addPassword", request: AddApplicationPassword, tier: required }
+    - { method: DELETE, path: "/applications/{id}", request: DeleteApplication, tier: required }
+    - { method: GET, path: "/servicePrincipals", request: ListServicePrincipals, tier: required }
+    - { method: POST, path: "/servicePrincipals", request: CreateServicePrincipal, tier: required }
+    - { method: DELETE, path: "/servicePrincipals/{id}", request: DeleteServicePrincipal, tier: required }
   kudu:
     - { method: POST, path: "/api/zipdeploy", request: ZipDeploy, tier: required }
     - { method: GET, path: "/api/deployments/{id}", request: GetDeploymentStatus, tier: required }

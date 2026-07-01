@@ -447,6 +447,33 @@ function userFixture(): array
     ];
 }
 
+function applicationFixture(): array
+{
+    return [
+        'id' => 'app-object-1',
+        'appId' => '00000000-0000-0000-0000-000000000010',
+        'displayName' => 'My App',
+    ];
+}
+
+function passwordCredentialFixture(): array
+{
+    return [
+        'secretText' => 'generated-secret',
+        'keyId' => '00000000-0000-0000-0000-000000000011',
+        'displayName' => 'default',
+    ];
+}
+
+function servicePrincipalFixture(): array
+{
+    return [
+        'id' => 'sp-object-1',
+        'appId' => '00000000-0000-0000-0000-000000000010',
+        'displayName' => 'My App Service Principal',
+    ];
+}
+
 function invitationFixture(): array
 {
     return [
