@@ -12,9 +12,6 @@
         <testsuite name="integration">
             <directory>tests/Integration</directory>
         </testsuite>
-        <testsuite name="feature">
-            <directory>tests/Integration</directory>
-        </testsuite>
     </testsuites>
     <php>
         <env name="APP_KEY" value="base64:F+mHMDBbavrsp/I3WYA5lDSwDJJI/0wQG4eM3csq/lo="/>

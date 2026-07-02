@@ -12,6 +12,7 @@ use CodebarAg\MicrosoftAzure\Transport\FunctionRuntimeConnector;
 use CodebarAg\MicrosoftAzure\Transport\GraphConnector;
 use CodebarAg\MicrosoftAzure\Transport\KeyVaultConnector;
 use CodebarAg\MicrosoftAzure\Transport\KuduConnector;
+use CodebarAg\MicrosoftAzure\Transport\LogAnalyticsConnector;
 use CodebarAg\MicrosoftAzure\Transport\OpenAiConnector;
 
 final class AzureClient
@@ -24,6 +25,8 @@ final class AzureClient
     private array $keyVaultConnectors = [];
 
     private ?GraphConnector $graphConnector = null;
+
+    private ?LogAnalyticsConnector $logAnalyticsConnector = null;
 
     /** @var array<string, KuduConnector> */
     private array $kuduConnectors = [];
@@ -71,6 +74,11 @@ final class AzureClient
     public function graph(): GraphConnector
     {
         return $this->graphConnector ??= new GraphConnector($this->config, $this->tokens, $this->fetcher);
+    }
+
+    public function logAnalyticsConnector(): LogAnalyticsConnector
+    {
+        return $this->logAnalyticsConnector ??= new LogAnalyticsConnector($this->config, $this->tokens, $this->fetcher);
     }
 
     public function kudu(string $appName): KuduConnector

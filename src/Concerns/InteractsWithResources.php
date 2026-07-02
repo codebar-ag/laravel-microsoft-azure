@@ -16,7 +16,9 @@ use CodebarAg\MicrosoftAzure\Resources\FunctionAppsResource;
 use CodebarAg\MicrosoftAzure\Resources\FunctionRuntimeResource;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
 use CodebarAg\MicrosoftAzure\Resources\KeyVaultsResource;
+use CodebarAg\MicrosoftAzure\Resources\LogAnalyticsQueryResource;
 use CodebarAg\MicrosoftAzure\Resources\LogAnalyticsWorkspacesResource;
+use CodebarAg\MicrosoftAzure\Resources\LogicWorkflowsResource;
 use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
 use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
@@ -160,6 +162,16 @@ trait InteractsWithResources
     public function logAnalyticsWorkspaces(string $subscriptionId, string $resourceGroup): LogAnalyticsWorkspacesResource
     {
         return new LogAnalyticsWorkspacesResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function logAnalytics(): LogAnalyticsQueryResource
+    {
+        return new LogAnalyticsQueryResource($this->resourceClient());
+    }
+
+    public function logicWorkflows(string $subscriptionId, string $resourceGroup): LogicWorkflowsResource
+    {
+        return new LogicWorkflowsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
     }
 
     public function applicationInsights(string $subscriptionId, string $resourceGroup): ApplicationInsightsResource

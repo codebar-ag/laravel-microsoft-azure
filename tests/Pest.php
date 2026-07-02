@@ -5,7 +5,9 @@ use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
 use CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData;
 use CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData;
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
+use CodebarAg\MicrosoftAzure\Exceptions\BadRequestException;
 use CodebarAg\MicrosoftAzure\Exceptions\ForbiddenException;
+use CodebarAg\MicrosoftAzure\Exceptions\RateLimitException;
 use CodebarAg\MicrosoftAzure\Facades\Azure;
 use CodebarAg\MicrosoftAzure\MicrosoftAzureManager;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup;
@@ -61,6 +63,16 @@ function runAzureIntegration(callable $callback): void
             : 'Assign Contributor (or equivalent) on MICROSOFT_AZURE_SUBSCRIPTION_ID.';
 
         test()->markTestSkipped("Azure RBAC: {$hint} — {$e->getMessage()}");
+    } catch (BadRequestException $e) {
+        if (str_contains($e->getMessage(), 'InvalidSku') || str_contains($e->getMessage(), "Can't create DevTest")) {
+            test()->markTestSkipped(
+                'Azure billing account limitation: this billing scope cannot create the requested subscription workload. — '.$e->getMessage(),
+            );
+        }
+
+        throw $e;
+    } catch (RateLimitException $e) {
+        test()->markTestSkipped('Azure throttling: retry later. — '.$e->getMessage());
     }
 }
 
@@ -152,6 +164,27 @@ function pollSubscriptionAlias(string $aliasName, int $timeoutSeconds = 300): Su
     throw new RuntimeException(
         "Subscription alias [{$aliasName}] did not reach a terminal provisioning state within {$timeoutSeconds} seconds."
     );
+}
+
+/**
+ * Repeatedly invokes $condition until it returns a non-null/non-false value,
+ * or fails the test once $timeoutSeconds has elapsed.
+ */
+function pollUntil(callable $condition, int $timeoutSeconds = 180, int $intervalSeconds = 5): mixed
+{
+    $deadline = time() + $timeoutSeconds;
+
+    do {
+        $result = $condition();
+
+        if ($result !== null && $result !== false) {
+            return $result;
+        }
+
+        sleep($intervalSeconds);
+    } while (time() < $deadline);
+
+    test()->fail("Condition did not become truthy within {$timeoutSeconds} seconds.");
 }
 
 /**
@@ -249,6 +282,18 @@ function clientWithKeyVaultMock(array $responses, string $vaultName = 'myvault')
 /**
  * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
  */
+function clientWithLogAnalyticsMock(array $responses): AzureClient
+{
+    $client = clientWithSeededToken();
+
+    $client->logAnalyticsConnector()->withMockClient(new MockClient($responses));
+
+    return $client;
+}
+
+/**
+ * @param  array<int, MockResponse>|array<class-string, MockResponse>  $responses
+ */
 function clientWithKuduMock(array $responses, string $appName = 'my-func'): AzureClient
 {
     $client = clientWithSeededToken();
@@ -317,6 +362,7 @@ function clientWithSeededToken(string $kuduAppName = 'my-func', string $function
         TokenAudience::Kudu->value => $kuduAppName.'.scm.azurewebsites.net',
         TokenAudience::CognitiveServicesDataPlane->value => null,
         TokenAudience::FunctionRuntime->value => $functionRuntimeAppName.'.azurewebsites.net',
+        TokenAudience::LogAnalytics->value => null,
     ];
 
     foreach ($audiences as $audience => $scopeHost) {

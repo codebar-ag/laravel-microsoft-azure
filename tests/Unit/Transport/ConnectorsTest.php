@@ -8,6 +8,7 @@ use CodebarAg\MicrosoftAzure\Transport\FunctionRuntimeConnector;
 use CodebarAg\MicrosoftAzure\Transport\GraphConnector;
 use CodebarAg\MicrosoftAzure\Transport\KeyVaultConnector;
 use CodebarAg\MicrosoftAzure\Transport\KuduConnector;
+use CodebarAg\MicrosoftAzure\Transport\LogAnalyticsConnector;
 use CodebarAg\MicrosoftAzure\Transport\OpenAiConnector;
 
 it('resolves connector base urls and default config', function (): void {
@@ -22,6 +23,7 @@ it('resolves connector base urls and default config', function (): void {
     $openAi = new OpenAiConnector($config, $tokens, $fetcher, 'my-openai');
     $foundry = new FoundryConnector($config, $tokens, $fetcher, 'my-foundry', 'default');
     $runtime = new FunctionRuntimeConnector($config, $tokens, $fetcher, 'my-app');
+    $logAnalytics = new LogAnalyticsConnector($config, $tokens, $fetcher);
 
     expect($arm->resolveBaseUrl())->toBe('https://management.azure.com')
         ->and($graph->resolveBaseUrl())->toBe('https://graph.microsoft.com/v1.0')
@@ -30,6 +32,7 @@ it('resolves connector base urls and default config', function (): void {
         ->and($openAi->resolveBaseUrl())->toBe('https://my-openai.openai.azure.com')
         ->and($foundry->resolveBaseUrl())->toBe('https://my-foundry.services.ai.azure.com/api/projects/default')
         ->and($runtime->resolveBaseUrl())->toBe('https://my-app.azurewebsites.net')
+        ->and($logAnalytics->resolveBaseUrl())->toBe('https://api.loganalytics.azure.com/v1')
         ->and($arm->defaultHeaders())->toBe(['Accept' => 'application/json'])
         ->and($arm->defaultConfig())->toBe(['timeout' => 30]);
 });

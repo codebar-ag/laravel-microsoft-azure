@@ -50,6 +50,36 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` |
 | arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\DeleteModelDeployment` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeploymentSkus` |
+| logic | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\CreateOrUpdateLogicWorkflow` |
+| logic | PATCH | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\UpdateLogicWorkflow` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\GetLogicWorkflow` |
+| logic | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\DeleteLogicWorkflow` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowsByResourceGroup` |
+| logic | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowsBySubscription` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/enable` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\EnableLogicWorkflow` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/disable` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\DisableLogicWorkflow` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/listCallbackUrl` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowCallbackUrl` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/generateUpgradedDefinition` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\GenerateUpgradedDefinition` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/regenerateAccessKey` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\RegenerateLogicWorkflowAccessKey` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/validate` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ValidateLogicWorkflow` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Versions\ListLogicWorkflowVersions` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions/{versionId}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Versions\GetLogicWorkflowVersion` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ListLogicWorkflowTriggers` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\GetLogicWorkflowTrigger` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/run` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\RunLogicWorkflowTrigger` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/reset` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ResetLogicWorkflowTrigger` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/listCallbackUrl` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ListLogicWorkflowTriggerCallbackUrl` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/schemas/json` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\GetLogicWorkflowTriggerSchemaJson` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/setState` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\SetLogicWorkflowTriggerState` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\ListLogicWorkflowTriggerHistories` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\GetLogicWorkflowTriggerHistory` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history}/resubmit` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\ResubmitLogicWorkflowTriggerHistory` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\ListLogicWorkflowRuns` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\GetLogicWorkflowRun` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/cancel` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\CancelLogicWorkflowRun` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\ListLogicWorkflowRunActions` |
+| logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\GetLogicWorkflowRunAction` |
+| logic | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action}/listExpressionTraces` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\ListLogicWorkflowRunActionExpressionTraces` |
 | functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\ListSitesByResourceGroup` |
 | functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` |
 | functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSite` |
@@ -83,6 +113,17 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | openai | POST | `/openai/files` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\UploadFile` |
 | openai | DELETE | `/openai/files/{fileId}` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\DeleteFile` |
 | openai | POST | `/openai/fine_tuning/jobs` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateFineTuningJob` |
+| openai_v1 | POST | `/openai/v1/chat/completions` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1ChatCompletions` |
+| openai_v1 | POST | `/openai/v1/embeddings` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1Embeddings` |
+| openai_v1 | POST | `/openai/v1/responses` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateResponse` |
+| openai_v1 | GET | `/openai/v1/models` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1ListModels` |
+| openai_v1 | GET | `/openai/v1/files` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1ListFiles` |
+| openai_v1 | POST | `/openai/v1/files` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1UploadFile` |
+| openai_v1 | DELETE | `/openai/v1/files/{fileId}` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1DeleteFile` |
+| openai_v1 | POST | `/openai/v1/images/generations` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateImageGeneration` |
+| openai_v1 | POST | `/openai/v1/audio/speech` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateSpeech` |
+| openai_v1 | POST | `/openai/v1/audio/transcriptions` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateTranscription` |
+| openai_v1 | POST | `/openai/v1/fine_tuning/jobs` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateFineTuningJob` |
 | foundry | GET | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\ListAgents` |
 | foundry | POST | `/agents` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` |
 | foundry | GET | `/agents/{name}` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\GetAgent` |
@@ -109,6 +150,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | function_runtime | POST | `/api/workflows/{workflowName}/run` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` |
 | function_runtime | GET | `/api/workflows/{workflowName}/status/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` |
 | function_runtime | POST | `/api/workflows/{workflowName}/respond/{runId}` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RespondToWorkflow` |
+| log_analytics_query | POST | `/workspaces/{workspaceId}/query` | `CodebarAg\MicrosoftAzure\Requests\LogAnalytics\ExecuteWorkspaceQuery` |
 | keyvault | GET | `/secrets/{name}` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret` |
 | keyvault | PUT | `/secrets/{name}` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` |
 | keyvault | GET | `/secrets` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets` |
@@ -153,6 +195,13 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\HostKeysData` | `properties` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\KeyVaultData` | `id`, `name`, `location`, `vaultUri`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\LogAnalyticsWorkspaceData` | `id`, `name`, `location`, `customerId`, `provisioningState`, `skuName`, `retentionInDays` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicCallbackUrlData` | `value`, `method`, `basePath`, `relativePath`, `queries` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowData` | `id`, `name`, `location`, `state`, `provisioningState`, `accessEndpoint`, `createdTime`, `changedTime`, `version`, `definition`, `parameters` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowRunActionData` | `id`, `name`, `status`, `code`, `startTime`, `endTime`, `trackingId` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowRunData` | `id`, `name`, `status`, `code`, `startTime`, `endTime`, `triggerName`, `clientTrackingId` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowTriggerData` | `id`, `name`, `state`, `provisioningState`, `status`, `lastExecutionTime`, `nextExecutionTime` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowTriggerHistoryData` | `id`, `name`, `status`, `code`, `startTime`, `endTime`, `fired`, `runName` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowVersionData` | `id`, `name`, `state`, `createdTime`, `changedTime`, `definition` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\MetricResultData` | `name`, `unit`, `points` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ModelDeploymentData` | `id`, `name`, `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity`, `provisioningState` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData` | `id`, `name`, `location`, `provisioningState`, `tags` |
@@ -179,6 +228,8 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretData` | `id`, `name`, `value`, `contentType`, `createdOn`, `updatedOn`, `enabled` |
 | `CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData` | `id`, `name`, `enabled` |
 | `CodebarAg\MicrosoftAzure\Data\Kudu\KuduDeploymentData` | `id`, `status`, `author`, `deployer`, `message`, `startTime`, `endTime`, `complete`, `active` |
+| `CodebarAg\MicrosoftAzure\Data\LogAnalytics\QueryResultsData` | `tables` |
+| `CodebarAg\MicrosoftAzure\Data\LogAnalytics\QueryTableData` | `name`, `columns`, `rows` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\ChatCompletionUsageData` | `promptTokens`, `completionTokens`, `totalTokens`, `id`, `model`, `choices`, `usage` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\EmbeddingData` | `model`, `data`, `promptTokens`, `totalTokens` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\ModelListData` | `data` |
@@ -210,7 +261,9 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\GenericJsonPayload` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions` | `body` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\HostedAgentDefinitionPayload` | `—` | `containerProtocolVersions`, `cpu`, `memory`, `image`, `environmentVariables`, `tools`, `raiConfig` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\KeyVaultPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\CreateOrUpdateVault` | `location`, `tenantId`, `skuName`, `enableRbacAuthorization`, `enablePurgeProtection`, `properties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\LogAnalyticsQueryPayload` | `CodebarAg\MicrosoftAzure\Requests\LogAnalytics\ExecuteWorkspaceQuery` | `query`, `timespan` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\LogAnalyticsWorkspacePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\CreateOrUpdateWorkspace` | `location`, `skuName`, `retentionInDays`, `properties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\LogicWorkflowPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\CreateOrUpdateLogicWorkflow` | `location`, `definition`, `parameters`, `state`, `integrationAccountId`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ModelDeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` | `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RaiConfigPayload` | `—` | `raiPolicyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `keyName` |
@@ -272,9 +325,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `DurableAgentRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunDurableAgent` | `array` |
 | `FoundryAgentEndpointResource` | `createInvocation()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointInvocation` | `array` |
 | `FoundryAgentEndpointResource` | `createResponse()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\AgentEndpoints\CreateAgentEndpointResponse` | `array` |
-| `FoundryAgentEndpointResource` | `withFoundryFeatures()` | `self` | `static` |
 | `FoundryAgentResource` | `endpoint()` | `FoundryAgentEndpointResource` | `FoundryAgentEndpointResource` |
-| `FoundryAgentResource` | `withFoundryFeatures()` | `self` | `static` |
 | `FoundryAgentsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\CreateAgent` | `array` |
 | `FoundryAgentsResource` | `createVersion()` | `GenericJsonPayload` | `array` |
 | `FoundryAgentsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Agents\DeleteAgent` | `—` |
@@ -351,11 +402,51 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `KeyVaultVaultResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\GetVault` | `KeyVaultData` |
 | `KeyVaultsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\ListVaultsByResourceGroup` | `Collection` |
 | `KeyVaultsResource` | `vault()` | `KeyVaultVaultResource` | `KeyVaultVaultResource` |
+| `LogAnalyticsQueryResource` | `query()` | `CodebarAg\MicrosoftAzure\Requests\LogAnalytics\ExecuteWorkspaceQuery` | `QueryResultsData` |
 | `LogAnalyticsWorkspaceResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\CreateOrUpdateWorkspace` | `LogAnalyticsWorkspaceData` |
 | `LogAnalyticsWorkspaceResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\DeleteWorkspace` | `—` |
 | `LogAnalyticsWorkspaceResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\GetWorkspace` | `LogAnalyticsWorkspaceData` |
 | `LogAnalyticsWorkspacesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\OperationalInsights\ListWorkspacesByResourceGroup` | `Collection` |
 | `LogAnalyticsWorkspacesResource` | `workspace()` | `LogAnalyticsWorkspaceResource` | `LogAnalyticsWorkspaceResource` |
+| `LogicWorkflowResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\CreateOrUpdateLogicWorkflow` | `LogicWorkflowData` |
+| `LogicWorkflowResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\DeleteLogicWorkflow` | `—` |
+| `LogicWorkflowResource` | `disable()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\DisableLogicWorkflow` | `—` |
+| `LogicWorkflowResource` | `enable()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\EnableLogicWorkflow` | `—` |
+| `LogicWorkflowResource` | `generateUpgradedDefinition()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\GenerateUpgradedDefinition` | `array` |
+| `LogicWorkflowResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\GetLogicWorkflow` | `LogicWorkflowData` |
+| `LogicWorkflowResource` | `listCallbackUrl()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowCallbackUrl` | `LogicCallbackUrlData` |
+| `LogicWorkflowResource` | `regenerateAccessKey()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\RegenerateLogicWorkflowAccessKey` | `—` |
+| `LogicWorkflowResource` | `runs()` | `LogicWorkflowRunsResource` | `LogicWorkflowRunsResource` |
+| `LogicWorkflowResource` | `triggers()` | `LogicWorkflowTriggersResource` | `LogicWorkflowTriggersResource` |
+| `LogicWorkflowResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\UpdateLogicWorkflow` | `LogicWorkflowData` |
+| `LogicWorkflowResource` | `validate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ValidateLogicWorkflow` | `—` |
+| `LogicWorkflowResource` | `versions()` | `LogicWorkflowVersionsResource` | `LogicWorkflowVersionsResource` |
+| `LogicWorkflowRunActionsResource` | `expressionTraces()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\ListLogicWorkflowRunActionExpressionTraces` | `Collection` |
+| `LogicWorkflowRunActionsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\GetLogicWorkflowRunAction` | `LogicWorkflowRunActionData` |
+| `LogicWorkflowRunActionsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\RunActions\ListLogicWorkflowRunActions` | `Collection` |
+| `LogicWorkflowRunResource` | `actions()` | `LogicWorkflowRunActionsResource` | `LogicWorkflowRunActionsResource` |
+| `LogicWorkflowRunResource` | `cancel()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\CancelLogicWorkflowRun` | `—` |
+| `LogicWorkflowRunResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\GetLogicWorkflowRun` | `LogicWorkflowRunData` |
+| `LogicWorkflowRunsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Runs\ListLogicWorkflowRuns` | `Collection` |
+| `LogicWorkflowRunsResource` | `run()` | `LogicWorkflowRunResource` | `LogicWorkflowRunResource` |
+| `LogicWorkflowTriggerHistoriesResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\GetLogicWorkflowTriggerHistory` | `LogicWorkflowTriggerHistoryData` |
+| `LogicWorkflowTriggerHistoriesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\ListLogicWorkflowTriggerHistories` | `Collection` |
+| `LogicWorkflowTriggerHistoriesResource` | `resubmit()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\TriggerHistories\ResubmitLogicWorkflowTriggerHistory` | `—` |
+| `LogicWorkflowTriggerResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\GetLogicWorkflowTrigger` | `LogicWorkflowTriggerData` |
+| `LogicWorkflowTriggerResource` | `histories()` | `LogicWorkflowTriggerHistoriesResource` | `LogicWorkflowTriggerHistoriesResource` |
+| `LogicWorkflowTriggerResource` | `listCallbackUrl()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ListLogicWorkflowTriggerCallbackUrl` | `LogicCallbackUrlData` |
+| `LogicWorkflowTriggerResource` | `reset()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ResetLogicWorkflowTrigger` | `—` |
+| `LogicWorkflowTriggerResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\RunLogicWorkflowTrigger` | `—` |
+| `LogicWorkflowTriggerResource` | `schemaJson()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\GetLogicWorkflowTriggerSchemaJson` | `array` |
+| `LogicWorkflowTriggerResource` | `setState()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\SetLogicWorkflowTriggerState` | `—` |
+| `LogicWorkflowTriggersResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Triggers\ListLogicWorkflowTriggers` | `Collection` |
+| `LogicWorkflowTriggersResource` | `trigger()` | `LogicWorkflowTriggerResource` | `LogicWorkflowTriggerResource` |
+| `LogicWorkflowVersionsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Versions\GetLogicWorkflowVersion` | `LogicWorkflowVersionData` |
+| `LogicWorkflowVersionsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Versions\ListLogicWorkflowVersions` | `Collection` |
+| `LogicWorkflowsResource` | `createOrUpdate()` | `LogicWorkflowPayload` | `LogicWorkflowData` |
+| `LogicWorkflowsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowsByResourceGroup` | `Collection` |
+| `LogicWorkflowsResource` | `listBySubscription()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\ListLogicWorkflowsBySubscription` | `Collection` |
+| `LogicWorkflowsResource` | `workflow()` | `LogicWorkflowResource` | `LogicWorkflowResource` |
 | `ManagedIdentitiesResource` | `identity()` | `UserAssignedIdentityResource` | `UserAssignedIdentityResource` |
 | `ManagedIdentitiesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\ListUserAssignedIdentitiesByResourceGroup` | `Collection` |
 | `MetricsResource` | `definitions()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Monitor\ListMetricDefinitions` | `Collection` |
@@ -381,7 +472,17 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `OpenAiResource` | `images()` | `OpenAiImagesResource` | `OpenAiImagesResource` |
 | `OpenAiResource` | `models()` | `OpenAiModelsResource` | `OpenAiModelsResource` |
 | `OpenAiResource` | `responses()` | `OpenAiResponsesResource` | `OpenAiResponsesResource` |
+| `OpenAiResource` | `v1()` | `OpenAiV1Resource` | `OpenAiV1Resource` |
 | `OpenAiResponsesResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateResponses` | `OpenAiResponseData` |
+| `OpenAiV1Resource` | `chatCompletions()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1ChatCompletions` | `ChatCompletionData` |
+| `OpenAiV1Resource` | `createFineTuningJob()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateFineTuningJob` | `array` |
+| `OpenAiV1Resource` | `deleteFile()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1DeleteFile` | `array` |
+| `OpenAiV1Resource` | `embeddings()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1Embeddings` | `EmbeddingData` |
+| `OpenAiV1Resource` | `imageGenerations()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateImageGeneration` | `array` |
+| `OpenAiV1Resource` | `responses()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateResponse` | `OpenAiResponseData` |
+| `OpenAiV1Resource` | `speech()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateSpeech` | `array` |
+| `OpenAiV1Resource` | `transcriptions()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateTranscription` | `array` |
+| `OpenAiV1Resource` | `uploadFile()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1UploadFile` | `array` |
 | `ResourceGroupsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `ResourceGroupData` |
 | `ResourceGroupsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup` | `—` |
 | `ResourceGroupsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup` | `ResourceGroupData` |
@@ -433,4 +534,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-07-01T12:44:40+00:00
+Generated at: 2026-07-02T11:43:11+00:00

@@ -4,6 +4,11 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 
 final class OpenAiResource extends OpenAiScopedResource
 {
+    public function v1(): OpenAiV1Resource
+    {
+        return new OpenAiV1Resource($this->client, $this->accountName, $this->apiKey);
+    }
+
     public function chat(): OpenAiChatResource
     {
         return new OpenAiChatResource($this->client, $this->accountName, $this->apiKey);

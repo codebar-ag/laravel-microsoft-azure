@@ -28,7 +28,8 @@ it('builds a stable connection identifier', function (): void {
 it('maps token audiences to OAuth scopes', function (): void {
     expect(TokenAudience::Arm->scope())->toBe('https://management.azure.com/.default')
         ->and(TokenAudience::KeyVault->scope())->toBe('https://vault.azure.net/.default')
-        ->and(TokenAudience::Graph->scope())->toBe('https://graph.microsoft.com/.default');
+        ->and(TokenAudience::Graph->scope())->toBe('https://graph.microsoft.com/.default')
+        ->and(TokenAudience::LogAnalytics->scope())->toBe('https://api.loganalytics.io/.default');
 });
 
 it('knows terminal provisioning states', function (): void {

@@ -16,6 +16,6 @@
         "X-MSEdge-Ref": "Ref A: DD269B32C3644A7DBF8D0827D6E5DB31 Ref B: GVA201070812062 Ref C: 2026-06-30T05:49:17Z",
         "Date": "Tue, 30 Jun 2026 05:49:17 GMT"
     },
-    "data": "{\"error\":{\"code\":\"AuthorizationFailed\",\"message\":\"The client 'd6965b92-2693-4dc5-b935-14aa36c32d28' with object id '3c5451e6-449b-434e-8855-cda36e2a5130' does not have authorization to perform action 'Microsoft.Resources\\\/subscriptions\\\/resourcegroups\\\/write' over scope '\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourcegroups\\\/rg-lma-ak5iw9skp1z9' or the scope is invalid. If access was recently granted, please refresh your credentials.\"}}",
+    "data": "{\"error\":{\"code\":\"AuthorizationFailed\",\"message\":\"The client '00000000-0000-0000-0000-000000000002' with object id '00000000-0000-0000-0000-000000000005' does not have authorization to perform action 'Microsoft.Resources\\\/subscriptions\\\/resourcegroups\\\/write' over scope '\\\/subscriptions\\\/00000000-0000-0000-0000-000000000004\\\/resourcegroups\\\/rg-lma-sanitized00' or the scope is invalid. If access was recently granted, please refresh your credentials.\"}}",
     "context": []
 }

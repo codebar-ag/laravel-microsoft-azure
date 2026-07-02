@@ -41,6 +41,36 @@ it('maps metric results with name, unit and points', function (): void {
         ->and($metric->points[1]['total'])->toBe(25.5);
 });
 
+it('maps metric results from a 2023-10-01 style payload', function (): void {
+    $client = clientWithArmMock([
+        GetMetrics::class => MockResponse::make(body: [
+            'cost' => 59,
+            'interval' => 'PT1H',
+            'value' => [
+                [
+                    'name' => ['value' => 'Requests', 'localizedValue' => 'Requests'],
+                    'unit' => 'Count',
+                    'errorCode' => 'Success',
+                    'timeseries' => [
+                        [
+                            'metadatavalues' => [],
+                            'data' => [
+                                ['timeStamp' => '2026-01-01T00:00:00Z', 'total' => 4.5],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]),
+    ]);
+
+    $metrics = (new MetricsResource($client, 'subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/sites/app1'))
+        ->get(['Requests'], 'PT2H', 'PT1H');
+
+    expect($metrics)->toHaveCount(1)
+        ->and($metrics->first()->points[0]['total'])->toBe(4.5);
+});
+
 it('lists metric definitions as name/unit arrays', function (): void {
     $client = clientWithArmMock([
         ListMetricDefinitions::class => MockResponse::make(body: [

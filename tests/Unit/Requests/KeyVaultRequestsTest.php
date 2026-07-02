@@ -1,6 +1,7 @@
 <?php
 
 use CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload;
+use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret;
@@ -14,7 +15,7 @@ it('includes key vault api-version on secret requests', function (): void {
     expect((new GetSecret('webhook-token', 'abc123'))->resolveEndpoint())
         ->toBe('/secrets/webhook-token/abc123')
         ->and((new SetSecret('name', new SetSecretPayload('value')))->query()->all())
-        ->toBe(['api-version' => '7.4']);
+        ->toBe(['api-version' => ApiVersion::KEY_VAULT]);
 });
 
 it('builds set secret body with optional attributes', function (): void {

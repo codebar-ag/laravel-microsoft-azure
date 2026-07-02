@@ -7,7 +7,7 @@
 
 Thin Azure and Microsoft 365 REST connector for Laravel — Saloon transport only, no business logic.
 
-Covers **ARM**, **Azure AI Foundry** (control + data plane), **Azure Functions** (ARM + runtime), **Key Vault**, **Microsoft Graph**, and **Kudu**. Orchestration (provisioning sequences, LRO polling, idempotency) belongs in the consuming app.
+Covers **ARM** (incl. **Logic Apps**), **Azure AI Foundry** (control + data plane, dated and **v1** OpenAI surfaces), **Azure Functions** (ARM + runtime), **Key Vault**, **Microsoft Graph**, **Log Analytics** (KQL querying), and **Kudu**. Orchestration (provisioning sequences, LRO polling, idempotency) belongs in the consuming app.
 
 ## Install
 
@@ -54,6 +54,16 @@ $alias = Azure::instance()->subscriptionAliases()->createOrUpdate(
 Azure::instance()->resourceGroups($subscriptionId)->get('my-rg');
 Azure::instance()->deployments($subscriptionId, 'my-rg')->createOrUpdate('tenantflow', $template, $params);
 
+// Logic Apps — create a workflow, then run its trigger
+$workflows = Azure::instance()->logicWorkflows($subscriptionId, 'my-rg');
+$workflows->createOrUpdate(
+    workflowName: 'invoice-router',
+    location: 'westeurope',
+    definition: $workflowDefinitionJson,
+    state: 'Enabled',
+);
+$workflows->workflow('invoice-router')->triggers()->trigger('manual')->run();
+
 // Key Vault
 Azure::instance()->vault('my-kv')->secrets()->set('webhook-token', $token);
 
@@ -75,6 +85,12 @@ Azure::instance()->openAi('my-aif')->chat()->create('gpt-5-mini', [
     'messages' => [['role' => 'user', 'content' => 'Hello']],
 ]);
 
+// Azure OpenAI v1 (GA, unversioned — model passed in the body, not the path)
+Azure::instance()->openAi('my-aif')->v1()->chatCompletions([
+    'model' => 'gpt-5-mini',
+    'messages' => [['role' => 'user', 'content' => 'Hello']],
+]);
+
 // Foundry Agent Service
 Azure::instance()->foundry('my-aif', 'my-prj')->responses()->create([
     'model' => 'gpt-5-mini',
@@ -85,6 +101,13 @@ Azure::instance()->foundry('my-aif', 'my-prj')->responses()->create([
 $func = Azure::instance()->functionApps($subscriptionId, 'my-rg')->app('my-func');
 $func->restart();
 $func->syncTriggers();
+
+// Log Analytics — run a KQL query (also used for workspace-based Application Insights)
+$results = Azure::instance()->logAnalytics()->query(
+    workspaceId: $workspaceCustomerId,
+    kql: 'AppRequests | where TimeGenerated > ago(1h) | take 50',
+);
+$results->table()?->rowsAssoc();
 ```
 
 Polling example (app-side — not in the package):

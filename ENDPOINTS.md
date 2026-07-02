@@ -2,19 +2,20 @@
 
 Human-readable index of every REST surface in `laravel-microsoft-azure`. For class-level mappings see [docs/api-reference.md](docs/api-reference.md) (auto-generated). For parity status see [docs/inventory-parity.md](docs/inventory-parity.md).
 
-**112 Saloon request classes** across **9 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
+**166 Saloon request classes** across **11 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
 
 ## Authentication scopes
 
 | Surface | Base URL | Auth |
 | --- | --- | --- |
-| ARM / Functions ARM / Foundry control plane | `https://management.azure.com` | Entra client credentials — `https://management.azure.com/.default` |
+| ARM / Functions ARM / Foundry control plane / Logic Apps | `https://management.azure.com` | Entra client credentials — `https://management.azure.com/.default` |
 | Key Vault | `https://{vault}.vault.azure.net` | Entra — `https://vault.azure.net/.default` |
 | Microsoft Graph | `https://graph.microsoft.com/v1.0` | Entra — `https://graph.microsoft.com/.default` |
 | Kudu (SCM) | `https://{app}.scm.azurewebsites.net` | Entra — scoped to SCM host |
-| Azure OpenAI data plane | `https://{account}.openai.azure.com` | Entra — `https://cognitiveservices.azure.com/.default` **or** `api-key` header |
+| Azure OpenAI data plane (dated + v1) | `https://{account}.openai.azure.com` | Entra — `https://cognitiveservices.azure.com/.default` **or** `api-key` header |
 | Foundry Agent Service | `https://{account}.services.ai.azure.com/api/projects/{project}` | Same as OpenAI data plane |
 | Function runtime | `https://{app}.azurewebsites.net` | `x-functions-key` / host key **or** Entra scoped to app host |
+| Log Analytics query | `https://api.loganalytics.azure.com/v1` | Entra — `https://api.loganalytics.io/.default` |
 | OAuth (internal) | `https://login.microsoftonline.com` | Client credentials |
 
 ---
@@ -41,7 +42,7 @@ Microsoft docs: [Azure Resource Manager REST](https://learn.microsoft.com/en-us/
 
 ## 2. Foundry control plane (ARM)
 
-Manage AI Services accounts, Foundry projects, and model deployments. API version `2025-06-01`.
+Manage AI Services accounts, Foundry projects, and model deployments. API version `2026-05-01`.
 
 ```php
 $cs = Azure::instance()->cognitiveServices($sub, $rg);
@@ -83,7 +84,7 @@ Microsoft docs: [AI Foundry account management REST](https://learn.microsoft.com
 
 ## 3. Azure Functions ARM (`Microsoft.Web`)
 
-Function App lifecycle, app settings, host/function keys, trigger sync. API version `2023-12-01`.
+Function App lifecycle, app settings, host/function keys, trigger sync. API version `2024-11-01`.
 
 ```php
 $app = Azure::instance()->functionApps($sub, $rg)->app('my-func');
@@ -114,9 +115,49 @@ Kudu zip deploy remains on `appService($name)->zipDeploy()`.
 
 ---
 
-## 4. Azure OpenAI data plane
+## 4. Logic Apps (`Microsoft.Logic`)
 
-Inference and file APIs against `{account}.openai.azure.com`. Supports Entra or API key auth.
+Workflow definitions, run-time triggers, run history, and per-run actions. API version `2019-05-01`. 30 request classes, all ARM-scoped (`management.azure.com`).
+
+```php
+$workflows = Azure::instance()->logicWorkflows($sub, $rg);
+
+$workflows->createOrUpdate(
+    workflowName: 'invoice-router',
+    location: 'westeurope',
+    definition: $workflowDefinitionJson,
+    state: 'Enabled',
+);
+
+$workflow = $workflows->workflow('invoice-router');
+$workflow->enable();
+$workflow->triggers()->trigger('manual')->run();
+$workflow->runs()->list();
+$workflow->runs()->run($runId)->actions()->list();
+```
+
+| Group | Operations | Tier |
+| --- | --- | --- |
+| Workflows | CRUD, list (subscription/RG), enable/disable, listCallbackUrl | required |
+| Workflows | generateUpgradedDefinition, regenerateAccessKey, validate | extended |
+| Versions | list, get | extended |
+| Triggers | list, get, run, listCallbackUrl | required |
+| Triggers | reset, schemas/json, setState | extended |
+| Trigger histories | list, get | required |
+| Trigger histories | resubmit | extended |
+| Runs | list, get, cancel | required |
+| Run actions | list, get | required |
+| Run actions | listExpressionTraces | extended |
+
+**Skipped:** Workflows `move` (ISE-only — Integration Service Environments are retired), `listSwagger` (designer artifact, not needed for headless callers), workflow-version triggers `listCallbackUrl` (redundant with the live-trigger callback URL), and run-action `repetitions` / `requestHistories` (high class count for low value — the parent action payload already carries status and error detail).
+
+Microsoft docs: [Logic Apps REST](https://learn.microsoft.com/en-us/rest/api/logic/)
+
+---
+
+## 5. Azure OpenAI data plane
+
+Inference and file APIs against `{account}.openai.azure.com`. Supports Entra or API key auth. Two surfaces: the dated api-version surface (deployment in the path) and the newer v1 surface (model in the body).
 
 ```php
 $openai = Azure::instance()->openAi('my-aif'); // optional 2nd arg: api key
@@ -143,9 +184,40 @@ $openai->responses()->create(['model' => 'gpt-5-mini', 'input' => 'Hello']);
 
 Microsoft docs: [Azure OpenAI REST](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/reference)
 
+### OpenAI v1 (GA, unversioned)
+
+GA since August 2025. Paths live under unversioned `/openai/v1/*` — no `api-version` query
+parameter and no `/deployments/{id}` path segment. The target model is passed in the request
+body (`model` field) instead. The dated `2024-10-21` surface above is unchanged and remains
+available side by side.
+
+```php
+$v1 = Azure::instance()->openAi('my-aif')->v1();
+
+$v1->chatCompletions([
+    'model' => 'gpt-5-mini',
+    'messages' => [['role' => 'user', 'content' => 'Hello']],
+]);
+
+$v1->embeddings(['model' => 'embed-model', 'input' => 'text']);
+$v1->responses(['model' => 'gpt-5-mini', 'input' => 'Hello']);
+$v1->models();
+```
+
+| Operation | Path | Tier |
+| --- | --- | --- |
+| Chat completions | `POST /openai/v1/chat/completions` | required |
+| Embeddings | `POST /openai/v1/embeddings` | required |
+| Responses API | `POST /openai/v1/responses` | required |
+| List models | `GET /openai/v1/models` | required |
+| Files | `GET/POST/DELETE /openai/v1/files` | extended |
+| Image generation | `POST /openai/v1/images/generations` | extended |
+| Speech / transcription | `POST /openai/v1/audio/speech`, `.../transcriptions` | extended |
+| Fine-tuning jobs | `POST /openai/v1/fine_tuning/jobs` | extended |
+
 ---
 
-## 5. Foundry Agent Service
+## 6. Foundry Agent Service
 
 Project-scoped agents, conversations, and Responses API. Legacy Assistants (threads/runs) marked **deprecated** (sunset Aug 2026).
 
@@ -182,7 +254,7 @@ Microsoft docs: [Foundry Agent Service](https://learn.microsoft.com/en-us/azure/
 
 ---
 
-## 6. Function runtime — Agent Framework workflows
+## 7. Function runtime — Agent Framework workflows
 
 HTTP endpoints auto-generated when a Function App uses `ConfigureDurableWorkflows` (MAF durable extension).
 
@@ -206,7 +278,33 @@ Microsoft docs: [Durable workflows in Agent Framework](https://learn.microsoft.c
 
 ---
 
-## 7. Resource provisioning, monitoring & cost (ARM)
+## 8. Log Analytics KQL query (data plane)
+
+Run Kusto Query Language (KQL) queries against a Log Analytics workspace. Base URL
+`https://api.loganalytics.azure.com/v1`, auth scope `https://api.loganalytics.io/.default`.
+
+Workspace-based Application Insights resources (the default kind since 2019) are queried
+through this same endpoint using their linked workspace's customer ID — there is no separate
+Application Insights query surface in this package.
+
+```php
+$results = Azure::instance()->logAnalytics()->query(
+    workspaceId: $workspaceCustomerId, // the workspace's "Log Analytics customer ID"
+    kql: 'AppRequests | where TimeGenerated > ago(1h) | take 50',
+);
+
+$results->table()?->rowsAssoc(); // list<array<string, mixed>>
+```
+
+| Operation | Path | Tier |
+| --- | --- | --- |
+| Execute query | `POST /workspaces/{workspaceId}/query` | required |
+
+Microsoft docs: [Log Analytics query REST](https://learn.microsoft.com/en-us/rest/api/loganalytics/dataaccess/query/get)
+
+---
+
+## 9. Resource provisioning, monitoring & cost (ARM)
 
 Full per-resource CRUD so the base stack can be composed via REST (no Bicep), plus
 read surfaces for billing and metrics. All ARM-scoped (`management.azure.com`).
@@ -232,7 +330,7 @@ Long-running operations: `deployments($sub, $rg)->await($name)` and
 
 ---
 
-## 8. Key Vault, Graph, Kudu
+## 10. Key Vault, Graph, Kudu
 
 Unchanged from prior releases — see [README](README.md) usage examples.
 

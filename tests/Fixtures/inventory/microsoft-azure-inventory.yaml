@@ -42,6 +42,37 @@ surfaces:
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: GetModelDeployment, tier: required }
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: DeleteModelDeployment, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus", request: ListModelDeploymentSkus, tier: required }
+  logic:
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: CreateOrUpdateLogicWorkflow, tier: required }
+    - { method: PATCH, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: UpdateLogicWorkflow, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: GetLogicWorkflow, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: DeleteLogicWorkflow, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows", request: ListLogicWorkflowsByResourceGroup, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows", request: ListLogicWorkflowsBySubscription, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/enable", request: EnableLogicWorkflow, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/disable", request: DisableLogicWorkflow, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/listCallbackUrl", request: ListLogicWorkflowCallbackUrl, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/generateUpgradedDefinition", request: GenerateUpgradedDefinition, tier: extended }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/regenerateAccessKey", request: RegenerateLogicWorkflowAccessKey, tier: extended }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/validate", request: ValidateLogicWorkflow, tier: extended }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions", request: ListLogicWorkflowVersions, tier: extended }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions/{versionId}", request: GetLogicWorkflowVersion, tier: extended }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers", request: ListLogicWorkflowTriggers, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}", request: GetLogicWorkflowTrigger, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/run", request: RunLogicWorkflowTrigger, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/reset", request: ResetLogicWorkflowTrigger, tier: extended }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/listCallbackUrl", request: ListLogicWorkflowTriggerCallbackUrl, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/schemas/json", request: GetLogicWorkflowTriggerSchemaJson, tier: extended }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/setState", request: SetLogicWorkflowTriggerState, tier: extended }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories", request: ListLogicWorkflowTriggerHistories, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history}", request: GetLogicWorkflowTriggerHistory, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history}/resubmit", request: ResubmitLogicWorkflowTriggerHistory, tier: extended }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs", request: ListLogicWorkflowRuns, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}", request: GetLogicWorkflowRun, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/cancel", request: CancelLogicWorkflowRun, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions", request: ListLogicWorkflowRunActions, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action}", request: GetLogicWorkflowRunAction, tier: required }
+    - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action}/listExpressionTraces", request: ListLogicWorkflowRunActionExpressionTraces, tier: extended }
   functions_arm:
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites", request: ListSitesByResourceGroup, tier: required }
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}", request: CreateOrUpdateSite, tier: required }
@@ -77,6 +108,18 @@ surfaces:
     - { method: POST, path: "/openai/files", request: UploadFile, tier: extended }
     - { method: DELETE, path: "/openai/files/{fileId}", request: DeleteFile, tier: extended }
     - { method: POST, path: "/openai/fine_tuning/jobs", request: CreateFineTuningJob, tier: extended }
+  openai_v1:
+    - { method: POST, path: "/openai/v1/chat/completions", request: V1ChatCompletions, tier: required }
+    - { method: POST, path: "/openai/v1/embeddings", request: V1Embeddings, tier: required }
+    - { method: POST, path: "/openai/v1/responses", request: V1CreateResponse, tier: required }
+    - { method: GET, path: "/openai/v1/models", request: V1ListModels, tier: required }
+    - { method: GET, path: "/openai/v1/files", request: V1ListFiles, tier: extended }
+    - { method: POST, path: "/openai/v1/files", request: V1UploadFile, tier: extended }
+    - { method: DELETE, path: "/openai/v1/files/{fileId}", request: V1DeleteFile, tier: extended }
+    - { method: POST, path: "/openai/v1/images/generations", request: V1CreateImageGeneration, tier: extended }
+    - { method: POST, path: "/openai/v1/audio/speech", request: V1CreateSpeech, tier: extended }
+    - { method: POST, path: "/openai/v1/audio/transcriptions", request: V1CreateTranscription, tier: extended }
+    - { method: POST, path: "/openai/v1/fine_tuning/jobs", request: V1CreateFineTuningJob, tier: extended }
   foundry:
     - { method: GET, path: "/agents", request: ListAgents, tier: required }
     - { method: POST, path: "/agents", request: CreateAgent, tier: required }
@@ -105,6 +148,8 @@ surfaces:
     - { method: POST, path: "/api/workflows/{workflowName}/run", request: RunWorkflow, tier: required }
     - { method: GET, path: "/api/workflows/{workflowName}/status/{runId}", request: GetWorkflowStatus, tier: required }
     - { method: POST, path: "/api/workflows/{workflowName}/respond/{runId}", request: RespondToWorkflow, tier: required }
+  log_analytics_query:
+    - { method: POST, path: "/workspaces/{workspaceId}/query", request: ExecuteWorkspaceQuery, tier: required }
   keyvault:
     - { method: GET, path: "/secrets/{name}", request: GetSecret, tier: required }
     - { method: PUT, path: "/secrets/{name}", request: SetSecret, tier: required }

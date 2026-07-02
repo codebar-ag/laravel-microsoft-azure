@@ -13,6 +13,8 @@ enum TokenAudience: string
 
     case FunctionRuntime = 'function_runtime';
 
+    case LogAnalytics = 'log_analytics';
+
     public function scope(?string $host = null): string
     {
         return match ($this) {
@@ -22,6 +24,7 @@ enum TokenAudience: string
             self::Kudu => 'https://'.rtrim((string) $host, '/').'/.default',
             self::CognitiveServicesDataPlane => 'https://cognitiveservices.azure.com/.default',
             self::FunctionRuntime => 'https://'.rtrim((string) $host, '/').'/.default',
+            self::LogAnalytics => 'https://api.loganalytics.io/.default',
         };
     }
 }

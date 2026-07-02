@@ -96,8 +96,8 @@ it('reads successful deployment via deployments resource gateway', function (): 
 });
 
 it('maps api version constants', function (): void {
-    expect(ApiVersion::ARM_RESOURCES)->toBe('2021-04-01')
-        ->and(ApiVersion::KEY_VAULT)->toBe('7.4')
+    expect(ApiVersion::ARM_RESOURCES)->toBe('2025-04-01')
+        ->and(ApiVersion::KEY_VAULT)->toBe('2025-07-01')
         ->and(ApiVersion::GRAPH)->toBe('v1.0');
 });
 

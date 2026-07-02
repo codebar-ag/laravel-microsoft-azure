@@ -36,6 +36,11 @@ abstract class Resource
         return $this->send($request, $this->client->keyVault($vaultHost));
     }
 
+    protected function sendLogAnalytics(Request $request): Response
+    {
+        return $this->send($request, $this->client->logAnalyticsConnector());
+    }
+
     protected function sendGraph(Request $request): Response
     {
         return $this->send($request, $this->client->graph());

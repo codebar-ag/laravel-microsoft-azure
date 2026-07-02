@@ -18,7 +18,9 @@ use CodebarAg\MicrosoftAzure\Resources\FunctionAppsResource;
 use CodebarAg\MicrosoftAzure\Resources\FunctionRuntimeResource;
 use CodebarAg\MicrosoftAzure\Resources\GraphResource;
 use CodebarAg\MicrosoftAzure\Resources\KeyVaultsResource;
+use CodebarAg\MicrosoftAzure\Resources\LogAnalyticsQueryResource;
 use CodebarAg\MicrosoftAzure\Resources\LogAnalyticsWorkspacesResource;
+use CodebarAg\MicrosoftAzure\Resources\LogicWorkflowsResource;
 use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
 use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
@@ -53,6 +55,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static StorageAccountsResource storageAccounts(string $subscriptionId, string $resourceGroup)
  * @method static ManagedIdentitiesResource managedIdentities(string $subscriptionId, string $resourceGroup)
  * @method static LogAnalyticsWorkspacesResource logAnalyticsWorkspaces(string $subscriptionId, string $resourceGroup)
+ * @method static LogAnalyticsQueryResource logAnalytics()
+ * @method static LogicWorkflowsResource logicWorkflows(string $subscriptionId, string $resourceGroup)
  * @method static ApplicationInsightsResource applicationInsights(string $subscriptionId, string $resourceGroup)
  * @method static CostManagementResource costManagement(string $scope)
  * @method static ConsumptionResource consumption(string $scope)

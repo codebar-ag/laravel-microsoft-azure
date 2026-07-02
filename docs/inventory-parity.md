@@ -44,6 +44,36 @@
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment} | GetModelDeployment | required | Parity |
 | arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment} | DeleteModelDeployment | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus | ListModelDeploymentSkus | required | Parity |
+| logic | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | CreateOrUpdateLogicWorkflow | required | Parity |
+| logic | PATCH | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | UpdateLogicWorkflow | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | GetLogicWorkflow | required | Parity |
+| logic | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | DeleteLogicWorkflow | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows | ListLogicWorkflowsByResourceGroup | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows | ListLogicWorkflowsBySubscription | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/enable | EnableLogicWorkflow | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/disable | DisableLogicWorkflow | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/listCallbackUrl | ListLogicWorkflowCallbackUrl | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/generateUpgradedDefinition | GenerateUpgradedDefinition | extended | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/regenerateAccessKey | RegenerateLogicWorkflowAccessKey | extended | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/validate | ValidateLogicWorkflow | extended | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions | ListLogicWorkflowVersions | extended | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/versions/{versionId} | GetLogicWorkflowVersion | extended | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers | ListLogicWorkflowTriggers | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger} | GetLogicWorkflowTrigger | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/run | RunLogicWorkflowTrigger | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/reset | ResetLogicWorkflowTrigger | extended | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/listCallbackUrl | ListLogicWorkflowTriggerCallbackUrl | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/schemas/json | GetLogicWorkflowTriggerSchemaJson | extended | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/setState | SetLogicWorkflowTriggerState | extended | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories | ListLogicWorkflowTriggerHistories | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history} | GetLogicWorkflowTriggerHistory | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/triggers/{trigger}/histories/{history}/resubmit | ResubmitLogicWorkflowTriggerHistory | extended | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs | ListLogicWorkflowRuns | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run} | GetLogicWorkflowRun | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/cancel | CancelLogicWorkflowRun | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions | ListLogicWorkflowRunActions | required | Parity |
+| logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action} | GetLogicWorkflowRunAction | required | Parity |
+| logic | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}/runs/{run}/actions/{action}/listExpressionTraces | ListLogicWorkflowRunActionExpressionTraces | extended | Parity |
 | functions_arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites | ListSitesByResourceGroup | required | Parity |
 | functions_arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name} | CreateOrUpdateSite | required | Parity |
 | functions_arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name} | GetSite | required | Parity |
@@ -77,6 +107,17 @@
 | openai | POST | /openai/files | UploadFile | extended | Parity |
 | openai | DELETE | /openai/files/{fileId} | DeleteFile | extended | Parity |
 | openai | POST | /openai/fine_tuning/jobs | CreateFineTuningJob | extended | Parity |
+| openai_v1 | POST | /openai/v1/chat/completions | V1ChatCompletions | required | Parity |
+| openai_v1 | POST | /openai/v1/embeddings | V1Embeddings | required | Parity |
+| openai_v1 | POST | /openai/v1/responses | V1CreateResponse | required | Parity |
+| openai_v1 | GET | /openai/v1/models | V1ListModels | required | Parity |
+| openai_v1 | GET | /openai/v1/files | V1ListFiles | extended | Parity |
+| openai_v1 | POST | /openai/v1/files | V1UploadFile | extended | Parity |
+| openai_v1 | DELETE | /openai/v1/files/{fileId} | V1DeleteFile | extended | Parity |
+| openai_v1 | POST | /openai/v1/images/generations | V1CreateImageGeneration | extended | Parity |
+| openai_v1 | POST | /openai/v1/audio/speech | V1CreateSpeech | extended | Parity |
+| openai_v1 | POST | /openai/v1/audio/transcriptions | V1CreateTranscription | extended | Parity |
+| openai_v1 | POST | /openai/v1/fine_tuning/jobs | V1CreateFineTuningJob | extended | Parity |
 | foundry | GET | /agents | ListAgents | required | Parity |
 | foundry | POST | /agents | CreateAgent | required | Parity |
 | foundry | GET | /agents/{name} | GetAgent | required | Parity |
@@ -103,6 +144,7 @@
 | function_runtime | POST | /api/workflows/{workflowName}/run | RunWorkflow | required | Parity |
 | function_runtime | GET | /api/workflows/{workflowName}/status/{runId} | GetWorkflowStatus | required | Parity |
 | function_runtime | POST | /api/workflows/{workflowName}/respond/{runId} | RespondToWorkflow | required | Parity |
+| log_analytics_query | POST | /workspaces/{workspaceId}/query | ExecuteWorkspaceQuery | required | Parity |
 | keyvault | GET | /secrets/{name} | GetSecret | required | Parity |
 | keyvault | PUT | /secrets/{name} | SetSecret | required | Parity |
 | keyvault | GET | /secrets | ListSecrets | required | Parity |
@@ -127,4 +169,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-07-01T12:44:40+00:00
+Generated at: 2026-07-02T12:12:04+00:00
