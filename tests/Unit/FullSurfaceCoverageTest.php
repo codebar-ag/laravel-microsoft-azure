@@ -582,6 +582,8 @@ it('builds request bodies and deserializes dto edge cases', function (): void {
 
     expect(TokenAudience::CognitiveServicesDataPlane->scope())
         ->toBe('https://cognitiveservices.azure.com/.default')
+        ->and(TokenAudience::Sql->scope())
+        ->toBe('https://database.windows.net/.default')
         ->and(ApiKeysData::fromAzure(['key1' => 'k1', 'key2' => 'k2'])->key1)->toBe('k1')
         ->and(CognitiveServicesAccountData::fromAzure(cognitiveServicesAccountFixture())->endpoint)
         ->toBe('https://aif-test.cognitiveservices.azure.com/')

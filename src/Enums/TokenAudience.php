@@ -15,6 +15,8 @@ enum TokenAudience: string
 
     case LogAnalytics = 'log_analytics';
 
+    case Sql = 'sql';
+
     public function scope(?string $host = null): string
     {
         return match ($this) {
@@ -25,6 +27,7 @@ enum TokenAudience: string
             self::CognitiveServicesDataPlane => 'https://cognitiveservices.azure.com/.default',
             self::FunctionRuntime => 'https://'.rtrim((string) $host, '/').'/.default',
             self::LogAnalytics => 'https://api.loganalytics.io/.default',
+            self::Sql => 'https://database.windows.net/.default',
         };
     }
 }
