@@ -87,10 +87,6 @@ Contributor-facing test suite, Saloon fixtures, and live-integration setup: [doc
 
 Error → cause → fix table for every exception this package throws: [docs/troubleshooting.md](docs/troubleshooting.md).
 
-## Upgrade guide
-
-Pre-1.0 — expect breaking changes between minor versions. There's currently one pending breaking change (the `ApiVersion` enum conversion) not yet released: [`UPGRADING.md`](UPGRADING.md).
-
 ## Limitations
 
 No business logic/orchestration, no DB migrations, no service health checks, no official SDK — full list: [docs/limitations.md](docs/limitations.md).
@@ -112,8 +108,7 @@ composer inventory:parity
 
 More detail on the test suite (fixtures, live integration tiers): [docs/testing.md](docs/testing.md).
 
-## Changelog, support, license
+## Support, license
 
-- [`CHANGELOG.md`](CHANGELOG.md)
 - Issues & source: https://github.com/codebar-ag/laravel-microsoft-azure
 - MIT, see [LICENSE](LICENSE)

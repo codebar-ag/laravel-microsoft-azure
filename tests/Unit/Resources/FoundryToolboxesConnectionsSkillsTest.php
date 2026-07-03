@@ -18,6 +18,7 @@ use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\DeleteToolbox;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\GetToolbox;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\ListToolboxes;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\ListToolboxMcpTools;
+use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\ListToolboxVersions;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\UpdateToolbox;
 use Saloon\Http\Faking\MockResponse;
 
@@ -26,6 +27,7 @@ it('covers the toolboxes resource gateway lifecycle', function (): void {
         CreateToolbox::class => MockResponse::make(body: ['name' => 'docuware-tools']),
         CreateToolboxVersion::class => MockResponse::make(body: ['version' => '1']),
         ListToolboxes::class => MockResponse::make(body: ['data' => [['name' => 'docuware-tools']]]),
+        ListToolboxVersions::class => MockResponse::make(body: ['data' => [['version' => '1']]]),
         UpdateToolbox::class => MockResponse::make(body: ['name' => 'docuware-tools', 'default_version' => '1']),
         DeleteToolbox::class => MockResponse::make(status: 204),
         ListToolboxMcpTools::class => MockResponse::make(body: ['result' => ['tools' => [['name' => 'search']]]]),
@@ -37,6 +39,7 @@ it('covers the toolboxes resource gateway lifecycle', function (): void {
     expect($toolboxes->create(['name' => 'docuware-tools']))->toHaveKey('name', 'docuware-tools')
         ->and($toolboxes->createVersion('docuware-tools', ['tools' => []]))->toHaveKey('version', '1')
         ->and($toolboxes->list())->toHaveCount(1)
+        ->and($toolboxes->listVersions('docuware-tools'))->toHaveCount(1)
         ->and($toolboxes->setDefaultVersion('docuware-tools', '1'))->toHaveKey('default_version', '1')
         ->and($toolboxes->listMcpTools('docuware-tools', '1'))->toHaveKey('result')
         ->and($toolboxes->callMcpTool('docuware-tools', '1', 'search', ['q' => 'x']))->toHaveKey('result');

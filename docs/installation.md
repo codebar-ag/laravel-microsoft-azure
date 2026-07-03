@@ -9,7 +9,7 @@
 
 No older PHP or Laravel versions are supported — `composer.json` pins `php": "8.4.*|8.5.*"` and `illuminate/contracts`/`illuminate/support` to `^13.0` only, and the CI matrix (`.github/workflows/run-tests.yml`) only tests PHP 8.4/8.5 against Laravel 13.
 
-The package is pre-1.0 (`minimum-stability: dev`, currently `v0.4.x`) — expect breaking changes between minor versions until a `v1.0.0` is tagged. Check [`UPGRADING.md`](../UPGRADING.md) before bumping.
+The package is pre-1.0 (`minimum-stability: dev`, currently `v0.4.x`) — expect breaking changes between minor versions until a `v1.0.0` is tagged.
 
 ## Install
 

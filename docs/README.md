@@ -8,7 +8,6 @@
 - [Testing](testing.md)
 - [Troubleshooting](troubleshooting.md)
 - [Limitations](limitations.md)
-- [`../UPGRADING.md`](../UPGRADING.md) — breaking-change migration guide
 - [`../ENDPOINTS.md`](../ENDPOINTS.md) — human-curated endpoint catalog
 - [`api-reference.md`](api-reference.md) *(auto-generated)* — every request/DTO/payload class
 - [`inventory-parity.md`](inventory-parity.md) *(auto-generated)* — endpoint coverage report

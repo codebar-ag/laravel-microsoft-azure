@@ -7,7 +7,7 @@ Explicit, honest list of what this package deliberately does **not** do.
 - **No .NET SDK or Agent Framework runtime code.** The Foundry Agent Service and Function Runtime surfaces call the HTTP APIs those runtimes expose — they don't embed or replace the Agent Framework `WorkflowBuilder` graph-authoring SDK (.NET/Python only).
 - **No database migrations or application seeding.** Deploying a schema into a provisioned Azure SQL database (or similar) is out of scope — bring your own migration runner.
 - **No service health checks.** The package makes the calls you ask it to; it doesn't poll third-party "is this service up" endpoints.
-- **Pre-1.0 / dev-stability.** `composer.json` sets `minimum-stability: dev`; the package is at `v0.4.x` with no `v1.0.0` yet. Expect breaking changes between minor versions until 1.0 — check [`UPGRADING.md`](../UPGRADING.md) before bumping.
+- **Pre-1.0 / dev-stability.** `composer.json` sets `minimum-stability: dev`; the package is at `v0.4.x` with no `v1.0.0` yet. Expect breaking changes between minor versions until 1.0.
 - **PHP 8.4/8.5 and Laravel 13 only.** No legacy PHP or Laravel support — see [Installation](installation.md).
 - **API Management coverage is subscriptions/keys only.** Products, policies, APIs, named values, and users are not covered — see [Logic Apps & API Management](usage/logic-apps-and-apim.md).
 - **Foundry Agent Service sub-surfaces vary in maturity.** Memory Stores, Evaluations, Schedules, Datasets, Indexes, and Redteams are lower-priority/preview additions with rougher edges than the core Agents/Responses/Conversations surface — see [Foundry Agent Service](usage/foundry-agent-service.md). Legacy Threads/Runs (Assistants-style) are marked deprecated by Microsoft (sunset August 2026).

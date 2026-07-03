@@ -160,6 +160,21 @@ it('replaces an agent manifest and sets version routing via the resource gateway
         ->and($agents->setVersionRouting('wf-1', ['strategy' => 'canary']))->toHaveKey('name', 'wf-1');
 });
 
+it('replaces an agent manifest and sets version routing with typed payload instances', function (): void {
+    $client = clientWithFoundryMock([
+        ReplaceAgent::class => MockResponse::make(body: ['id' => 'agent-1', 'name' => 'wf-1']),
+        SetAgentVersionRouting::class => MockResponse::make(body: ['id' => 'agent-1', 'name' => 'wf-1']),
+    ]);
+
+    $agents = $client->foundry('my-foundry', 'default')->agents();
+
+    $updatePayload = new UpdateAgentPayload(new GenericJsonPayload(['kind' => 'workflow']));
+    $routingPayload = new AgentVersionRoutingPayload(['strategy' => 'canary']);
+
+    expect($agents->replace('wf-1', $updatePayload))->toHaveKey('name', 'wf-1')
+        ->and($agents->setVersionRouting('wf-1', $routingPayload))->toHaveKey('name', 'wf-1');
+});
+
 it('builds typed code and external agent definition payloads with escape-hatch fields', function (): void {
     expect((new CodeAgentDefinitionPayload(['sandbox' => 'python3.12']))->toAzureBody())
         ->toBe(['kind' => 'code', 'sandbox' => 'python3.12'])
@@ -233,6 +248,17 @@ it('throws when a container operation finishes in a failed state', function (): 
 
     expect(fn () => $container->awaitContainerOperation('op-1'))
         ->toThrow(LongRunningOperationException::class);
+});
+
+it('throws when a container operation does not reach a terminal state before the timeout', function (): void {
+    $client = clientWithFoundryMock([
+        GetAgentContainerOperation::class => MockResponse::make(body: ['id' => 'op-1', 'status' => 'running']),
+    ]);
+
+    $container = fakeClockContainerResource($client);
+
+    expect(fn () => $container->awaitContainerOperation('op-1', timeoutSeconds: 10, intervalSeconds: 5))
+        ->toThrow(LongRunningOperationException::class, 'Container operation did not reach a terminal state within 10s.');
 });
 
 it('lists, updates, deletes and compacts conversations and items via the resource gateway', function (): void {
