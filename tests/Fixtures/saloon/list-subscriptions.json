@@ -1,0 +1,21 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "849",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-ratelimit-remaining-tenant-reads": "249",
+        "x-ms-request-id": "18ae00a9-41a6-46e6-b10e-4ad6fc3d7c5d",
+        "x-ms-correlation-request-id": "18ae00a9-41a6-46e6-b10e-4ad6fc3d7c5d",
+        "x-ms-routing-request-id": "ITALYNORTH:20260703T170123Z:18ae00a9-41a6-46e6-b10e-4ad6fc3d7c5d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: E69F76C1F9554A8B8837018C07A4E577 Ref B: MIL221091016025 Ref C: 2026-07-03T17:01:23Z",
+        "Date": "Fri, 03 Jul 2026 17:01:23 GMT"
+    },
+    "data": "{\"value\":[{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\",\"authorizationSource\":\"RoleBased\",\"managedByTenants\":[],\"subscriptionId\":\"6696d1cb-8e87-4794-9f90-2682acdbe3c5\",\"tenantId\":\"7e82cdc2-9d70-4d2d-aa33-592c4f7a984a\",\"displayName\":\"Development\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Public_2014-09-01\",\"quotaId\":\"PayAsYouGo_2014-09-01\",\"spendingLimit\":\"Off\"}},{\"id\":\"\\\/subscriptions\\\/f4b49264-7d0a-4d76-a8c4-32b7079d9b78\",\"authorizationSource\":\"RoleBased\",\"managedByTenants\":[],\"subscriptionId\":\"f4b49264-7d0a-4d76-a8c4-32b7079d9b78\",\"tenantId\":\"7e82cdc2-9d70-4d2d-aa33-592c4f7a984a\",\"displayName\":\"Dedicated Validate 1782900639\",\"state\":\"Disabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Public_2014-09-01\",\"quotaId\":\"PayAsYouGo_2014-09-01\",\"spendingLimit\":\"Off\"}}],\"count\":{\"type\":\"Total\",\"value\":\"REDACTED\"}}",
+    "context": []
+}

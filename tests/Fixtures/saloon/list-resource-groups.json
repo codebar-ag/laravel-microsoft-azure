@@ -1,0 +1,22 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "1040",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-ratelimit-remaining-subscription-reads": "249",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "3749",
+        "x-ms-request-id": "9c5a04f4-0763-45cf-82cb-cd839026a6c1",
+        "x-ms-correlation-request-id": "9c5a04f4-0763-45cf-82cb-cd839026a6c1",
+        "x-ms-routing-request-id": "SWITZERLANDNORTH:20260703T170121Z:9c5a04f4-0763-45cf-82cb-cd839026a6c1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: 2E74F06E3C2A42869BF5F0AE9B01F2E7 Ref B: GVA201070811034 Ref C: 2026-07-03T17:01:21Z",
+        "Date": "Fri, 03 Jul 2026 17:01:21 GMT"
+    },
+    "data": "{\"value\":[{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourceGroups\\\/kqnh-1371-rg\",\"name\":\"kqnh-1371-rg\",\"type\":\"Microsoft.Resources\\\/resourceGroups\",\"location\":\"swedencentral\",\"tags\":{\"customer\":\"codebar Solutions AG\",\"resourceSlug\":\"kqnh-1371\",\"project\":\"flows-codebar\",\"managedBy\":\"codebar\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourceGroups\\\/rg-lma-oknddyvpswro\",\"name\":\"rg-lma-oknddyvpswro\",\"type\":\"Microsoft.Resources\\\/resourceGroups\",\"location\":\"westeurope\",\"tags\":{\"purpose\":\"laravel-microsoft-azure-integration-test\",\"managed-by\":\"laravel-microsoft-azure\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourceGroups\\\/rg-lma-ymwjswtjhhrn\",\"name\":\"rg-lma-ymwjswtjhhrn\",\"type\":\"Microsoft.Resources\\\/resourceGroups\",\"location\":\"westeurope\",\"tags\":{\"purpose\":\"laravel-microsoft-azure-integration-test\",\"managed-by\":\"laravel-microsoft-azure\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}]}",
+    "context": []
+}

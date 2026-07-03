@@ -1,0 +1,22 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "391",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-ratelimit-remaining-subscription-reads": "249",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "3749",
+        "x-ms-request-id": "3437f7d3-37c4-4d1d-a93e-d3f70027a207",
+        "x-ms-correlation-request-id": "3437f7d3-37c4-4d1d-a93e-d3f70027a207",
+        "x-ms-routing-request-id": "FRANCESOUTH:20260703T170124Z:3437f7d3-37c4-4d1d-a93e-d3f70027a207",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: 0C09AEDA78C5465DBEB50D45F9A4515F Ref B: GVA201070812034 Ref C: 2026-07-03T17:01:23Z",
+        "Date": "Fri, 03 Jul 2026 17:01:23 GMT"
+    },
+    "data": "{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\",\"authorizationSource\":\"RoleBased\",\"managedByTenants\":[],\"subscriptionId\":\"6696d1cb-8e87-4794-9f90-2682acdbe3c5\",\"tenantId\":\"7e82cdc2-9d70-4d2d-aa33-592c4f7a984a\",\"displayName\":\"Development\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Public_2014-09-01\",\"quotaId\":\"PayAsYouGo_2014-09-01\",\"spendingLimit\":\"Off\"}}",
+    "context": []
+}

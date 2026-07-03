@@ -1,0 +1,22 @@
+{
+    "statusCode": 201,
+    "headers": {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Content-Length": "340",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Expires": "-1",
+        "x-ms-ratelimit-remaining-subscription-writes": "199",
+        "x-ms-ratelimit-remaining-subscription-global-writes": "2999",
+        "x-ms-request-id": "2515aad0-14db-49ee-97bf-ddc705609e32",
+        "x-ms-correlation-request-id": "2515aad0-14db-49ee-97bf-ddc705609e32",
+        "x-ms-routing-request-id": "SWITZERLANDNORTH:20260703T170118Z:2515aad0-14db-49ee-97bf-ddc705609e32",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-MSEdge-Ref": "Ref A: 81263BD139A84E9BB4C05AE5A54D5AAF Ref B: GVA201070812034 Ref C: 2026-07-03T17:01:17Z",
+        "Date": "Fri, 03 Jul 2026 17:01:17 GMT"
+    },
+    "data": "{\"id\":\"\\\/subscriptions\\\/6696d1cb-8e87-4794-9f90-2682acdbe3c5\\\/resourceGroups\\\/rg-lma-tnz37d3pptyy\",\"name\":\"rg-lma-tnz37d3pptyy\",\"type\":\"Microsoft.Resources\\\/resourceGroups\",\"location\":\"westeurope\",\"tags\":{\"purpose\":\"laravel-microsoft-azure-integration-test\",\"managed-by\":\"laravel-microsoft-azure\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+    "context": []
+}

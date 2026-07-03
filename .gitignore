@@ -1,0 +1,7 @@
+/vendor/
+/build/
+/.phpunit.cache/
+/phpunit.xml
+/.phpunit.result.cache
+/tests/Fixtures/saloon/live/
+composer.lock
