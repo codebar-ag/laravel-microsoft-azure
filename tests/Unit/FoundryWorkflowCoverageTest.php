@@ -261,6 +261,22 @@ it('throws when a container operation does not reach a terminal state before the
         ->toThrow(LongRunningOperationException::class, 'Container operation did not reach a terminal state within 10s.');
 });
 
+it('invokes real sleep and time when awaiting a container operation with interval greater than zero', function (): void {
+    $client = clientWithFoundryMock([
+        MockResponse::make(body: ['id' => 'op-1', 'status' => 'running']),
+        MockResponse::make(body: ['id' => 'op-1', 'status' => 'succeeded']),
+    ]);
+
+    $container = $client->foundry('my-foundry', 'default')->agent('hosted-agent')->version('3')->container();
+
+    $start = microtime(true);
+
+    $result = $container->awaitContainerOperation('op-1', timeoutSeconds: 30, intervalSeconds: 1);
+
+    expect($result)->toHaveKey('status', 'succeeded')
+        ->and(microtime(true) - $start)->toBeGreaterThan(0.5);
+});
+
 it('lists, updates, deletes and compacts conversations and items via the resource gateway', function (): void {
     $client = clientWithFoundryMock([
         ListConversations::class => MockResponse::make(body: ['data' => [['id' => 'conv-1']]]),
