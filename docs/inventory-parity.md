@@ -25,6 +25,21 @@
 | arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name} | CreateOrUpdateSqlFirewallRule | required | Parity |
 | arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name} | DeleteSqlFirewallRule | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db} | GetSqlDatabase | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers | ListPostgresFlexibleServersByResourceGroup | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server} | GetPostgresFlexibleServer | required | Parity |
+| arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server} | CreateOrUpdatePostgresFlexibleServer | required | Parity |
+| arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server} | DeletePostgresFlexibleServer | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases | ListPostgresDatabases | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db} | GetPostgresDatabase | required | Parity |
+| arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db} | CreateOrUpdatePostgresDatabase | required | Parity |
+| arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db} | DeletePostgresDatabase | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules | ListPostgresFirewallRules | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name} | GetPostgresFirewallRule | required | Parity |
+| arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name} | CreateOrUpdatePostgresFirewallRule | required | Parity |
+| arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name} | DeletePostgresFirewallRule | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations | ListPostgresConfigurations | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name} | GetPostgresConfiguration | required | Parity |
+| arm | PATCH | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name} | UpdatePostgresConfiguration | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts | ListCognitiveServicesAccounts | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts | ListCognitiveServicesAccountsByResourceGroup | required | Parity |
 | arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account} | CreateOrUpdateCognitiveServicesAccount | required | Parity |
@@ -241,4 +256,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-07-03T13:35:51+00:00
+Generated at: 2026-07-27T14:49:36+00:00
