@@ -66,6 +66,7 @@ Full surface catalog, one page per group:
 - [Key Vault](docs/usage/key-vault.md)
 - [Storage](docs/usage/storage.md) — accounts, blob containers, Storage Queue data plane
 - [SQL](docs/usage/sql.md)
+- [PostgreSQL](ENDPOINTS.md) — flexible servers, databases, firewall rules, server parameters (ARM `Microsoft.DBforPostgreSQL/flexibleServers`)
 - [Foundry & Azure OpenAI](docs/usage/foundry-and-openai.md)
 - [Foundry Agent Service](docs/usage/foundry-agent-service.md)
 - [Logic Apps & API Management](docs/usage/logic-apps-and-apim.md)
