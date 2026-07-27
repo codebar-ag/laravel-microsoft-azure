@@ -31,6 +31,21 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule` |
 | arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlFirewallRule` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\GetSqlDatabase` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresFlexibleServersByResourceGroup` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresFlexibleServer` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFlexibleServer` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresFlexibleServer` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresDatabases` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresDatabase` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresDatabase` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresDatabase` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresFirewallRules` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresFirewallRule` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFirewallRule` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresFirewallRule` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresConfigurations` |
+| arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresConfiguration` |
+| arm | PATCH | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\UpdatePostgresConfiguration` |
 | arm | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccounts` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountsByResourceGroup` |
 | arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` |
@@ -727,4 +742,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-07-27T14:48:28+00:00
+Generated at: 2026-07-27T16:30:40+00:00
