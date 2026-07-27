@@ -23,6 +23,7 @@ use CodebarAg\MicrosoftAzure\Resources\LogicWorkflowsResource;
 use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
 use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
+use CodebarAg\MicrosoftAzure\Resources\PostgresFlexibleServersResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceGroupsResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceProvidersResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
@@ -163,6 +164,11 @@ trait InteractsWithResources
     public function sqlServers(string $subscriptionId, string $resourceGroup): SqlServersResource
     {
         return new SqlServersResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function postgresFlexibleServers(string $subscriptionId, string $resourceGroup): PostgresFlexibleServersResource
+    {
+        return new PostgresFlexibleServersResource($this->resourceClient(), $subscriptionId, $resourceGroup);
     }
 
     public function logAnalyticsWorkspaces(string $subscriptionId, string $resourceGroup): LogAnalyticsWorkspacesResource

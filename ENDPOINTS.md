@@ -2,7 +2,7 @@
 
 Human-readable index of every REST surface in `laravel-microsoft-azure`. For class-level mappings see [docs/api-reference.md](docs/api-reference.md) (auto-generated). For parity status see [docs/inventory-parity.md](docs/inventory-parity.md).
 
-**238 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
+**299 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
 
 ## Authentication scopes
 
@@ -23,7 +23,7 @@ Human-readable index of every REST surface in `laravel-microsoft-azure`. For cla
 
 ## 1. ARM — core infrastructure
 
-Subscriptions, resource groups, template deployments, RBAC, SQL, deleted-resource purge.
+Subscriptions, resource groups, template deployments, RBAC, SQL, PostgreSQL, deleted-resource purge.
 
 | Gateway | Example |
 | --- | --- |
@@ -36,8 +36,58 @@ Subscriptions, resource groups, template deployments, RBAC, SQL, deleted-resourc
 | `deletedCognitiveServices($sub)` | List/purge soft-deleted AI accounts |
 | `sql($sub, $rg, $server)` | SQL firewall rules |
 | `sqlDatabases($sub, $rg, $server)` | Get database |
+| `postgresFlexibleServers($sub, $rg)` | PostgreSQL flexible server CRUD, databases, firewall rules, server parameters |
 
-Microsoft docs: [Azure Resource Manager REST](https://learn.microsoft.com/en-us/rest/api/resources/)
+### Azure Database for PostgreSQL — flexible servers
+
+`Microsoft.DBforPostgreSQL/flexibleServers`, api-version `2025-08-01`. Single Server
+(`Microsoft.DBforPostgreSQL/servers`) is retired and deliberately not covered.
+
+```php
+$servers = $azure->postgresFlexibleServers($sub, $rg);
+
+$servers->createOrUpdate(
+    serverName: 'pg-shared',
+    location: 'switzerlandnorth',
+    skuName: 'Standard_D2ds_v5',
+    skuTier: 'GeneralPurpose',
+    administratorLogin: 'pgadmin',
+    administratorLoginPassword: $password,
+    version: '17',
+    storageSizeGB: 64,
+);
+
+$server = $servers->server('pg-shared');
+$server->get()->isReady();                                  // state === 'Ready'
+$server->databases()->createOrUpdate('tenant_acme');
+$server->firewallRules()->allowAzureServices();             // the 0.0.0.0/0.0.0.0 sentinel
+$server->configurations()->requireSecureTransport();        // require_secure_transport = ON
+```
+
+| Sub-gateway | Operations |
+| --- | --- |
+| `->databases()` | list, get, createOrUpdate, delete |
+| `->firewallRules()` | list, get, createOrUpdate, allowAzureServices, delete |
+| `->configurations()` | list, get, update, requireSecureTransport |
+
+Three provider behaviours the wrappers encode, all differing from `Microsoft.Sql`:
+
+- Readiness is reported on `properties.state` (`Ready`), **not** `properties.provisioningState` —
+  so there is no `ProvisioningState` enum on `PostgresFlexibleServerData`; poll `isReady()`.
+- `sku` is a **top-level** object and is required on create; `tier` must match the family the
+  `name` belongs to (`Standard_B1ms` → `Burstable`, `Standard_D2ds_v5` → `GeneralPurpose`).
+- There is no "allow all Azure services" server flag. A firewall rule with start and end both
+  `0.0.0.0` is Azure's sentinel for it — see `PostgresFirewallRulesResource::allowAzureServices()`.
+
+A configuration update needs `source: user-override` (the payload default) or the new value is
+reported but not applied. `PostgresConfigurationData::requiresRestart()` reports whether the
+parameter is static — `require_secure_transport` and `azure.extensions` both are.
+
+Creating a database over ARM is idempotent, where the SQL route (`CREATE DATABASE`) has to run
+outside a transaction and catch SQLSTATE `42P04`.
+
+Microsoft docs: [Azure Resource Manager REST](https://learn.microsoft.com/en-us/rest/api/resources/) ·
+[PostgreSQL flexible servers](https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers)
 
 ---
 

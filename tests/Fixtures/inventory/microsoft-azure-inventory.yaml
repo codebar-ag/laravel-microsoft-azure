@@ -23,6 +23,21 @@ surfaces:
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: CreateOrUpdateSqlFirewallRule, tier: required }
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: DeleteSqlFirewallRule, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}", request: GetSqlDatabase, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers", request: ListPostgresFlexibleServersByResourceGroup, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}", request: GetPostgresFlexibleServer, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}", request: CreateOrUpdatePostgresFlexibleServer, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}", request: DeletePostgresFlexibleServer, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases", request: ListPostgresDatabases, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}", request: GetPostgresDatabase, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}", request: CreateOrUpdatePostgresDatabase, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/databases/{db}", request: DeletePostgresDatabase, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules", request: ListPostgresFirewallRules, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}", request: GetPostgresFirewallRule, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}", request: CreateOrUpdatePostgresFirewallRule, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/firewallRules/{name}", request: DeletePostgresFirewallRule, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations", request: ListPostgresConfigurations, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name}", request: GetPostgresConfiguration, tier: required }
+    - { method: PATCH, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{server}/configurations/{name}", request: UpdatePostgresConfiguration, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts", request: ListCognitiveServicesAccounts, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts", request: ListCognitiveServicesAccountsByResourceGroup, tier: required }
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}", request: CreateOrUpdateCognitiveServicesAccount, tier: required }

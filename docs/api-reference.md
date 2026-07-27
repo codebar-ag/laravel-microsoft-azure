@@ -279,6 +279,10 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\LogicWorkflowVersionData` | `id`, `name`, `state`, `createdTime`, `changedTime`, `definition` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\MetricResultData` | `name`, `unit`, `points` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ModelDeploymentData` | `id`, `name`, `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity`, `provisioningState` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\PostgresConfigurationData` | `id`, `name`, `value`, `defaultValue`, `dataType`, `allowedValues`, `source`, `isDynamicConfig`, `isReadOnly` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\PostgresDatabaseData` | `id`, `name`, `charset`, `collation` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\PostgresFirewallRuleData` | `id`, `name`, `startIpAddress`, `endIpAddress` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\PostgresFlexibleServerData` | `id`, `name`, `location`, `fullyQualifiedDomainName`, `state`, `version`, `administratorLogin`, `skuName`, `skuTier`, `storageSizeGB` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\QueueData` | `id`, `name`, `metadata` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData` | `id`, `name`, `location`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceProviderData` | `namespace`, `registrationState`, `id` |
@@ -348,6 +352,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\LogicWorkflowPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\CreateOrUpdateLogicWorkflow` | `location`, `definition`, `parameters`, `state`, `integrationAccountId`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\McpJsonRpcPayload` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Toolboxes\CallToolboxMcpTool` | `method`, `params`, `id` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ModelDeploymentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment` | `modelFormat`, `modelName`, `modelVersion`, `skuName`, `skuCapacity` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\PostgresConfigurationPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\UpdatePostgresConfiguration` | `value`, `source` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\PostgresDatabasePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresDatabase` | `charset`, `collation` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\PostgresFirewallRulePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFirewallRule` | `startIpAddress`, `endIpAddress` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\PostgresFlexibleServerPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFlexibleServer` | `location`, `skuName`, `skuTier`, `administratorLogin`, `administratorLoginPassword`, `version`, `storageSizeGB`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RaiConfigPayload` | `—` | `raiPolicyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateStorageKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `keyName` |
@@ -641,6 +649,25 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `OpenAiV1Resource` | `speech()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateSpeech` | `array` |
 | `OpenAiV1Resource` | `transcriptions()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1CreateTranscription` | `array` |
 | `OpenAiV1Resource` | `uploadFile()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\V1\V1UploadFile` | `array` |
+| `PostgresConfigurationsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresConfiguration` | `PostgresConfigurationData` |
+| `PostgresConfigurationsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresConfigurations` | `Collection` |
+| `PostgresConfigurationsResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\UpdatePostgresConfiguration` | `PostgresConfigurationData` |
+| `PostgresDatabasesResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresDatabase` | `PostgresDatabaseData` |
+| `PostgresDatabasesResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresDatabase` | `—` |
+| `PostgresDatabasesResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresDatabase` | `PostgresDatabaseData` |
+| `PostgresDatabasesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresDatabases` | `Collection` |
+| `PostgresFirewallRulesResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFirewallRule` | `PostgresFirewallRuleData` |
+| `PostgresFirewallRulesResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresFirewallRule` | `—` |
+| `PostgresFirewallRulesResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresFirewallRule` | `PostgresFirewallRuleData` |
+| `PostgresFirewallRulesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresFirewallRules` | `Collection` |
+| `PostgresFlexibleServerResource` | `configurations()` | `PostgresConfigurationsResource` | `PostgresConfigurationsResource` |
+| `PostgresFlexibleServerResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFlexibleServer` | `PostgresFlexibleServerData` |
+| `PostgresFlexibleServerResource` | `databases()` | `PostgresDatabasesResource` | `PostgresDatabasesResource` |
+| `PostgresFlexibleServerResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\DeletePostgresFlexibleServer` | `—` |
+| `PostgresFlexibleServerResource` | `firewallRules()` | `PostgresFirewallRulesResource` | `PostgresFirewallRulesResource` |
+| `PostgresFlexibleServerResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\GetPostgresFlexibleServer` | `PostgresFlexibleServerData` |
+| `PostgresFlexibleServersResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\ListPostgresFlexibleServersByResourceGroup` | `Collection` |
+| `PostgresFlexibleServersResource` | `server()` | `PostgresFlexibleServerResource` | `PostgresFlexibleServerResource` |
 | `QueuesResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateQueue` | `QueueData` |
 | `QueuesResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\DeleteQueue` | `—` |
 | `ResourceGroupsResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `ResourceGroupData` |
@@ -700,4 +727,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-07-03T15:28:07+00:00
+Generated at: 2026-07-27T14:48:28+00:00

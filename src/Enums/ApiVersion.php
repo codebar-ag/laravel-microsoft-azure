@@ -12,6 +12,7 @@ enum ApiVersion
     case ARM_DELETED_VAULTS;
     case ARM_DELETED_COGNITIVE_SERVICES;
     case ARM_SQL;
+    case ARM_POSTGRESQL;
     case ARM_STORAGE;
     case ARM_KEY_VAULT_VAULTS;
     case ARM_LOG_ANALYTICS;
@@ -50,6 +51,7 @@ enum ApiVersion
             self::ARM_DELETED_VAULTS => '2023-02-01',
             self::ARM_DELETED_COGNITIVE_SERVICES => '2023-05-01',
             self::ARM_SQL => '2025-01-01',
+            self::ARM_POSTGRESQL => '2025-08-01',
             self::ARM_STORAGE => '2025-06-01',
             self::ARM_KEY_VAULT_VAULTS => '2026-02-01',
             self::ARM_LOG_ANALYTICS => '2025-02-01',
