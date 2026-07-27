@@ -3,6 +3,7 @@
 use CodebarAg\MicrosoftAzure\Data\Payload\CreateAgentPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\GenericJsonPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\HostedAgentDefinitionPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\PromptAgentDefinitionPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\RaiConfigPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\StorageAccountPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\UpdateAgentPayload;
@@ -54,6 +55,32 @@ it('builds hosted agent definitions with image, env, tools and rai config', func
         ->and($body['environment_variables'])->toBe(['LOG_LEVEL' => 'debug'])
         ->and($body['tools'])->toBe([['type' => 'code_interpreter']])
         ->and($body['rai_config'])->toBe(['rai_policy_name' => 'default-policy']);
+});
+
+it('builds prompt agent definitions with and without tools', function (): void {
+    $bare = new PromptAgentDefinitionPayload(
+        model: 'gpt-5.4-nano',
+        instructions: 'You are a helpful assistant.',
+    );
+
+    expect($bare->toAzureBody())->toBe([
+        'kind' => 'prompt',
+        'model' => 'gpt-5.4-nano',
+        'instructions' => 'You are a helpful assistant.',
+    ]);
+
+    $withTools = new PromptAgentDefinitionPayload(
+        model: 'gpt-5.4-nano',
+        instructions: 'You are a helpful assistant.',
+        tools: [['type' => 'mcp', 'server_label' => 'docuware']],
+    );
+
+    expect($withTools->toAzureBody())->toBe([
+        'kind' => 'prompt',
+        'model' => 'gpt-5.4-nano',
+        'instructions' => 'You are a helpful assistant.',
+        'tools' => [['type' => 'mcp', 'server_label' => 'docuware']],
+    ]);
 });
 
 it('builds storage account bodies with custom properties', function (): void {
