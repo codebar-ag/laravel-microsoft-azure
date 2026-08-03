@@ -256,4 +256,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-07-27T14:49:36+00:00
+Generated at: 2026-07-27T19:20:35+00:00

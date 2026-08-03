@@ -371,6 +371,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\PostgresDatabasePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresDatabase` | `charset`, `collation` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\PostgresFirewallRulePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFirewallRule` | `startIpAddress`, `endIpAddress` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\PostgresFlexibleServerPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Postgres\CreateOrUpdatePostgresFlexibleServer` | `location`, `skuName`, `skuTier`, `administratorLogin`, `administratorLoginPassword`, `version`, `storageSizeGB`, `properties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\PromptAgentDefinitionPayload` | `—` | `model`, `instructions`, `tools` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RaiConfigPayload` | `—` | `raiPolicyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateStorageKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `keyName` |
@@ -742,4 +743,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-07-27T16:30:40+00:00
+Generated at: 2026-07-27T19:20:35+00:00
