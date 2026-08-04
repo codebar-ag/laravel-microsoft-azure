@@ -64,6 +64,29 @@ it('creates or updates a project connection with credentials', function (): void
         ->and($connection->name)->toBe('mcp-abc123');
 });
 
+it('creates a project connection with metadata', function (): void {
+    $connection = projectConnections([
+        CreateOrUpdateProjectConnection::class => MockResponse::make(body: [
+            'id' => 'x',
+            'name' => 'mcp-tagged',
+            'properties' => [
+                'category' => 'GenericHttp',
+                'authType' => 'None',
+                'target' => 'https://mcp.example.com/mcp',
+                'metadata' => ['environment' => 'staging'],
+            ],
+        ]),
+    ])->createOrUpdate('mcp-tagged', new ProjectConnectionPayload(
+        category: 'GenericHttp',
+        authType: 'None',
+        target: 'https://mcp.example.com/mcp',
+        metadata: ['environment' => 'staging'],
+    ));
+
+    expect($connection)->toBeInstanceOf(ProjectConnectionData::class)
+        ->and($connection->name)->toBe('mcp-tagged');
+});
+
 it('creates a project connection without credentials', function (): void {
     $connection = projectConnections([
         CreateOrUpdateProjectConnection::class => MockResponse::make(body: [
