@@ -55,6 +55,16 @@ final class EncryptedCacheTokenRepository implements TokenRepository
     }
 
     /**
+     * `$config->cacheLifetimeInSeconds` caps how long a token is kept —
+     * previously ignored entirely, so every token was cached for its own
+     * ~1 hour Entra expiry regardless of what the connection configured.
+     * A test connection setting this to 0 (to force a fresh token on every
+     * call, e.g. so a just-granted RBAC role assignment is exercised
+     * immediately instead of failing against a token cached before the
+     * grant existed) was silently not honored: a token cached moments
+     * before a role assignment landed stayed cached — and kept being
+     * denied — for up to the next hour. `<= 0` means "don't cache at all".
+     *
      * @param  Closure(): AccessTokenData  $fetch
      */
     private function refreshAccessToken(
@@ -70,7 +80,11 @@ final class EncryptedCacheTokenRepository implements TokenRepository
 
         $token = $fetch();
 
-        $cache->put($key, Crypt::encrypt($token), max(1, $token->expiresIn - self::EXPIRY_SKEW_SECONDS));
+        $ttl = min($token->expiresIn - self::EXPIRY_SKEW_SECONDS, $config->cacheLifetimeInSeconds);
+
+        if ($ttl > 0) {
+            $cache->put($key, Crypt::encrypt($token), $ttl);
+        }
 
         TokenRefreshed::dispatch($config->name, $config->tenantId, $config->clientId);
 

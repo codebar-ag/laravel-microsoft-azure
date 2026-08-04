@@ -77,4 +77,15 @@ final class FoundryProjectsResource extends Resource
             $projectName,
         ));
     }
+
+    public function connections(string $projectName): ProjectConnectionsResource
+    {
+        return new ProjectConnectionsResource(
+            $this->client,
+            $this->subscriptionId,
+            $this->resourceGroupName,
+            $this->accountName,
+            $projectName,
+        );
+    }
 }
