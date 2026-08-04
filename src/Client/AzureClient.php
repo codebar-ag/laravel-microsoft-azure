@@ -4,6 +4,8 @@ namespace CodebarAg\MicrosoftAzure\Client;
 
 use CodebarAg\MicrosoftAzure\Concerns\InteractsWithResources;
 use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
+use CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData;
+use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Transport\ArmConnector;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
@@ -53,6 +55,35 @@ final class AzureClient
     public function name(): string
     {
         return $this->config->name;
+    }
+
+    /**
+     * A bearer token for $audience, from the same per-connection cache every
+     * connector authenticates from.
+     *
+     * The connectors are the right way to reach an Azure API and stay so.
+     * This exists for the data-plane routes that no connector covers because
+     * their base URL is neither `{account}.openai.azure.com`
+     * ({@see OpenAiConnector}) nor `{account}.services.ai.azure.com/api/projects/{project}`
+     * ({@see FoundryConnector}) — Foundry's model-provider passthrough routes,
+     * `{account}.services.ai.azure.com/providers/{publisher}/azure/*`, are the
+     * live example. Those accept an api-key only until an account turns on
+     * project management, after which Azure enforces Entra ID on them
+     * regardless of `disableLocalAuth`, and a consumer holding its own HTTP
+     * client then has no way to authenticate at all.
+     *
+     * Handing back the token rather than adding a connector per publisher
+     * keeps the token lifecycle — caching, expiry, refresh — in one place
+     * while leaving the request itself to the caller.
+     */
+    public function accessToken(TokenAudience $audience, ?string $scopeHost = null): string
+    {
+        return $this->tokens->accessToken(
+            $this->config,
+            $audience,
+            $scopeHost,
+            fn (): AccessTokenData => $this->fetcher->fetch($this->config, $audience, $scopeHost),
+        );
     }
 
     protected function resourceClient(): self
