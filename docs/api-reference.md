@@ -350,7 +350,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\ClientCredentialsTokenPayload` | `CodebarAg\MicrosoftAzure\Requests\Auth\ClientCredentialsTokenRequest` | `clientId`, `clientSecret`, `scope` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CodeAgentDefinitionPayload` | `—` | `definition` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CognitiveServicesAccountPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `location`, `kind`, `skuName`, `properties`, `tags`, `identityType` |
-| `CodebarAg\MicrosoftAzure\Data\Payload\CostQueryPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CostManagement\QueryCost` | `from`, `to`, `grouping` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\CostQueryPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\CostManagement\QueryCost` | `from`, `to`, `grouping`, `granularity` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateAgentPayload` | `—` | `name`, `definition`, `description`, `metadata` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateApplicationPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` | `displayName`, `signInAudience` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\CreateGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup` | `displayName`, `mailNickname`, `mailEnabled`, `securityEnabled`, `groupTypes` |
@@ -750,4 +750,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-04T13:06:12+00:00
+Generated at: 2026-08-07T09:53:57+00:00
