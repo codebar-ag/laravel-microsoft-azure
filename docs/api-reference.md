@@ -313,7 +313,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData` | `id`, `subscriptionId`, `displayName`, `state`, `tenantId`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\UsageDetailData` | `id`, `name`, `cost`, `currency`, `date`, `product`, `meterName` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\UserAssignedIdentityData` | `id`, `name`, `location`, `principalId`, `clientId`, `tenantId`, `tags` |
-| `CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData` | `id`, `name`, `location`, `kind`, `defaultHostName`, `state`, `provisioningState`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData` | `id`, `name`, `location`, `kind`, `defaultHostName`, `state`, `provisioningState`, `tags`, `identityType`, `identityPrincipalId`, `identityTenantId` |
 | `CodebarAg\MicrosoftAzure\Data\Authentication\AccessTokenData` | `accessToken`, `tokenType`, `expiresIn`, `expiresAt` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\ApplicationData` | `id`, `appId`, `displayName` |
 | `CodebarAg\MicrosoftAzure\Data\Graph\GroupData` | `id`, `displayName`, `mailNickname`, `description`, `mailEnabled`, `securityEnabled`, `groupTypes` |
@@ -387,7 +387,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\SubscriptionAliasPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\CreateOrUpdateSubscriptionAlias` | `billingScope`, `displayName`, `workload`, `subscriptionId`, `additionalProperties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\UpdateAgentPayload` | `—` | `definition`, `description`, `metadata` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\UserAssignedIdentityPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\CreateOrUpdateUserAssignedIdentity` | `location`, `tags` |
-| `CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` | `location`, `kind`, `properties`, `tags` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\CreateOrUpdateSite` | `location`, `kind`, `properties`, `tags`, `identityType` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\WorkflowAgentDefinitionPayload` | `—` | `workflow`, `raiConfig` |
 
 **Note:** `ZipDeploy` sends a binary stream body and has no payload DTO.
@@ -750,4 +750,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-07T09:53:57+00:00
+Generated at: 2026-08-07T16:06:22+00:00

@@ -141,7 +141,23 @@ it('builds create function app body', function (): void {
             'location' => 'westeurope',
             'kind' => 'functionapp',
             'properties' => ['serverFarmId' => '/plan/id'],
-        ]);
+        ])
+        ->and($request->body()->all())->not->toHaveKey('identity');
+});
+
+it('sets a system-assigned identity on the function app body when requested', function (): void {
+    $request = new CreateOrUpdateSite(
+        subscriptionId: 'sub-1',
+        resourceGroupName: 'rg-test',
+        appName: 'my-func',
+        payload: new WebSitePayload(
+            location: 'westeurope',
+            properties: ['serverFarmId' => '/plan/id'],
+            identityType: 'SystemAssigned',
+        ),
+    );
+
+    expect($request->body()->all())->toHaveKey('identity', ['type' => 'SystemAssigned']);
 });
 
 it('builds app settings body', function (): void {

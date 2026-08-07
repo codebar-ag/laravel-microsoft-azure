@@ -17,6 +17,24 @@ $app->functions('FlowRunner')->keys()->list();
 $app->syncTriggers();
 ```
 
+### System-assigned identity
+
+Pass `identityType` to emit the top-level ARM `identity` block. The returned `WebSiteData`
+exposes `identityType`, `identityPrincipalId` and `identityTenantId` — the principal id is what
+you grant data-plane RBAC (storage, Key Vault) to.
+
+```php
+$site = $app->createOrUpdate(
+    location: 'switzerlandnorth',
+    properties: ['serverFarmId' => $planId],
+    identityType: 'SystemAssigned',
+);
+
+Azure::instance()
+    ->roleAssignments($storageAccountId)
+    ->create($roleAssignmentName, $roleDefinitionId, (string) $site->identityPrincipalId);
+```
+
 ## Kudu (SCM) zip deploy
 
 ```php

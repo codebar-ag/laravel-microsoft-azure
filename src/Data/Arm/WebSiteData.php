@@ -18,6 +18,9 @@ final class WebSiteData extends AzureData
         public ?ProvisioningState $provisioningState = null,
         /** @var array<string, mixed> */
         public array $tags = [],
+        public ?string $identityType = null,
+        public ?string $identityPrincipalId = null,
+        public ?string $identityTenantId = null,
     ) {}
 
     /**
@@ -36,6 +39,9 @@ final class WebSiteData extends AzureData
             state: Field::arrNullableString($data, 'properties.state'),
             provisioningState: $state !== null ? ProvisioningState::tryFrom($state) : null,
             tags: Field::mixedArray($data, 'tags'),
+            identityType: Field::arrNullableString($data, 'identity.type'),
+            identityPrincipalId: Field::arrNullableString($data, 'identity.principalId'),
+            identityTenantId: Field::arrNullableString($data, 'identity.tenantId'),
         );
     }
 }
