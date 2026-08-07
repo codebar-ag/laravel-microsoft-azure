@@ -51,12 +51,13 @@ final class FunctionAppResource extends Resource
         array $properties = [],
         array $tags = [],
         string $kind = 'functionapp',
+        ?string $identityType = null,
     ): WebSiteData {
         $response = $this->sendArm(new CreateOrUpdateSite(
             $this->subscriptionId,
             $this->resourceGroupName,
             $this->appName,
-            new WebSitePayload($location, $kind, $properties, $tags),
+            new WebSitePayload($location, $kind, $properties, $tags, $identityType),
         ));
 
         return WebSiteData::fromAzure($this->jsonArray($response));

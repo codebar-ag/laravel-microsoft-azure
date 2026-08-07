@@ -155,6 +155,11 @@ function webSiteFixture(): array
         'name' => 'my-func',
         'location' => 'westeurope',
         'kind' => 'functionapp',
+        'identity' => [
+            'type' => 'SystemAssigned',
+            'principalId' => '00000000-0000-0000-0000-000000000040',
+            'tenantId' => '00000000-0000-0000-0000-000000000050',
+        ],
         'properties' => [
             'defaultHostName' => 'my-func.azurewebsites.net',
             'state' => 'Running',
@@ -481,7 +486,12 @@ it('covers function app lifecycle settings keys and workflow respond', function 
 
     $app = $client->functionApps('sub-1', 'rg-test')->app('my-func');
 
-    expect($app->createOrUpdate('westeurope')->name)->toBe('my-func')
+    $site = $app->createOrUpdate('westeurope', identityType: 'SystemAssigned');
+
+    expect($site->name)->toBe('my-func')
+        ->and($site->identityType)->toBe('SystemAssigned')
+        ->and($site->identityPrincipalId)->toBe('00000000-0000-0000-0000-000000000040')
+        ->and($site->identityTenantId)->toBe('00000000-0000-0000-0000-000000000050')
         ->and($app->getConfig())->toHaveKey('properties.numberOfWorkers', 1)
         ->and($app->createOrUpdateConfig(['numberOfWorkers' => 2]))->toHaveKey('properties.numberOfWorkers', 2)
         ->and($app->settings()->update(['KEY' => 'updated']))->toHaveKey('KEY', 'updated')

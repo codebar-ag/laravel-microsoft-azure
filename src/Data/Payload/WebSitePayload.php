@@ -13,6 +13,7 @@ final class WebSitePayload extends AzurePayload
         public readonly string $kind = 'functionapp',
         public readonly array $properties = [],
         public readonly array $tags = [],
+        public readonly ?string $identityType = null,
     ) {}
 
     public function toAzureBody(): array
@@ -25,6 +26,10 @@ final class WebSitePayload extends AzurePayload
 
         if ($this->tags !== []) {
             $body['tags'] = $this->tags;
+        }
+
+        if ($this->identityType !== null) {
+            $body['identity'] = ['type' => $this->identityType];
         }
 
         return $body;
