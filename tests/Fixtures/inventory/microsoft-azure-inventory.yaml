@@ -255,6 +255,8 @@ surfaces:
     - { method: GET, path: "/users/{id}", request: GetUser, tier: required }
     - { method: GET, path: "/users", request: ListUsers, tier: required }
     - { method: POST, path: "/invitations", request: CreateInvitation, tier: required }
+    - { method: GET, path: "/applications", request: ListApplications, tier: required }
+    - { method: GET, path: "/applications/{id}", request: GetApplication, tier: required }
     - { method: POST, path: "/applications", request: CreateApplication, tier: required }
     - { method: POST, path: "/applications/{id}/addPassword", request: AddApplicationPassword, tier: required }
     - { method: DELETE, path: "/applications/{id}", request: DeleteApplication, tier: required }

@@ -252,6 +252,8 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | graph | GET | `/users/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\GetUser` |
 | graph | GET | `/users` | `CodebarAg\MicrosoftAzure\Requests\Graph\Users\ListUsers` |
 | graph | POST | `/invitations` | `CodebarAg\MicrosoftAzure\Requests\Graph\Invitations\CreateInvitation` |
+| graph | GET | `/applications` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\ListApplications` |
+| graph | GET | `/applications/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\GetApplication` |
 | graph | POST | `/applications` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` |
 | graph | POST | `/applications/{id}/addPassword` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword` |
 | graph | DELETE | `/applications/{id}` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication` |
@@ -326,6 +328,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Kudu\KuduDeploymentData` | `id`, `status`, `author`, `deployer`, `message`, `startTime`, `endTime`, `complete`, `active` |
 | `CodebarAg\MicrosoftAzure\Data\LogAnalytics\QueryResultsData` | `tables` |
 | `CodebarAg\MicrosoftAzure\Data\LogAnalytics\QueryTableData` | `name`, `columns`, `rows` |
+| `CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData` | `state`, `id`, `name`, `location`, `reportedProvisioningState`, `provisioningState`, `resource`, `statusCode`, `message`, `scheduledPurgeDate` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\ChatCompletionUsageData` | `promptTokens`, `completionTokens`, `totalTokens`, `id`, `model`, `choices`, `usage` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\EmbeddingData` | `model`, `data`, `promptTokens`, `totalTokens` |
 | `CodebarAg\MicrosoftAzure\Data\OpenAi\ModelListData` | `data` |
@@ -414,11 +417,15 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ApplicationInsightsComponentResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\CreateOrUpdateComponent` | `ApplicationInsightsComponentData` |
 | `ApplicationInsightsComponentResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\DeleteComponent` | `—` |
 | `ApplicationInsightsComponentResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\GetComponent` | `ApplicationInsightsComponentData` |
+| `ApplicationInsightsComponentResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\GetComponent` | `ResourceObservationData` |
 | `ApplicationInsightsResource` | `component()` | `ApplicationInsightsComponentResource` | `ApplicationInsightsComponentResource` |
 | `ApplicationInsightsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Insights\Components\ListComponentsByResourceGroup` | `Collection` |
 | `ApplicationsResource` | `addPassword()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword` | `PasswordCredentialData` |
 | `ApplicationsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication` | `ApplicationData` |
 | `ApplicationsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication` | `—` |
+| `ApplicationsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\GetApplication` | `ApplicationData` |
+| `ApplicationsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\ListApplications` | `Collection` |
+| `ApplicationsResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Graph\Applications\GetApplication` | `ResourceObservationData` |
 | `BlobContainersResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateBlobContainer` | `BlobContainerData` |
 | `BlobContainersResource` | `setManagementPolicy()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\SetBlobManagementPolicy` | `—` |
 | `CognitiveServicesAccountResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount` | `CognitiveServicesAccountData` |
@@ -428,6 +435,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CognitiveServicesAccountResource` | `listKeys()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountKeys` | `ApiKeysData` |
 | `CognitiveServicesAccountResource` | `listModels()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountModels` | `Collection` |
 | `CognitiveServicesAccountResource` | `listSkus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\ListCognitiveServicesAccountSkus` | `Collection` |
+| `CognitiveServicesAccountResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\GetCognitiveServicesAccount` | `ResourceObservationData` |
 | `CognitiveServicesAccountResource` | `projects()` | `FoundryProjectsResource` | `FoundryProjectsResource` |
 | `CognitiveServicesAccountResource` | `regenerateKey()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\RegenerateCognitiveServicesAccountKey` | `ApiKeysData` |
 | `CognitiveServicesAccountResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\UpdateCognitiveServicesAccount` | `CognitiveServicesAccountData` |
@@ -493,6 +501,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FoundryProjectsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\DeleteFoundryProject` | `—` |
 | `FoundryProjectsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\GetFoundryProject` | `FoundryProjectData` |
 | `FoundryProjectsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\ListFoundryProjects` | `Collection` |
+| `FoundryProjectsResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Projects\GetFoundryProject` | `ResourceObservationData` |
 | `FoundryRedteamsResource` | `create()` | `GenericJsonPayload` | `array` |
 | `FoundryRedteamsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Foundry\Redteams\GetRedteam` | `array` |
 | `FoundryResource` | `agent()` | `FoundryAgentResource` | `FoundryAgentResource` |
@@ -551,6 +560,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FunctionAppResource` | `getConfig()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSiteConfig` | `array` |
 | `FunctionAppResource` | `hostKeys()` | `FunctionAppHostKeysResource` | `FunctionAppHostKeysResource` |
 | `FunctionAppResource` | `listFunctions()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\ListFunctions` | `Collection` |
+| `FunctionAppResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSite` | `ResourceObservationData` |
 | `FunctionAppResource` | `restart()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite` | `—` |
 | `FunctionAppResource` | `settings()` | `FunctionAppSettingsResource` | `FunctionAppSettingsResource` |
 | `FunctionAppResource` | `start()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StartSite` | `—` |
@@ -585,6 +595,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `KeyVaultVaultResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\CreateOrUpdateVault` | `KeyVaultData` |
 | `KeyVaultVaultResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\DeleteVault` | `—` |
 | `KeyVaultVaultResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\GetVault` | `KeyVaultData` |
+| `KeyVaultVaultResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\GetVault` | `ResourceObservationData` |
 | `KeyVaultsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\KeyVault\Vaults\ListVaultsByResourceGroup` | `Collection` |
 | `KeyVaultsResource` | `vault()` | `KeyVaultVaultResource` | `KeyVaultVaultResource` |
 | `LogAnalyticsQueryResource` | `query()` | `CodebarAg\MicrosoftAzure\Requests\LogAnalytics\ExecuteWorkspaceQuery` | `QueryResultsData` |
@@ -641,6 +652,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ModelDeploymentsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` | `ModelDeploymentData` |
 | `ModelDeploymentsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeployments` | `Collection` |
 | `ModelDeploymentsResource` | `listSkus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeploymentSkus` | `Collection` |
+| `ModelDeploymentsResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` | `ResourceObservationData` |
 | `OpenAiAudioResource` | `speech()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateSpeech` | `array` |
 | `OpenAiAudioResource` | `transcription()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\CreateTranscription` | `array` |
 | `OpenAiChatResource` | `completions()` | `CodebarAg\MicrosoftAzure\Requests\OpenAi\ChatCompletions` | `ChatCompletionData` |
@@ -697,6 +709,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ResourceGroupsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup` | `—` |
 | `ResourceGroupsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup` | `ResourceGroupData` |
 | `ResourceGroupsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\ListResourceGroups` | `Collection` |
+| `ResourceGroupsResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\GetResourceGroup` | `ResourceObservationData` |
 | `ResourceProvidersResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\GetResourceProvider` | `ResourceProviderData` |
 | `ResourceProvidersResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\ListResourceProviders` | `Collection` |
 | `ResourceProvidersResource` | `register()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceProviders\RegisterResourceProvider` | `ResourceProviderData` |
@@ -727,6 +740,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `StorageAccountResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\DeleteStorageAccount` | `—` |
 | `StorageAccountResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\GetStorageAccount` | `StorageAccountData` |
 | `StorageAccountResource` | `listKeys()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\ListStorageAccountKeys` | `StorageAccountKeysData` |
+| `StorageAccountResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\GetStorageAccount` | `ResourceObservationData` |
 | `StorageAccountResource` | `queue()` | `StorageQueueResource` | `StorageQueueResource` |
 | `StorageAccountResource` | `queues()` | `QueuesResource` | `QueuesResource` |
 | `StorageAccountResource` | `regenerateKey()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `StorageAccountKeysData` |
@@ -750,4 +764,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-07T16:06:22+00:00
+Generated at: 2026-08-08T08:02:11+00:00

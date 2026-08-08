@@ -70,3 +70,21 @@ $v1->models();
 ```
 
 For the distinct, project-scoped `foundry(...)->responses()` surface (Foundry Agent Service), see [Foundry Agent Service](foundry-agent-service.md).
+
+## Actual-state reads
+
+```php
+$account = Azure::instance()->cognitiveServices($subscriptionId, 'my-rg')->account('my-aif');
+
+$account->observe(location: 'westeurope')->state;   // pass location to detect soft delete
+$account->projects()->observe('my-prj')->state;
+$account->deployments()->observe('gpt-4o')->state;
+
+Azure::instance()->deletedCognitiveServices($subscriptionId)->find('westeurope', 'my-aif'); // nullable
+```
+
+Soft delete matters more here than anywhere else: a deleted-not-purged account holds its name
+**and** its model deployments keep consuming the subscription-wide quota for those models
+until it is purged. `observe(location: …)` reports that as `SoftDeleted` rather than `Absent`
+so a caller purges instead of retrying a create that will `409` forever — see
+[Advanced usage](../advanced.md#actual-state-reads-observe).

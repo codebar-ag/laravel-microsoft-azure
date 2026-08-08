@@ -52,9 +52,19 @@ $app = $graph->applications()->create(displayName: 'My Integration');
 $credential = $graph->applications()->addPassword($app->id, displayName: 'default');
 $graph->applications()->delete($app->id);
 
+$graph->applications()->get($app->id);                  // by directory object id
+$graph->applications()->list();                         // optional OData $filter
+$graph->applications()->findByAppId($app->appId);       // nullable; by client id
+$graph->applications()->observe($app->id);              // actual-state read, never throws on 404/403
+
 $graph->servicePrincipals()->create(appId: $app->appId);
 $graph->servicePrincipals()->findByAppId($app->appId);       // nullable
 $graph->servicePrincipals()->findByAppIdOrFail($app->appId); // throws if not found
 $graph->servicePrincipals()->list(); // optional OData $filter
 $graph->servicePrincipals()->delete($servicePrincipalObjectId);
 ```
+
+App registrations are the one provisioned family with no soft-delete state to model: a deleted
+app sits in the directory recycle bin for 30 days, but `displayName` was never unique, so it
+holds nothing and a re-create always succeeds. `observe()` therefore returns only `Absent`,
+`Available` or `Inaccessible` here — see [Advanced usage](../advanced.md#actual-state-reads-observe).

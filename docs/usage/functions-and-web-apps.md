@@ -69,3 +69,14 @@ Azure::instance()->managedIdentities($subscriptionId, 'my-rg')->createOrUpdate(
 
 Azure::instance()->managedIdentities($subscriptionId, 'my-rg')->identity('my-func-identity')->get();
 ```
+
+## Actual-state reads
+
+```php
+Azure::instance()->functionApps($subscriptionId, 'my-rg')->app('my-func')->observe()->state;
+```
+
+`Available` means the ARM site resource is provisioned, not that the app is running —
+`Microsoft.Web` keeps run state on `properties.state` (`Running`/`Stopped`), which stays on
+the attached `WebSiteData`. A stopped app is provisioned and available; starting it is a
+different repair from creating it. See [Advanced usage](../advanced.md#actual-state-reads-observe).

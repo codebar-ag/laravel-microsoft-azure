@@ -3,8 +3,10 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
 use CodebarAg\MicrosoftAzure\Data\KeyVault\SecretData;
 use CodebarAg\MicrosoftAzure\Data\KeyVault\SecretIdentifierData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\DeleteSecret;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret;
@@ -15,11 +17,33 @@ use Illuminate\Support\Collection;
 
 final class SecretsResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $vaultName,
     ) {
         parent::__construct($client);
+    }
+
+    /**
+     * Can this connection's principal actually use the vault's data plane?
+     *
+     * An ARM read of the vault answers a different question. The control plane
+     * says the vault exists and is provisioned; the data plane enforces its own
+     * RBAC, and a freshly granted role takes tens of seconds to propagate to it.
+     * In that window the vault is `Available` on ARM and every secret call 403s.
+     *
+     * Returns `Available` (the principal can list secrets), `Inaccessible` (403
+     * — retry, this is usually propagation) or `Absent` (404 — the vault itself
+     * is gone). Lists secret identifiers, never secret values.
+     */
+    public function observeAccess(): ResourceObservationData
+    {
+        return $this->observeKeyVault(
+            new ListSecrets,
+            $this->vaultHost($this->vaultName),
+        );
     }
 
     public function get(string $secretName, ?string $version = null): SecretData

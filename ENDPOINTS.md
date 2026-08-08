@@ -2,7 +2,7 @@
 
 Human-readable index of every REST surface in `laravel-microsoft-azure`. For class-level mappings see [docs/api-reference.md](docs/api-reference.md) (auto-generated). For parity status see [docs/inventory-parity.md](docs/inventory-parity.md).
 
-**299 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
+**305 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
 
 ## Authentication scopes
 
@@ -518,13 +518,15 @@ Long-running operations: `deployments($sub, $rg)->await($name)` and
 
 ## 11. Key Vault, Graph, Kudu
 
-Unchanged from prior releases — see [README](README.md) usage examples.
-
 | Surface | Gateway |
 | --- | --- |
 | Key Vault secrets | `vault($name)->secrets()` |
-| Microsoft Graph | `graph()->groups()`, `users()`, `invitations()` |
+| Microsoft Graph | `graph()->groups()`, `users()`, `invitations()`, `applications()`, `servicePrincipals()` |
 | Kudu zip deploy | `appService($name)->zipDeploy($zipPath)` |
+
+App registrations are readable as well as writable: `applications()->get($objectId)`,
+`applications()->list($filter)` and `applications()->findByAppId($clientId)` cover
+`GET /applications/{id}` and `GET /applications`.
 
 ---
 
@@ -557,6 +559,31 @@ $queue = Azure::instance()->storageAccounts($sub, $rg)->account('myacct')->queue
 **Note for maintainers:** this is the package's first data-plane gateway to (a) support Shared Key/HMAC signing rather than a bearer token, and (b) parse XML responses instead of JSON — both genuinely new code paths, isolated to `SharedKeyAuthenticator`, `StorageQueueConnector`, and `XmlField`. Scope stays intentionally narrow (message send/receive/delete only — no queue management, peek, or update-message operations).
 
 Microsoft docs: [Storage Queue REST](https://learn.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api), [Authorize with Shared Key](https://learn.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key)
+
+---
+
+## 13. Actual-state reads
+
+Every `get()` above answers "give me this resource" and throws when it cannot. The
+`observe()` methods answer the different question a reconciler asks — *what is actually
+there right now* — and return a `ResourceObservationData` instead of throwing, because
+absence and inaccessibility are answers rather than errors. See
+[docs/advanced.md](docs/advanced.md#actual-state-reads-observe) for the state vocabulary.
+
+| Gateway | Read |
+| --- | --- |
+| `resourceGroups($sub)` | `->observe($name)` |
+| `vaults($sub, $rg)->vault($name)` | `->observe($location = null)` — pass `$location` to detect soft delete |
+| `vault($name)->secrets()` | `->observeAccess()` — data-plane reachability, not ARM |
+| `cognitiveServices($sub, $rg)->account($name)` | `->observe($location = null)` — pass `$location` to detect soft delete |
+| `…->account($name)->projects()` | `->observe($projectName)` |
+| `…->account($name)->deployments()` | `->observe($deploymentName)` |
+| `storageAccounts($sub, $rg)->account($name)` | `->observe()` |
+| `applicationInsights($sub, $rg)->component($name)` | `->observe()` |
+| `functionApps($sub, $rg)->app($name)` | `->observe()` |
+| `graph()->applications()` | `->observe($objectId)` |
+| `deletedVaults($sub)` | `->find($location, $name)` |
+| `deletedCognitiveServices($sub)` | `->find($location, $name)` |
 
 ---
 

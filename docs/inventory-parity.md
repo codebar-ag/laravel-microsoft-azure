@@ -246,6 +246,8 @@
 | graph | GET | /users/{id} | GetUser | required | Parity |
 | graph | GET | /users | ListUsers | required | Parity |
 | graph | POST | /invitations | CreateInvitation | required | Parity |
+| graph | GET | /applications | ListApplications | required | Parity |
+| graph | GET | /applications/{id} | GetApplication | required | Parity |
 | graph | POST | /applications | CreateApplication | required | Parity |
 | graph | POST | /applications/{id}/addPassword | AddApplicationPassword | required | Parity |
 | graph | DELETE | /applications/{id} | DeleteApplication | required | Parity |
@@ -256,4 +258,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-08-07T09:53:44+00:00
+Generated at: 2026-08-08T08:05:33+00:00

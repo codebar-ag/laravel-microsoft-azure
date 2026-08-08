@@ -55,3 +55,13 @@ $queue = Azure::instance()->storageAccounts($subscriptionId, 'my-rg')->account('
 - Pass an account key (from `listKeys()`) → Shared Key (Full) request signing, computed per-request via HMAC-SHA256 over the canonicalized headers and resource.
 
 Scope is intentionally narrow: message send/receive/delete only — no queue management, peek, or update-message operations. See [Troubleshooting](../troubleshooting.md) for Shared Key auth failure modes (stale key, clock skew).
+
+## Actual-state reads
+
+```php
+Azure::instance()->storageAccounts($subscriptionId, 'my-rg')->account('myacct')->observe()->state;
+```
+
+Storage accounts spend real time in `ResolvingDNS` between `Creating` and `Succeeded`, and the
+account endpoints do not answer until they leave it — that window reports `Provisioning`, not
+`Available`. See [Advanced usage](../advanced.md#actual-state-reads-observe).

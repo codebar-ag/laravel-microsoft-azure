@@ -3,8 +3,10 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
 use CodebarAg\MicrosoftAzure\Data\Arm\StorageAccountData;
 use CodebarAg\MicrosoftAzure\Data\Arm\StorageAccountKeysData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\RegenerateStorageKeyPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\StorageAccountPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageAccount;
@@ -15,6 +17,8 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey;
 
 final class StorageAccountResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
@@ -33,6 +37,25 @@ final class StorageAccountResource extends Resource
         ));
 
         return StorageAccountData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Actual-state read.
+     *
+     * Storage accounts spend real time in `ResolvingDNS` between `Creating` and
+     * `Succeeded`, and the account endpoints do not answer until they leave it —
+     * that window reports `Provisioning`, not `Available`.
+     */
+    public function observe(): ResourceObservationData
+    {
+        return $this->observeArm(
+            new GetStorageAccount(
+                $this->subscriptionId,
+                $this->resourceGroupName,
+                $this->accountName,
+            ),
+            fn (array $json): StorageAccountData => StorageAccountData::fromAzure($json),
+        );
     }
 
     /**

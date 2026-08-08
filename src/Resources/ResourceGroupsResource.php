@@ -3,7 +3,9 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
 use CodebarAg\MicrosoftAzure\Data\Arm\ResourceGroupData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\DeleteResourceGroup;
@@ -13,6 +15,8 @@ use Illuminate\Support\Collection;
 
 final class ResourceGroupsResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
@@ -25,6 +29,20 @@ final class ResourceGroupsResource extends Resource
         $response = $this->sendArm(new GetResourceGroup($this->subscriptionId, $resourceGroupName));
 
         return ResourceGroupData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Actual-state read: what ARM says is there now, including "nothing".
+     *
+     * Resource groups are never soft-deleted, so the reachable states are
+     * absent, provisioning, available, failed, deleting and inaccessible.
+     */
+    public function observe(string $resourceGroupName): ResourceObservationData
+    {
+        return $this->observeArm(
+            new GetResourceGroup($this->subscriptionId, $resourceGroupName),
+            fn (array $json): ResourceGroupData => ResourceGroupData::fromAzure($json),
+        );
     }
 
     /**
