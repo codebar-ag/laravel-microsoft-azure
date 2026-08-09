@@ -9,6 +9,10 @@ on:
 jobs:
   release:
     name: Release
+    # `closed` fires for both merged and abandoned pull requests. Without this
+    # guard, closing a pull request *without* merging it still bumps the
+    # version and pushes a tag for code that never reached main.
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

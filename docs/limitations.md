@@ -19,9 +19,9 @@ For the design rationale behind the current surface set (why some things were de
 
 ## Release tags
 
-Tags are cut automatically by `.github/workflows/release.yml` (`anothrNick/github-tag-action`, default bump: minor) when a pull request against `main` closes. Two things this does **not** guard against, both currently visible in the tag list:
+Tags are cut automatically by `.github/workflows/release.yml` (`anothrNick/github-tag-action`, default bump: minor) when a pull request against `main` is **merged**.
 
-- **A hand-cut tag.** Composer derives versions from git tags — there is no `version` field in `composer.json` to check a tag against (and there should not be one; Composer's own guidance is to omit it). Nothing verifies that a tag was produced by the workflow, and a tag pushed by hand is installable immediately. `v1.0` and `v0.11.0` both point at commit `b9058b5`; `v0.1` points at a commit that is not an ancestor of `main` at all.
-- **An unmerged pull request.** The workflow triggers on `pull_request: types: [closed]` with no `if: github.event.pull_request.merged == true`, so closing a pull request **without** merging it also bumps the version and pushes a tag.
+- **An unmerged pull request no longer tags — fixed.** The workflow triggers on `pull_request: types: [closed]`, which fires for abandoned pull requests as well as merged ones, so the `release` job now carries `if: github.event.pull_request.merged == true`. Closing a pull request without merging it is a no-op. Until that guard was added, closing one **without** merging also bumped the version and pushed a tag for code that never reached `main`.
+- **A hand-cut tag is still not guarded against.** Composer derives versions from git tags — there is no `version` field in `composer.json` to check a tag against (and there should not be one; Composer's own guidance is to omit it). Nothing verifies that a tag was produced by the workflow, and a tag pushed by hand is installable immediately. `v1.0` and `v0.11.0` both point at commit `b9058b5`; `v0.1` points at a commit that is not an ancestor of `main` at all.
 
 Release by merging a pull request into `main` and letting the workflow tag. Do not push tags by hand.

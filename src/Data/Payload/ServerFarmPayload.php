@@ -9,6 +9,16 @@ namespace CodebarAg\MicrosoftAzure\Data\Payload;
  * plan's OS is not a formatting choice: ARM's own default is Windows, and a
  * Linux plan needs both `kind: linux` and `properties.reserved: true`. A
  * default here would silently pick one for callers who never thought about it.
+ *
+ * `properties` is omitted entirely when empty rather than emitted as `[]`.
+ * A default Windows `Y1`/`Dynamic` plan is a legitimate request that needs
+ * nothing beyond `location` and `sku`, but an empty PHP array JSON-encodes as
+ * the array `[]` where ARM's schema wants an object, and ARM rejects the whole
+ * body with "The request cannot be interpreted as valid Json: []". Omitting
+ * matches {@see StorageAccountPayload} and {@see ResourceGroupPayload}.
+ * `CreateOrUpdateStorageTable` deliberately does the opposite and sends
+ * `{"properties":{}}` — a table genuinely nests under `properties`, so there
+ * the key has to be present and only its encoding was ever wrong.
  */
 final class ServerFarmPayload extends AzurePayload
 {
@@ -30,8 +40,11 @@ final class ServerFarmPayload extends AzurePayload
         $body = [
             'location' => $this->location,
             'sku' => ['name' => $this->skuName, 'tier' => $this->skuTier],
-            'properties' => $this->properties,
         ];
+
+        if ($this->properties !== []) {
+            $body['properties'] = $this->properties;
+        }
 
         if ($this->kind !== null) {
             $body['kind'] = $this->kind;

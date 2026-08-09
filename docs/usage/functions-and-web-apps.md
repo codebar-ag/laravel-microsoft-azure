@@ -60,6 +60,11 @@ if (! $observation->state->isPresent()) {
 `kind` is omitted when null rather than defaulted: ARM's own default is Windows, and a Linux
 plan needs both `kind: linux` and `properties.reserved: true`.
 
+`properties` is omitted from the body when you pass none, rather than sent empty. A default
+Windows `Y1`/`Dynamic` plan needs nothing beyond `location` and `sku`, and an empty PHP array
+encodes as the JSON array `[]` where ARM's schema wants an object — ARM rejects the whole
+request with `The request cannot be interpreted as valid Json: []`.
+
 ## Basic publishing credentials (SCM / FTP)
 
 Basic-auth publish credentials are enabled by default. An app reached only through its managed
