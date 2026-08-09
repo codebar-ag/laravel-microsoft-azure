@@ -239,8 +239,36 @@ it('omits kind and tags from a plan body rather than defaulting an OS', function
     expect((new ServerFarmPayload('switzerlandnorth'))->toAzureBody())->toBe([
         'location' => 'switzerlandnorth',
         'sku' => ['name' => 'Y1', 'tier' => 'Dynamic'],
-        'properties' => [],
     ]);
+});
+
+it('omits empty plan properties instead of encoding them as an empty json array', function (): void {
+    // Assert the encoded string, not the array: `['properties' => []]` and
+    // `['properties' => new stdClass]` compare equal under most array
+    // assertions but are different bytes on the wire, and ARM rejects the
+    // array form outright with "The request cannot be interpreted as valid
+    // Json: []". A default Y1/Dynamic plan is a legitimate request, so this is
+    // the body the package sends when a caller names only a location.
+    $request = new CreateOrUpdateServerFarm(
+        subscriptionId: 'sub-1',
+        resourceGroupName: 'rg-test',
+        planName: 'my-plan',
+        payload: new ServerFarmPayload('switzerlandnorth'),
+    );
+
+    expect((string) $request->body())
+        ->toBe('{"location":"switzerlandnorth","sku":{"name":"Y1","tier":"Dynamic"}}')
+        ->not->toContain('"properties":[]');
+
+    $populated = new CreateOrUpdateServerFarm(
+        subscriptionId: 'sub-1',
+        resourceGroupName: 'rg-test',
+        planName: 'my-plan',
+        payload: new ServerFarmPayload('switzerlandnorth', properties: ['reserved' => true]),
+    );
+
+    expect((string) $populated->body())
+        ->toBe('{"location":"switzerlandnorth","sku":{"name":"Y1","tier":"Dynamic"},"properties":{"reserved":true}}');
 });
 
 it('builds a publishing credentials policy body in both directions', function (): void {
