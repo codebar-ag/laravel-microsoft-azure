@@ -29,6 +29,7 @@ use CodebarAg\MicrosoftAzure\Resources\ResourceProvidersResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleDefinitionsResource;
 use CodebarAg\MicrosoftAzure\Resources\SecretsResource;
+use CodebarAg\MicrosoftAzure\Resources\ServerFarmsResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlDatabasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlFirewallRulesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlServersResource;
@@ -124,6 +125,11 @@ trait InteractsWithResources
     public function functionApps(string $subscriptionId, string $resourceGroup): FunctionAppsResource
     {
         return new FunctionAppsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
+    }
+
+    public function serverFarms(string $subscriptionId, string $resourceGroup): ServerFarmsResource
+    {
+        return new ServerFarmsResource($this->resourceClient(), $subscriptionId, $resourceGroup);
     }
 
     public function apiManagement(string $subscriptionId, string $resourceGroup): ApiManagementResource

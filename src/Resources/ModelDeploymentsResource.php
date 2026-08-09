@@ -3,7 +3,9 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
 use CodebarAg\MicrosoftAzure\Data\Arm\ModelDeploymentData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\ModelDeploymentPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\CreateOrUpdateModelDeployment;
 use CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\DeleteModelDeployment;
@@ -14,6 +16,8 @@ use Illuminate\Support\Collection;
 
 final class ModelDeploymentsResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
@@ -47,6 +51,26 @@ final class ModelDeploymentsResource extends Resource
         ));
 
         return ModelDeploymentData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Actual-state read.
+     *
+     * A deployment reaches `Succeeded` well before the model behind it answers
+     * requests; this reports the ARM lifecycle only. Whether the model actually
+     * serves traffic is a data-plane question — ask the OpenAI/Foundry gateways.
+     */
+    public function observe(string $deploymentName): ResourceObservationData
+    {
+        return $this->observeArm(
+            new GetModelDeployment(
+                $this->subscriptionId,
+                $this->resourceGroupName,
+                $this->accountName,
+                $deploymentName,
+            ),
+            fn (array $json): ModelDeploymentData => ModelDeploymentData::fromAzure($json),
+        );
     }
 
     public function createOrUpdate(

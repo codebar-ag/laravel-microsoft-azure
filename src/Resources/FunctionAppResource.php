@@ -3,8 +3,11 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
+use CodebarAg\MicrosoftAzure\Data\Arm\BasicPublishingCredentialsPolicyData;
 use CodebarAg\MicrosoftAzure\Data\Arm\FunctionData;
 use CodebarAg\MicrosoftAzure\Data\Arm\WebSiteData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\GenericJsonPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\ListFunctions;
@@ -16,12 +19,15 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\GetSiteConfig;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StartSite;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StopSite;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\UpdateBasicPublishingCredentialsPolicy;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers;
 use Illuminate\Support\Collection;
 
 final class FunctionAppResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
@@ -40,6 +46,27 @@ final class FunctionAppResource extends Resource
         ));
 
         return WebSiteData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Actual-state read of the ARM site resource.
+     *
+     * `Available` here means the site resource is provisioned, not that the app
+     * is running — `Microsoft.Web` keeps run state on `properties.state`
+     * (`Running` / `Stopped`), which stays on {@see WebSiteData::$state} in the
+     * attached DTO. A stopped app is provisioned and available; it is just
+     * stopped, and starting it is a different repair from creating it.
+     */
+    public function observe(): ResourceObservationData
+    {
+        return $this->observeArm(
+            new GetSite(
+                $this->subscriptionId,
+                $this->resourceGroupName,
+                $this->appName,
+            ),
+            fn (array $json): WebSiteData => WebSiteData::fromAzure($json),
+        );
     }
 
     /**
@@ -127,6 +154,23 @@ final class FunctionAppResource extends Resource
         ));
 
         return $this->jsonArray($response);
+    }
+
+    /**
+     * `$policyName` is `scm` or `ftp` — Azure keeps one policy resource per
+     * publishing channel, so switching both off is two calls.
+     */
+    public function updateBasicPublishingCredentialsPolicy(string $policyName, bool $allow): BasicPublishingCredentialsPolicyData
+    {
+        $response = $this->sendArm(new UpdateBasicPublishingCredentialsPolicy(
+            $this->subscriptionId,
+            $this->resourceGroupName,
+            $this->appName,
+            $policyName,
+            $allow,
+        ));
+
+        return BasicPublishingCredentialsPolicyData::fromAzure($this->jsonArray($response));
     }
 
     public function settings(): FunctionAppSettingsResource

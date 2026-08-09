@@ -3,11 +3,15 @@
 namespace CodebarAg\MicrosoftAzure\Resources;
 
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
+use CodebarAg\MicrosoftAzure\Concerns\ObservesActualState;
 use CodebarAg\MicrosoftAzure\Data\Arm\ApiKeysData;
 use CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesAccountData;
 use CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesModelData;
+use CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData;
+use CodebarAg\MicrosoftAzure\Data\Observation\ResourceObservationData;
 use CodebarAg\MicrosoftAzure\Data\Payload\CognitiveServicesAccountPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\RegenerateKeyPayload;
+use CodebarAg\MicrosoftAzure\Exceptions\RequestException;
 use CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\CreateOrUpdateCognitiveServicesAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\DeleteCognitiveServicesAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Accounts\GetCognitiveServicesAccount;
@@ -20,6 +24,8 @@ use Illuminate\Support\Collection;
 
 final class CognitiveServicesAccountResource extends Resource
 {
+    use ObservesActualState;
+
     public function __construct(
         AzureClient $client,
         private readonly string $subscriptionId,
@@ -38,6 +44,57 @@ final class CognitiveServicesAccountResource extends Resource
         ));
 
         return CognitiveServicesAccountData::fromAzure($this->jsonArray($response));
+    }
+
+    /**
+     * Actual-state read.
+     *
+     * Pass $location to distinguish soft-deleted from absent. A deleted-not-purged
+     * Cognitive Services / Foundry account holds more than its name: its model
+     * deployments keep consuming the subscription-wide quota for those models
+     * until it is purged. So soft-delete is both a hard failure for a create
+     * (the name 409s) and unfinished business for a delete (the quota is still
+     * spent) — which is why it is a state of its own rather than a flavour of
+     * absent.
+     */
+    public function observe(?string $location = null): ResourceObservationData
+    {
+        return $this->observeArm(
+            new GetCognitiveServicesAccount(
+                $this->subscriptionId,
+                $this->resourceGroupName,
+                $this->accountName,
+            ),
+            fn (array $json): CognitiveServicesAccountData => CognitiveServicesAccountData::fromAzure($json),
+            $location === null ? null : fn (): ?ResourceObservationData => $this->observeSoftDeleted($location),
+        );
+    }
+
+    /**
+     * @return ResourceObservationData|null null when nothing holds the name, so the
+     *                                      caller keeps the plain `Absent` observation
+     */
+    private function observeSoftDeleted(string $location): ?ResourceObservationData
+    {
+        $deletedAccounts = new DeletedCognitiveServicesResource($this->client, $this->subscriptionId);
+
+        try {
+            $deleted = $deletedAccounts->find($location, $this->accountName);
+        } catch (RequestException $exception) {
+            return ResourceObservationData::inaccessible($exception->statusCode, $exception->azureMessage);
+        }
+
+        if (! $deleted instanceof DeletedCognitiveServicesAccountData) {
+            return null;
+        }
+
+        return ResourceObservationData::softDeleted(
+            id: $deleted->id,
+            name: $deleted->name,
+            location: $deleted->location,
+            scheduledPurgeDate: $deleted->scheduledPurgeDate,
+            resource: $deleted,
+        );
     }
 
     /**

@@ -27,6 +27,17 @@ final class DeletedVaultsResource extends Resource
         return $this->mapList($response, 'value', fn (array $item) => DeletedVaultData::fromAzure($item));
     }
 
+    /**
+     * The soft-deleted vault holding $vaultName in $location, if one does.
+     *
+     * Azure vault names are case-insensitive, so the comparison is too.
+     */
+    public function find(string $location, string $vaultName): ?DeletedVaultData
+    {
+        return $this->list($location)
+            ->first(fn (DeletedVaultData $vault): bool => strcasecmp($vault->name, $vaultName) === 0);
+    }
+
     public function purge(string $location, string $vaultName): void
     {
         $this->sendArm(new PurgeDeletedVault($this->subscriptionId, $location, $vaultName));

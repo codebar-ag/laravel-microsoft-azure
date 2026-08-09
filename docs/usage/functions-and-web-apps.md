@@ -35,6 +35,41 @@ Azure::instance()
     ->create($roleAssignmentName, $roleDefinitionId, (string) $site->identityPrincipalId);
 ```
 
+## App Service Plans (`Microsoft.Web/serverfarms`)
+
+A site needs a plan, and a plan is not editable in place: tier and region are fixed at create
+time, and plan creation is quota-limited per subscription. So `observe()` first — it answers
+`Absent` instead of throwing — and only create when the plan is genuinely missing.
+
+```php
+$plans = Azure::instance()->serverFarms($subscriptionId, 'my-rg');
+
+$observation = $plans->plan('my-plan')->observe();
+
+if (! $observation->state->isPresent()) {
+    $plans->plan('my-plan')->createOrUpdate(
+        location: 'switzerlandnorth',
+        skuName: 'Y1',
+        skuTier: 'Dynamic',
+        kind: 'linux',
+        properties: ['reserved' => true],
+    );
+}
+```
+
+`kind` is omitted when null rather than defaulted: ARM's own default is Windows, and a Linux
+plan needs both `kind: linux` and `properties.reserved: true`.
+
+## Basic publishing credentials (SCM / FTP)
+
+Basic-auth publish credentials are enabled by default. An app reached only through its managed
+identity has no use for them; each channel is its own policy resource.
+
+```php
+$app->updateBasicPublishingCredentialsPolicy('scm', false);
+$app->updateBasicPublishingCredentialsPolicy('ftp', false);
+```
+
 ## Kudu (SCM) zip deploy
 
 ```php
@@ -69,3 +104,14 @@ Azure::instance()->managedIdentities($subscriptionId, 'my-rg')->createOrUpdate(
 
 Azure::instance()->managedIdentities($subscriptionId, 'my-rg')->identity('my-func-identity')->get();
 ```
+
+## Actual-state reads
+
+```php
+Azure::instance()->functionApps($subscriptionId, 'my-rg')->app('my-func')->observe()->state;
+```
+
+`Available` means the ARM site resource is provisioned, not that the app is running —
+`Microsoft.Web` keeps run state on `properties.state` (`Running`/`Stopped`), which stays on
+the attached `WebSiteData`. A stopped app is provisioned and available; starting it is a
+different repair from creating it. See [Advanced usage](../advanced.md#actual-state-reads-observe).

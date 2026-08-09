@@ -25,11 +25,13 @@ use CodebarAg\MicrosoftAzure\Resources\LogicWorkflowsResource;
 use CodebarAg\MicrosoftAzure\Resources\ManagedIdentitiesResource;
 use CodebarAg\MicrosoftAzure\Resources\MetricsResource;
 use CodebarAg\MicrosoftAzure\Resources\OpenAiResource;
+use CodebarAg\MicrosoftAzure\Resources\PostgresFlexibleServersResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceGroupsResource;
 use CodebarAg\MicrosoftAzure\Resources\ResourceProvidersResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleAssignmentsResource;
 use CodebarAg\MicrosoftAzure\Resources\RoleDefinitionsResource;
 use CodebarAg\MicrosoftAzure\Resources\SecretsResource;
+use CodebarAg\MicrosoftAzure\Resources\ServerFarmsResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlDatabasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlFirewallRulesResource;
 use CodebarAg\MicrosoftAzure\Resources\SqlServersResource;
@@ -54,6 +56,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static SqlFirewallRulesResource sql(string $subscriptionId, string $resourceGroup, string $server)
  * @method static SqlDatabasesResource sqlDatabases(string $subscriptionId, string $resourceGroup, string $server)
  * @method static SqlServersResource sqlServers(string $subscriptionId, string $resourceGroup)
+ * @method static PostgresFlexibleServersResource postgresFlexibleServers(string $subscriptionId, string $resourceGroup)
  * @method static VaultResource vault(string $vaultName)
  * @method static SecretsResource secrets(string $vaultName)
  * @method static KeyVaultsResource vaults(string $subscriptionId, string $resourceGroup)
@@ -70,6 +73,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static AppServiceResource appService(string $appName)
  * @method static CognitiveServicesResource cognitiveServices(string $subscriptionId, string $resourceGroup)
  * @method static FunctionAppsResource functionApps(string $subscriptionId, string $resourceGroup)
+ * @method static ServerFarmsResource serverFarms(string $subscriptionId, string $resourceGroup)
  * @method static ApiManagementResource apiManagement(string $subscriptionId, string $resourceGroup)
  * @method static OpenAiResource openAi(string $accountName, ?string $apiKey = null)
  * @method static FoundryResource foundry(string $accountName, string $projectName, ?string $apiKey = null)

@@ -74,3 +74,13 @@ Azure::instance()->resourceProviders($subscriptionId)->awaitRegistered('Microsof
 ```
 
 Registering a provider is itself a long-running operation — `awaitRegistered()` polls until the provider's `registrationState` is `Registered`, throwing `LongRunningOperationException` on timeout or an unexpected terminal state.
+
+## Actual-state reads
+
+```php
+Azure::instance()->resourceGroups($subscriptionId)->observe('my-rg')->state;
+```
+
+`observe()` returns an `ObservedState` instead of throwing on `404`/`403`, so a resource
+deleted out of band in the portal is visible rather than invisible — see
+[Advanced usage](../advanced.md#actual-state-reads-observe).

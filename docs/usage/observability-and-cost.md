@@ -58,3 +58,11 @@ Azure::instance()->consumption($scope)->usageDetails($filter);
 ```
 
 `$scope` is an ARM scope string (subscription, resource group, or billing scope). `usageDetails()` follows `nextLink` pagination internally and returns the full `Collection` — see [Advanced usage → Pagination](../advanced.md#pagination).
+
+## Actual-state reads
+
+```php
+Azure::instance()->applicationInsights($subscriptionId, 'my-rg')->component('my-ai')->observe()->state;
+```
+
+See [Advanced usage](../advanced.md#actual-state-reads-observe).
