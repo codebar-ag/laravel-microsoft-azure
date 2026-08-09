@@ -85,9 +85,11 @@ dataset('arm request endpoints', [
         '/providers/Microsoft.Subscription/aliases/tenant-acme',
         ApiVersion::ARM_SUBSCRIPTION_ALIASES,
     ],
+    // Subscription-wide: ARM serves no location-scoped deleted-vault list,
+    // even though the purge below is location-scoped.
     'ListDeletedVaults' => [
-        fn () => new ListDeletedVaults('sub-1', 'westeurope'),
-        '/subscriptions/sub-1/providers/Microsoft.KeyVault/locations/westeurope/deletedVaults',
+        fn () => new ListDeletedVaults('sub-1'),
+        '/subscriptions/sub-1/providers/Microsoft.KeyVault/deletedVaults',
         ApiVersion::ARM_DELETED_VAULTS,
     ],
     'PurgeDeletedVault' => [

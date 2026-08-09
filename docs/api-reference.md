@@ -779,4 +779,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-09T19:58:40+00:00
+Generated at: 2026-08-09T23:18:16+00:00
