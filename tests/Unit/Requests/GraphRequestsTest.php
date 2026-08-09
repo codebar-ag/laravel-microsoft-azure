@@ -9,6 +9,7 @@ use CodebarAg\MicrosoftAzure\Data\Payload\CreateServicePrincipalPayload;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\AddApplicationPassword;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\CreateApplication;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\DeleteApplication;
+use CodebarAg\MicrosoftAzure\Requests\Graph\Applications\ListApplications;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\AddGroupMember;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\CreateGroup;
 use CodebarAg\MicrosoftAzure\Requests\Graph\Groups\DeleteGroup;
@@ -93,6 +94,17 @@ it('applies graph list service principals filter query', function (): void {
 
 it('returns empty query when list service principals filter is blank', function (): void {
     expect((new ListServicePrincipals(filter: ''))->query()->all())->toBe([]);
+});
+
+it('applies filter and select independently when listing applications', function (): void {
+    expect((new ListApplications)->query()->all())->toBe([])
+        ->and((new ListApplications(filter: '', select: ''))->query()->all())->toBe([])
+        ->and((new ListApplications(filter: "startswith(displayName,'flows-')"))->query()->all())
+        ->toBe(['$filter' => "startswith(displayName,'flows-')"])
+        ->and((new ListApplications(select: 'id,appId,displayName'))->query()->all())
+        ->toBe(['$select' => 'id,appId,displayName'])
+        ->and((new ListApplications("startswith(displayName,'flows-')", 'id,appId,displayName'))->query()->all())
+        ->toBe(['$filter' => "startswith(displayName,'flows-')", '$select' => 'id,appId,displayName']);
 });
 
 it('builds create application body', function (): void {

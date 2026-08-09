@@ -39,9 +39,9 @@ final class ApplicationsResource extends Resource
     /**
      * @return Collection<int, ApplicationData>
      */
-    public function list(?string $filter = null): Collection
+    public function list(?string $filter = null, ?string $select = null): Collection
     {
-        $response = $this->sendGraph(new ListApplications($filter));
+        $response = $this->sendGraph(new ListApplications($filter, $select));
 
         return $this->mapList($response, 'value', fn (array $item) => ApplicationData::fromAzure($item));
     }
