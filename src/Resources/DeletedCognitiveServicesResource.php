@@ -7,6 +7,7 @@ use CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts;
 use CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 final class DeletedCognitiveServicesResource extends Resource
 {
@@ -18,13 +19,29 @@ final class DeletedCognitiveServicesResource extends Resource
     }
 
     /**
+     * Soft-deleted accounts, optionally narrowed to one location.
+     *
+     * ARM only lists these subscription-wide, so the location filter is
+     * applied here rather than in the request. Passing null lists every
+     * region — which is what you want when hunting for leaked quota, since a
+     * caller usually knows the account name but not where it was created.
+     *
      * @return Collection<int, DeletedCognitiveServicesAccountData>
      */
-    public function list(string $location): Collection
+    public function list(?string $location = null): Collection
     {
-        $response = $this->sendArm(new ListDeletedCognitiveServicesAccounts($this->subscriptionId, $location));
+        $response = $this->sendArm(new ListDeletedCognitiveServicesAccounts($this->subscriptionId));
 
-        return $this->mapList($response, 'value', fn (array $item) => DeletedCognitiveServicesAccountData::fromAzure($item));
+        $accounts = $this->mapPaginated($response, 'value', fn (array $item) => DeletedCognitiveServicesAccountData::fromAzure($item));
+
+        if ($location === null) {
+            return $accounts;
+        }
+
+        return $accounts
+            ->filter(fn (DeletedCognitiveServicesAccountData $account): bool => $account->location !== null
+                && strcasecmp($account->location, $location) === 0)
+            ->values();
     }
 
     /**
@@ -41,8 +58,26 @@ final class DeletedCognitiveServicesResource extends Resource
         );
     }
 
-    public function purge(string $location, string $accountName): void
+    /**
+     * Permanently remove a soft-deleted account, releasing its model quota.
+     *
+     * Takes the whole account rather than a name because the purge route needs
+     * the resource group, and the only place that survives the group's own
+     * deletion is the account's id. Get one from {@see self::find()}.
+     */
+    public function purge(DeletedCognitiveServicesAccountData $account): void
     {
-        $this->sendArm(new PurgeDeletedCognitiveServicesAccount($this->subscriptionId, $location, $accountName));
+        if ($account->location === null || $account->resourceGroup === null) {
+            throw new InvalidArgumentException(
+                "Deleted Cognitive Services account [{$account->name}] cannot be purged: its id [{$account->id}] carries no location and resource group.",
+            );
+        }
+
+        $this->sendArm(new PurgeDeletedCognitiveServicesAccount(
+            $this->subscriptionId,
+            $account->location,
+            $account->resourceGroup,
+            $account->name,
+        ));
     }
 }

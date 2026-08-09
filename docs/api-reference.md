@@ -26,8 +26,8 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | arm | PUT | `/{scope}/providers/Microsoft.Authorization/roleAssignments/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment` |
 | arm | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\ListDeletedVaults` |
 | arm | POST | `/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{loc}/deletedVaults/{name}/purge` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\PurgeDeletedVault` |
-| arm | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts` |
-| arm | POST | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts/{name}/purge` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount` |
+| arm | GET | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts` |
+| arm | DELETE | `/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/resourceGroups/{rg}/deletedAccounts/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount` |
 | arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule` |
 | arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\DeleteSqlFirewallRule` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\GetSqlDatabase` |
@@ -283,7 +283,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesAccountData` | `id`, `name`, `location`, `kind`, `skuName`, `endpoint`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesModelData` | `name`, `version`, `format` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\CostQueryResultData` | `columns`, `rows`, `currency` |
-| `CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData` | `id`, `name`, `location`, `deletionDate`, `scheduledPurgeDate` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\DeletedCognitiveServicesAccountData` | `id`, `name`, `location`, `resourceGroup`, `deletionDate`, `scheduledPurgeDate` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeletedVaultData` | `id`, `name`, `location`, `deletionDate`, `scheduledPurgeDate` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeploymentData` | `id`, `name`, `mode`, `provisioningState`, `correlationId`, `timestamp`, `outputs`, `error` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\DeploymentOperationData` | `id`, `operationId`, `provisioningState`, `statusMessage`, `targetResource` |
@@ -453,7 +453,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `ConsumptionResource` | `usageDetails()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Consumption\ListUsageDetails` | `Collection` |
 | `CostManagementResource` | `query()` | `CodebarAg\MicrosoftAzure\Requests\Arm\CostManagement\QueryCost` | `CostQueryResultData` |
 | `DeletedCognitiveServicesResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\ListDeletedCognitiveServicesAccounts` | `Collection` |
-| `DeletedCognitiveServicesResource` | `purge()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedCognitiveServices\PurgeDeletedCognitiveServicesAccount` | `—` |
+| `DeletedCognitiveServicesResource` | `purge()` | `InvalidArgumentException` | `—` |
 | `DeletedVaultsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\ListDeletedVaults` | `Collection` |
 | `DeletedVaultsResource` | `purge()` | `CodebarAg\MicrosoftAzure\Requests\Arm\DeletedVaults\PurgeDeletedVault` | `—` |
 | `DeploymentsResource` | `cancel()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Deployments\CancelDeployment` | `—` |
@@ -779,4 +779,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-09T09:58:11+00:00
+Generated at: 2026-08-09T19:58:40+00:00

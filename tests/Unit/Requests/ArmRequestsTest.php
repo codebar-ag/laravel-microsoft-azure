@@ -95,14 +95,19 @@ dataset('arm request endpoints', [
         '/subscriptions/sub-1/providers/Microsoft.KeyVault/locations/westeurope/deletedVaults/kv-test/purge',
         ApiVersion::ARM_DELETED_VAULTS,
     ],
+    // Subscription-wide, unlike ListDeletedVaults directly above: ARM has no
+    // location-scoped list for deleted Cognitive Services accounts and answers
+    // one with 404.
     'ListDeletedCognitiveServicesAccounts' => [
-        fn () => new ListDeletedCognitiveServicesAccounts('sub-1', 'westeurope'),
-        '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/locations/westeurope/deletedAccounts',
+        fn () => new ListDeletedCognitiveServicesAccounts('sub-1'),
+        '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/deletedAccounts',
         ApiVersion::ARM_DELETED_COGNITIVE_SERVICES,
     ],
+    // A DELETE on the resource itself, NOT the `/purge` action verb the Key
+    // Vault family uses, and the path carries the (already deleted) group.
     'PurgeDeletedCognitiveServicesAccount' => [
-        fn () => new PurgeDeletedCognitiveServicesAccount('sub-1', 'westeurope', 'aif-test'),
-        '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/locations/westeurope/deletedAccounts/aif-test/purge',
+        fn () => new PurgeDeletedCognitiveServicesAccount('sub-1', 'westeurope', 'rg-test', 'aif-test'),
+        '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/locations/westeurope/resourceGroups/rg-test/deletedAccounts/aif-test',
         ApiVersion::ARM_DELETED_COGNITIVE_SERVICES,
     ],
     'GetSqlDatabase' => [

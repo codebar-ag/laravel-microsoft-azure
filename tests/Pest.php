@@ -620,6 +620,29 @@ function deletedVaultFixture(): array
     ];
 }
 
+/**
+ * A soft-deleted Cognitive Services account as ARM actually returns one.
+ *
+ * The `resourceGroups` segment in the id matters: it is the only place the
+ * group survives once the group itself is deleted, and the purge route needs
+ * it. Reusing the Key Vault fixture here would hide that, since deleted vault
+ * ids carry no group at all.
+ *
+ * @return array<string, mixed>
+ */
+function deletedCognitiveServicesAccountFixture(): array
+{
+    return [
+        'id' => '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/locations/westeurope/resourceGroups/rg-test/deletedAccounts/aif-test',
+        'name' => 'aif-test',
+        'location' => 'westeurope',
+        'properties' => [
+            'deletionDate' => '2026-01-01T00:00:00Z',
+            'scheduledPurgeDate' => '2026-01-03T00:00:00Z',
+        ],
+    ];
+}
+
 function secretIdentifierFixture(): array
 {
     return [
