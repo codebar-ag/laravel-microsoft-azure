@@ -65,6 +65,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\GetModelDeployment` |
 | arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\DeleteModelDeployment` |
 | arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus` | `CodebarAg\MicrosoftAzure\Requests\Arm\CognitiveServices\Deployments\ListModelDeploymentSkus` |
+| arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{account}/tableServices/default/tables/{tableName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageTable` |
 | logic | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\CreateOrUpdateLogicWorkflow` |
 | logic | PATCH | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\UpdateLogicWorkflow` |
 | logic | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Logic\Workflows\GetLogicWorkflow` |
@@ -117,6 +118,9 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | functions_arm | DELETE | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteFunctionKey` |
 | functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers` |
 | functions_arm | POST | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers/status` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus` |
+| functions_arm | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\GetServerFarm` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\CreateOrUpdateServerFarm` |
+| functions_arm | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/{policyName}` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\UpdateBasicPublishingCredentialsPolicy` |
 | api_management | PUT | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid}` | `CodebarAg\MicrosoftAzure\Requests\Arm\ApiManagement\Subscriptions\CreateOrUpdateApimSubscription` |
 | api_management | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid}` | `CodebarAg\MicrosoftAzure\Requests\Arm\ApiManagement\Subscriptions\GetApimSubscription` |
 | api_management | GET | `/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions` | `CodebarAg\MicrosoftAzure\Requests\Arm\ApiManagement\Subscriptions\ListApimSubscriptions` |
@@ -273,6 +277,7 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\ApimSubscriptionData` | `id`, `name`, `displayName`, `scope`, `state`, `ownerId`, `primaryKey`, `secondaryKey`, `createdDate`, `startDate`, `expirationDate`, `endDate`, `notificationDate`, `stateComment`, `allowTracing` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ApimSubscriptionKeysData` | `primaryKey`, `secondaryKey` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\ApplicationInsightsComponentData` | `id`, `name`, `location`, `instrumentationKey`, `connectionString`, `appId`, `provisioningState` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\BasicPublishingCredentialsPolicyData` | `id`, `name`, `allow` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\BlobContainerData` | `id`, `name`, `publicAccess` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\CanceledSubscriptionData` | `subscriptionId` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\CognitiveServicesAccountData` | `id`, `name`, `location`, `kind`, `skuName`, `endpoint`, `provisioningState`, `tags` |
@@ -306,11 +311,13 @@ See also: [inventory parity](inventory-parity.md) for endpoint coverage status.
 | `CodebarAg\MicrosoftAzure\Data\Arm\ResourceProviderData` | `namespace`, `registrationState`, `id` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\RoleAssignmentData` | `id`, `name`, `scope`, `roleDefinitionId`, `principalId`, `principalType` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\RoleDefinitionData` | `id`, `name`, `roleName`, `type` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\ServerFarmData` | `id`, `name`, `location`, `skuName`, `skuTier`, `kind`, `reserved`, `status`, `provisioningState`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlDatabaseData` | `id`, `name`, `location`, `status`, `collation`, `edition`, `currentServiceObjectiveName`, `autoPauseDelay` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlFirewallRuleData` | `id`, `name`, `startIpAddress`, `endIpAddress` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SqlServerData` | `id`, `name`, `location`, `fullyQualifiedDomainName`, `state`, `provisioningState` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\StorageAccountData` | `id`, `name`, `location`, `skuName`, `kind`, `provisioningState`, `primaryBlobEndpoint`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\StorageAccountKeysData` | `keys` |
+| `CodebarAg\MicrosoftAzure\Data\Arm\StorageTableData` | `id`, `name`, `tableName` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionAliasData` | `id`, `name`, `subscriptionId`, `provisioningState`, `billingScope`, `displayName`, `workload` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\SubscriptionData` | `id`, `subscriptionId`, `displayName`, `state`, `tenantId`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Arm\UsageDetailData` | `id`, `name`, `cost`, `currency`, `date`, `product`, `meterName` |
@@ -382,6 +389,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `CodebarAg\MicrosoftAzure\Data\Payload\RegenerateStorageKeyPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `keyName` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\ResourceGroupPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\ResourceGroups\CreateOrUpdateResourceGroup` | `location`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\RoleAssignmentPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\RoleAssignments\CreateRoleAssignment` | `roleDefinitionId`, `principalId`, `principalType` |
+| `CodebarAg\MicrosoftAzure\Data\Payload\ServerFarmPayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\CreateOrUpdateServerFarm` | `location`, `skuName`, `skuTier`, `kind`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SetSecretPayload` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` | `value`, `attributes` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SqlDatabasePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlDatabase` | `location`, `skuName`, `tier`, `family`, `capacity`, `properties`, `tags` |
 | `CodebarAg\MicrosoftAzure\Data\Payload\SqlFirewallRulePayload` | `CodebarAg\MicrosoftAzure\Requests\Arm\Sql\CreateOrUpdateSqlFirewallRule` | `startIpAddress`, `endIpAddress` |
@@ -567,6 +575,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `FunctionAppResource` | `stop()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StopSite` | `—` |
 | `FunctionAppResource` | `syncTriggers()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers` | `—` |
 | `FunctionAppResource` | `syncTriggersStatus()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus` | `array` |
+| `FunctionAppResource` | `updateBasicPublishingCredentialsPolicy()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\UpdateBasicPublishingCredentialsPolicy` | `BasicPublishingCredentialsPolicyData` |
 | `FunctionAppSettingsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListApplicationSettings` | `array` |
 | `FunctionAppSettingsResource` | `listConnectionStrings()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListConnectionStrings` | `array` |
 | `FunctionAppSettingsResource` | `update()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings` | `array` |
@@ -719,6 +728,10 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `SecretsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\GetSecret` | `SecretData` |
 | `SecretsResource` | `set()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret` | `SecretData` |
 | `SecretsResource` | `versions()` | `CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecretVersions` | `Collection` |
+| `ServerFarmResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\CreateOrUpdateServerFarm` | `ServerFarmData` |
+| `ServerFarmResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\GetServerFarm` | `ServerFarmData` |
+| `ServerFarmResource` | `observe()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\GetServerFarm` | `ResourceObservationData` |
+| `ServerFarmsResource` | `plan()` | `ServerFarmResource` | `ServerFarmResource` |
 | `ServicePrincipalsResource` | `create()` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\CreateServicePrincipal` | `ServicePrincipalData` |
 | `ServicePrincipalsResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Graph\ServicePrincipals\DeleteServicePrincipal` | `—` |
 | `ServicePrincipalsResource` | `findByAppIdOrFail()` | `RuntimeException` | `ServicePrincipalData` |
@@ -744,6 +757,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `StorageAccountResource` | `queue()` | `StorageQueueResource` | `StorageQueueResource` |
 | `StorageAccountResource` | `queues()` | `QueuesResource` | `QueuesResource` |
 | `StorageAccountResource` | `regenerateKey()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey` | `StorageAccountKeysData` |
+| `StorageAccountResource` | `tables()` | `TablesResource` | `TablesResource` |
 | `StorageAccountsResource` | `account()` | `StorageAccountResource` | `StorageAccountResource` |
 | `StorageAccountsResource` | `list()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\ListStorageAccountsByResourceGroup` | `Collection` |
 | `StorageQueueResource` | `deleteMessage()` | `CodebarAg\MicrosoftAzure\Requests\StorageQueue\DeleteMessage` | `—` |
@@ -754,6 +768,7 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `SubscriptionAliasesResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\SubscriptionAliases\GetSubscriptionAlias` | `SubscriptionAliasData` |
 | `SubscriptionsResource` | `cancel()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\CancelSubscription` | `CanceledSubscriptionData` |
 | `SubscriptionsResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Subscriptions\GetSubscription` | `SubscriptionData` |
+| `TablesResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageTable` | `StorageTableData` |
 | `UserAssignedIdentityResource` | `createOrUpdate()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\CreateOrUpdateUserAssignedIdentity` | `UserAssignedIdentityData` |
 | `UserAssignedIdentityResource` | `delete()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\DeleteUserAssignedIdentity` | `—` |
 | `UserAssignedIdentityResource` | `get()` | `CodebarAg\MicrosoftAzure\Requests\Arm\ManagedIdentity\GetUserAssignedIdentity` | `UserAssignedIdentityData` |
@@ -764,4 +779,4 @@ Write operations accept typed payload DTOs (`toAzureBody()` or `toFormBody()` fo
 | `WorkflowRuntimeResource` | `run()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\RunWorkflow` | `array` |
 | `WorkflowRuntimeResource` | `status()` | `CodebarAg\MicrosoftAzure\Requests\FunctionRuntime\GetWorkflowStatus` | `array` |
 
-Generated at: 2026-08-08T08:02:11+00:00
+Generated at: 2026-08-09T09:48:39+00:00

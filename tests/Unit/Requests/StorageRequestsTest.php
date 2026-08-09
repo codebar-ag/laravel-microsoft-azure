@@ -8,6 +8,7 @@ use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateBlobContainer;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateQueue;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageAccount;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\CreateOrUpdateStorageTable;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\DeleteQueue;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\DeleteStorageAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\GetStorageAccount;
@@ -68,6 +69,11 @@ dataset('storage request endpoints', [
         '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Storage/storageAccounts/sa1/queueServices/default/queues/orders',
         ApiVersion::ARM_STORAGE,
     ],
+    'CreateOrUpdateStorageTable' => [
+        fn () => new CreateOrUpdateStorageTable('sub-1', 'rg-test', 'sa1', 'intaketargets'),
+        '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Storage/storageAccounts/sa1/tableServices/default/tables/intaketargets',
+        ApiVersion::ARM_STORAGE,
+    ],
 ]);
 
 it('resolves storage request endpoints and api-version query', function (callable $factory, string $endpoint, ApiVersion $apiVersion): void {
@@ -124,4 +130,10 @@ it('builds blob management policy body with rules', function (): void {
     expect($request->body()->all())->toBe([
         'properties' => ['policy' => ['rules' => $rules]],
     ]);
+});
+
+it('builds create table body as a json object, never an empty array', function (): void {
+    // ARM answers `[]` with "The request cannot be interpreted as valid Json: []".
+    expect((string) (new CreateOrUpdateStorageTable('sub-1', 'rg-test', 'sa1', 'intaketargets'))->body())
+        ->toBe('{"properties":{}}');
 });

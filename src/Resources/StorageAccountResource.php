@@ -131,6 +131,16 @@ final class StorageAccountResource extends Resource
         );
     }
 
+    public function tables(): TablesResource
+    {
+        return new TablesResource(
+            $this->client,
+            $this->subscriptionId,
+            $this->resourceGroupName,
+            $this->accountName,
+        );
+    }
+
     public function queue(string $queueName, ?string $accountKey = null): StorageQueueResource
     {
         return new StorageQueueResource(

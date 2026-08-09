@@ -59,6 +59,7 @@
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment} | GetModelDeployment | required | Parity |
 | arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment} | DeleteModelDeployment | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus | ListModelDeploymentSkus | required | Parity |
+| arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{account}/tableServices/default/tables/{tableName} | CreateOrUpdateStorageTable | required | Parity |
 | logic | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | CreateOrUpdateLogicWorkflow | required | Parity |
 | logic | PATCH | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | UpdateLogicWorkflow | required | Parity |
 | logic | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name} | GetLogicWorkflow | required | Parity |
@@ -111,6 +112,9 @@
 | functions_arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName} | DeleteFunctionKey | required | Parity |
 | functions_arm | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers | SyncFunctionTriggers | required | Parity |
 | functions_arm | POST | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers/status | ListSyncFunctionTriggersStatus | required | Parity |
+| functions_arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName} | GetServerFarm | required | Parity |
+| functions_arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName} | CreateOrUpdateServerFarm | required | Parity |
+| functions_arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/{policyName} | UpdateBasicPublishingCredentialsPolicy | required | Parity |
 | api_management | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid} | CreateOrUpdateApimSubscription | required | Parity |
 | api_management | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid} | GetApimSubscription | required | Parity |
 | api_management | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions | ListApimSubscriptions | required | Parity |
@@ -258,4 +262,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-08-08T08:05:33+00:00
+Generated at: 2026-08-09T09:50:14+00:00

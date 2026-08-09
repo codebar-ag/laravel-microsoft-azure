@@ -57,6 +57,7 @@ surfaces:
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: GetModelDeployment, tier: required }
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}", request: DeleteModelDeployment, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deployment}/skus", request: ListModelDeploymentSkus, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{account}/tableServices/default/tables/{tableName}", request: CreateOrUpdateStorageTable, tier: required }
   logic:
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: CreateOrUpdateLogicWorkflow, tier: required }
     - { method: PATCH, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Logic/workflows/{name}", request: UpdateLogicWorkflow, tier: required }
@@ -111,6 +112,9 @@ surfaces:
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", request: DeleteFunctionKey, tier: required }
     - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers", request: SyncFunctionTriggers, tier: required }
     - { method: POST, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers/status", request: ListSyncFunctionTriggersStatus, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName}", request: GetServerFarm, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/serverfarms/{planName}", request: CreateOrUpdateServerFarm, tier: required }
+    - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/{policyName}", request: UpdateBasicPublishingCredentialsPolicy, tier: required }
   api_management:
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid}", request: CreateOrUpdateApimSubscription, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.ApiManagement/service/{name}/subscriptions/{sid}", request: GetApimSubscription, tier: required }

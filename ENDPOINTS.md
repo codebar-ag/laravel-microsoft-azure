@@ -2,7 +2,7 @@
 
 Human-readable index of every REST surface in `laravel-microsoft-azure`. For class-level mappings see [docs/api-reference.md](docs/api-reference.md) (auto-generated). For parity status see [docs/inventory-parity.md](docs/inventory-parity.md).
 
-**305 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
+**309 Saloon request classes** across **13 surfaces**. All wrappers are REST-only — no .NET SDK or Agent Framework runtime code in this package.
 
 ## Authentication scopes
 
@@ -163,10 +163,18 @@ $app->syncTriggers();
 | Host keys | `POST .../host/default/listkeys`, `PUT/DELETE .../host/default/keys/{key}` |
 | Function keys | `POST .../functions/{fn}/listkeys`, `PUT/DELETE .../functions/{fn}/keys/{key}` |
 | Sync triggers | `POST .../syncfunctiontriggers`, `.../syncfunctiontriggers/status` |
+| App Service Plan (serverfarms) | `GET/PUT .../Microsoft.Web/serverfarms/{planName}` |
+| Basic publishing credentials | `PUT .../sites/{name}/basicPublishingCredentialsPolicies/{scm\|ftp}` |
 
 Microsoft docs: [Web Apps REST](https://learn.microsoft.com/en-us/rest/api/appservice/web-apps)
 
 Kudu zip deploy remains on `appService($name)->zipDeploy()`.
+
+The plan a site runs on is its own gateway — `serverFarms($sub, $rg)->plan($name)` →
+`get / observe / createOrUpdate`. A plan cannot change tier or region in place and plan
+creation is subscription-quota-limited, so `observe()` before `createOrUpdate()` is the
+intended order. Basic SCM/FTP publishing credentials are on by default and are switched
+off per channel with `app($name)->updateBasicPublishingCredentialsPolicy('scm', false)`.
 
 ---
 
@@ -499,6 +507,7 @@ read surfaces for billing and metrics. All ARM-scoped (`management.azure.com`).
 | --- | --- |
 | Storage accounts + keys | `storageAccounts($sub, $rg)->account($name)` → `get / createOrUpdate / delete / listKeys / regenerateKey` |
 | Blob containers + lifecycle | `storageAccounts($sub, $rg)->account($name)->blobContainers()` → `createOrUpdate / setManagementPolicy` |
+| Storage tables (control plane) | `storageAccounts($sub, $rg)->account($name)->tables()` → `createOrUpdate` |
 | Key Vault vaults (control plane) | `vaults($sub, $rg)->vault($name)` → `get / createOrUpdate / delete` |
 | SQL servers | `sqlServers($sub, $rg)->server($name)` → `get / createOrUpdate / delete` |
 | SQL databases | `sqlDatabases($sub, $rg, $server)` → `get / createOrUpdate / delete` |
@@ -581,6 +590,7 @@ absence and inaccessibility are answers rather than errors. See
 | `storageAccounts($sub, $rg)->account($name)` | `->observe()` |
 | `applicationInsights($sub, $rg)->component($name)` | `->observe()` |
 | `functionApps($sub, $rg)->app($name)` | `->observe()` |
+| `serverFarms($sub, $rg)->plan($name)` | `->observe()` |
 | `graph()->applications()` | `->observe($objectId)` |
 | `deletedVaults($sub)` | `->find($location, $name)` |
 | `deletedCognitiveServices($sub)` | `->find($location, $name)` |

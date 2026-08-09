@@ -31,6 +31,18 @@ Azure::instance()->storageAccounts($subscriptionId, 'my-rg')
     ->setManagementPolicy([/* lifecycle policy rules */]);
 ```
 
+## Storage tables (ARM control plane)
+
+Created through ARM rather than the table data plane, so a table is provisioned with the same
+credential, and in the same pass, as the account's containers and queues. Idempotent.
+
+```php
+Azure::instance()->storageAccounts($subscriptionId, 'my-rg')
+    ->account('myacct')
+    ->tables()
+    ->createOrUpdate('intaketargets');
+```
+
 ## Storage Queue data plane
 
 Message bodies are base64-encoded automatically (Azure rejects raw XML-unsafe markup in the message body). API version `2025-05-05`.

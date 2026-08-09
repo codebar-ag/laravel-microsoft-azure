@@ -2,6 +2,7 @@
 
 use CodebarAg\MicrosoftAzure\Data\Payload\AppSettingsPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\FunctionKeyPayload;
+use CodebarAg\MicrosoftAzure\Data\Payload\ServerFarmPayload;
 use CodebarAg\MicrosoftAzure\Data\Payload\WebSitePayload;
 use CodebarAg\MicrosoftAzure\Enums\ApiVersion;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Functions\GetFunction;
@@ -12,6 +13,8 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteFunctionKey;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteHostKey;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListFunctionKeys;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListHostKeys;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\CreateOrUpdateServerFarm;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\ServerFarms\GetServerFarm;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListApplicationSettings;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\ListConnectionStrings;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Settings\UpdateApplicationSettings;
@@ -23,6 +26,7 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\ListSitesByResourceGroup;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\RestartSite;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StartSite;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\StopSite;
+use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Sites\UpdateBasicPublishingCredentialsPolicy;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\ListSyncFunctionTriggersStatus;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Triggers\SyncFunctionTriggers;
 use Saloon\Http\Request;
@@ -115,6 +119,21 @@ dataset('web request endpoints', [
         $webBase.'/syncfunctiontriggers/status',
         ApiVersion::ARM_WEB,
     ],
+    'GetServerFarm' => [
+        fn () => new GetServerFarm('sub-1', 'rg-test', 'my-plan'),
+        '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/serverfarms/my-plan',
+        ApiVersion::ARM_WEB,
+    ],
+    'CreateOrUpdateServerFarm' => [
+        fn () => new CreateOrUpdateServerFarm('sub-1', 'rg-test', 'my-plan', new ServerFarmPayload('switzerlandnorth')),
+        '/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/serverfarms/my-plan',
+        ApiVersion::ARM_WEB,
+    ],
+    'UpdateBasicPublishingCredentialsPolicy' => [
+        fn () => new UpdateBasicPublishingCredentialsPolicy('sub-1', 'rg-test', 'my-func', 'scm', false),
+        $webBase.'/basicPublishingCredentialsPolicies/scm',
+        ApiVersion::ARM_WEB,
+    ],
 ]);
 
 it('resolves web request endpoints and api-version query', function (callable $factory, string $endpoint, ApiVersion $apiVersion): void {
@@ -195,4 +214,38 @@ it('builds function key body', function (): void {
 
     expect($functionKeyRequest->resolveEndpoint())
         ->toBe('/subscriptions/sub-1/resourceGroups/rg-test/providers/Microsoft.Web/sites/my-func/functions/HttpTrigger/keys/default');
+});
+
+it('builds an app service plan body with sku, kind and tags', function (): void {
+    $request = new CreateOrUpdateServerFarm(
+        subscriptionId: 'sub-1',
+        resourceGroupName: 'rg-test',
+        planName: 'my-plan',
+        payload: new ServerFarmPayload('switzerlandnorth', 'Y1', 'Dynamic', 'linux', ['reserved' => true], ['project' => 'test']),
+    );
+
+    expect($request->body()->all())->toBe([
+        'location' => 'switzerlandnorth',
+        'sku' => ['name' => 'Y1', 'tier' => 'Dynamic'],
+        'properties' => ['reserved' => true],
+        'kind' => 'linux',
+        'tags' => ['project' => 'test'],
+    ]);
+});
+
+it('omits kind and tags from a plan body rather than defaulting an OS', function (): void {
+    // ARM's own default is Windows, so emitting a kind nobody asked for picks
+    // an OS on the caller's behalf.
+    expect((new ServerFarmPayload('switzerlandnorth'))->toAzureBody())->toBe([
+        'location' => 'switzerlandnorth',
+        'sku' => ['name' => 'Y1', 'tier' => 'Dynamic'],
+        'properties' => [],
+    ]);
+});
+
+it('builds a publishing credentials policy body in both directions', function (): void {
+    expect((new UpdateBasicPublishingCredentialsPolicy('s', 'rg', 'site', 'scm', false))->body()->all())
+        ->toBe(['properties' => ['allow' => false]])
+        ->and((new UpdateBasicPublishingCredentialsPolicy('s', 'rg', 'site', 'ftp', true))->body()->all())
+        ->toBe(['properties' => ['allow' => true]]);
 });
