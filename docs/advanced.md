@@ -139,7 +139,15 @@ every secret call 403s. `secrets()->observeAccess()` asks that second question d
 
 ## Pagination
 
-Azure list endpoints that page via `nextLink` / `@odata.nextLink` (e.g. Consumption usage details, Graph list endpoints) are followed transparently inside the relevant `Resource` method using an internal `mapPaginated()` helper (capped at 100 pages as a runaway guard) — you get back a fully-materialized `Illuminate\Support\Collection`, not a page at a time. There's nothing extra to call; if a `list()`/`usageDetails()`-style method returns a `Collection`, pagination already happened.
+**ARM** list endpoints that page via `nextLink` (Consumption usage details, Logic Apps runs/triggers/versions, API Management subscriptions) are followed transparently inside the relevant `Resource` method using an internal `mapPaginated()` helper (capped at 100 pages as a runaway guard) — you get back a fully-materialized `Illuminate\Support\Collection`, not a page at a time.
+
+**Microsoft Graph list endpoints are not paginated for you.** `applications()->list()`,
+`users()->list()` and `servicePrincipals()->list()` return the **first page only** (Graph's
+default page size, 100 for most resources) and `@odata.nextLink` is dropped. `mapPaginated()`
+cannot serve them as written — it fetches each subsequent page through the ARM connector, which
+is the wrong base URL and the wrong token audience for Graph. Narrow the result with an OData
+`$filter` (and `$select`) rather than relying on the full list; a Graph list that needs every
+page has to be driven by the caller for now.
 
 ## Facade vs. manager
 

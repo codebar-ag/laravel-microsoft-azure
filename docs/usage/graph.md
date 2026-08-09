@@ -53,7 +53,11 @@ $credential = $graph->applications()->addPassword($app->id, displayName: 'defaul
 $graph->applications()->delete($app->id);
 
 $graph->applications()->get($app->id);                  // by directory object id
-$graph->applications()->list();                         // optional OData $filter
+$graph->applications()->list();                         // optional OData $filter and $select
+$graph->applications()->list(
+    filter: "startswith(displayName,'flows-')",
+    select: 'id,appId,displayName',                     // Graph returns the whole object otherwise
+);
 $graph->applications()->findByAppId($app->appId);       // nullable; by client id
 $graph->applications()->observe($app->id);              // actual-state read, never throws on 404/403
 
@@ -63,6 +67,10 @@ $graph->servicePrincipals()->findByAppIdOrFail($app->appId); // throws if not fo
 $graph->servicePrincipals()->list(); // optional OData $filter
 $graph->servicePrincipals()->delete($servicePrincipalObjectId);
 ```
+
+Every Graph `list()` here returns the **first page only** — `@odata.nextLink` is not followed.
+Narrow with `$filter`/`$select` rather than relying on a full enumeration; see
+[Pagination](../advanced.md#pagination).
 
 App registrations are the one provisioned family with no soft-delete state to model: a deleted
 app sits in the directory recycle bin for 30 days, but `displayName` was never unique, so it
