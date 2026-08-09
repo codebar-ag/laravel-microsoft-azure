@@ -35,12 +35,21 @@ it('deserializes arm dto payloads', function (): void {
     $deletedVault = DeletedVaultData::fromAzure(deletedVaultFixture());
     expect($deletedVault->name)->toBe('kv-test');
 
-    $deletedAi = DeletedCognitiveServicesAccountData::fromAzure([
-        'id' => '/subscriptions/sub-1/providers/Microsoft.CognitiveServices/locations/westeurope/deletedAccounts/aif-test',
+    $deletedAi = DeletedCognitiveServicesAccountData::fromAzure(deletedCognitiveServicesAccountFixture());
+    expect($deletedAi->name)->toBe('aif-test')
+        ->and($deletedAi->location)->toBe('westeurope')
+        // Read back off the id: ARM returns no resourceGroup field on these,
+        // and the purge route cannot be addressed without one.
+        ->and($deletedAi->resourceGroup)->toBe('rg-test');
+
+    // An id without the segment yields null rather than a wrong guess, which
+    // the resource turns into a thrown purge instead of a silent no-op.
+    $groupless = DeletedCognitiveServicesAccountData::fromAzure([
+        'id' => '/subscriptions/sub-1/deletedAccounts/aif-test',
         'name' => 'aif-test',
-        'properties' => ['location' => 'westeurope'],
+        'location' => 'westeurope',
     ]);
-    expect($deletedAi->name)->toBe('aif-test');
+    expect($groupless->resourceGroup)->toBeNull();
 
     $canceled = CanceledSubscriptionData::fromAzure(canceledSubscriptionFixture());
     expect($canceled->subscriptionId)->toBe('sub-1');

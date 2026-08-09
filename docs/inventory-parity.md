@@ -20,8 +20,8 @@
 | arm | PUT | /{scope}/providers/Microsoft.Authorization/roleAssignments/{name} | CreateRoleAssignment | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults | ListDeletedVaults | required | Parity |
 | arm | POST | /subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{loc}/deletedVaults/{name}/purge | PurgeDeletedVault | required | Parity |
-| arm | GET | /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts | ListDeletedCognitiveServicesAccounts | required | Parity |
-| arm | POST | /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts/{name}/purge | PurgeDeletedCognitiveServicesAccount | required | Parity |
+| arm | GET | /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts | ListDeletedCognitiveServicesAccounts | required | Parity |
+| arm | DELETE | /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/resourceGroups/{rg}/deletedAccounts/{name} | PurgeDeletedCognitiveServicesAccount | required | Parity |
 | arm | PUT | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name} | CreateOrUpdateSqlFirewallRule | required | Parity |
 | arm | DELETE | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name} | DeleteSqlFirewallRule | required | Parity |
 | arm | GET | /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db} | GetSqlDatabase | required | Parity |
@@ -262,4 +262,4 @@
 | kudu | GET | /api/deployments/{id} | GetDeploymentStatus | required | Parity |
 | auth | POST | /oauth2/v2.0/token | ClientCredentialsTokenRequest | internal | Internal |
 
-Generated at: 2026-08-09T09:58:11+00:00
+Generated at: 2026-08-09T23:18:14+00:00

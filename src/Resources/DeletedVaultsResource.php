@@ -18,13 +18,29 @@ final class DeletedVaultsResource extends Resource
     }
 
     /**
+     * Soft-deleted vaults, optionally narrowed to one location.
+     *
+     * ARM only lists these subscription-wide, so the location filter is
+     * applied here rather than in the request, and the list is followed across
+     * pages — ARM can answer with an empty `value` and a `nextLink`, which a
+     * first-page-only read reports as "nothing is soft-deleted".
+     *
      * @return Collection<int, DeletedVaultData>
      */
-    public function list(string $location): Collection
+    public function list(?string $location = null): Collection
     {
-        $response = $this->sendArm(new ListDeletedVaults($this->subscriptionId, $location));
+        $response = $this->sendArm(new ListDeletedVaults($this->subscriptionId));
 
-        return $this->mapList($response, 'value', fn (array $item) => DeletedVaultData::fromAzure($item));
+        $vaults = $this->mapPaginated($response, 'value', fn (array $item) => DeletedVaultData::fromAzure($item));
+
+        if ($location === null) {
+            return $vaults;
+        }
+
+        return $vaults
+            ->filter(fn (DeletedVaultData $vault): bool => $vault->location !== null
+                && strcasecmp($vault->location, $location) === 0)
+            ->values();
     }
 
     /**

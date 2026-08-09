@@ -18,8 +18,8 @@ surfaces:
     - { method: PUT, path: "/{scope}/providers/Microsoft.Authorization/roleAssignments/{name}", request: CreateRoleAssignment, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults", request: ListDeletedVaults, tier: required }
     - { method: POST, path: "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{loc}/deletedVaults/{name}/purge", request: PurgeDeletedVault, tier: required }
-    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts", request: ListDeletedCognitiveServicesAccounts, tier: required }
-    - { method: POST, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/deletedAccounts/{name}/purge", request: PurgeDeletedCognitiveServicesAccount, tier: required }
+    - { method: GET, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts", request: ListDeletedCognitiveServicesAccounts, tier: required }
+    - { method: DELETE, path: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{loc}/resourceGroups/{rg}/deletedAccounts/{name}", request: PurgeDeletedCognitiveServicesAccount, tier: required }
     - { method: PUT, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: CreateOrUpdateSqlFirewallRule, tier: required }
     - { method: DELETE, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/firewallRules/{name}", request: DeleteSqlFirewallRule, tier: required }
     - { method: GET, path: "/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Sql/servers/{server}/databases/{db}", request: GetSqlDatabase, tier: required }

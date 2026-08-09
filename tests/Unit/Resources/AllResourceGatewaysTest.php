@@ -90,7 +90,7 @@ it('covers remaining arm resource gateways', function (): void {
         CreateRoleAssignment::class => MockResponse::make(body: roleAssignmentFixture()),
         ListDeletedVaults::class => MockResponse::make(body: ['value' => [deletedVaultFixture()]]),
         PurgeDeletedVault::class => MockResponse::make(status: 204),
-        ListDeletedCognitiveServicesAccounts::class => MockResponse::make(body: ['value' => [deletedVaultFixture()]]),
+        ListDeletedCognitiveServicesAccounts::class => MockResponse::make(body: ['value' => [deletedCognitiveServicesAccountFixture()]]),
         PurgeDeletedCognitiveServicesAccount::class => MockResponse::make(status: 204),
         CreateOrUpdateSqlFirewallRule::class => MockResponse::make(body: sqlFirewallRuleFixture()),
         DeleteSqlFirewallRule::class => MockResponse::make(status: 204),
@@ -129,7 +129,9 @@ it('covers remaining arm resource gateways', function (): void {
     $client->resourceGroups('sub-1')->delete('rg-test');
     $client->subscriptionAliases()->delete('tenant-acme');
     $client->deletedVaults('sub-1')->purge('westeurope', 'kv-test');
-    $client->deletedCognitiveServices('sub-1')->purge('westeurope', 'cog-test');
+    $client->deletedCognitiveServices('sub-1')->purge(
+        $client->deletedCognitiveServices('sub-1')->find('westeurope', 'aif-test'),
+    );
     $client->sql('sub-1', 'rg-test', 'sql1')->delete('rule');
     $client->deployments('sub-1', 'rg-test')->cancel('tenantflow');
 });
