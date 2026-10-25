@@ -22,6 +22,8 @@ final class FoundryConnector extends AzureConnector
         public readonly string $projectName,
         public readonly ?string $apiKey = null,
     ) {
+        self::assertHostLabel($accountName, 'account name');
+
         parent::__construct($config, $tokens, $fetcher, TokenAudience::FoundryDataPlane);
     }
 

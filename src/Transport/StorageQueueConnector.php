@@ -22,6 +22,8 @@ final class StorageQueueConnector extends AzureConnector
         public readonly string $accountName,
         public readonly ?string $accountKey = null,
     ) {
+        self::assertHostLabel($accountName, 'account name');
+
         parent::__construct($config, $tokens, $fetcher, TokenAudience::StorageDataPlane);
     }
 

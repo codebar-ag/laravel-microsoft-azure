@@ -7,6 +7,7 @@ use CodebarAg\MicrosoftAzure\Config\ConnectionConfig;
 use CodebarAg\MicrosoftAzure\Enums\TokenAudience;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
+use InvalidArgumentException;
 use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
@@ -26,6 +27,21 @@ abstract class AzureConnector extends Connector
         protected readonly ?string $scopeHost = null,
     ) {
         $this->bootAzureTransport();
+    }
+
+    /**
+     * Guards names that get interpolated into a host name (e.g. `{name}.scm.azurewebsites.net`).
+     *
+     * Without this check a value such as `attacker.example/#` would move the request, and
+     * the bearer token or key attached to it, to a host outside Azure.
+     */
+    protected static function assertHostLabel(string $value, string $field): string
+    {
+        if (preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/', $value) !== 1) {
+            throw new InvalidArgumentException("Azure {$field} [{$value}] is not a valid host name label.");
+        }
+
+        return $value;
     }
 
     public function connectionConfig(): ConnectionConfig

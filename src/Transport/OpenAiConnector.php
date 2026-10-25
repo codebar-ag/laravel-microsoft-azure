@@ -21,6 +21,8 @@ final class OpenAiConnector extends AzureConnector
         public readonly string $accountName,
         public readonly ?string $apiKey = null,
     ) {
+        self::assertHostLabel($accountName, 'account name');
+
         parent::__construct($config, $tokens, $fetcher, TokenAudience::CognitiveServicesDataPlane);
     }
 

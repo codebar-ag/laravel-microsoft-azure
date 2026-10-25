@@ -21,6 +21,8 @@ final class FunctionRuntimeConnector extends AzureConnector
         public readonly string $appName,
         public readonly ?string $hostKey = null,
     ) {
+        self::assertHostLabel($appName, 'app name');
+
         $host = $appName.'.azurewebsites.net';
 
         parent::__construct($config, $tokens, $fetcher, TokenAudience::FunctionRuntime, $host);

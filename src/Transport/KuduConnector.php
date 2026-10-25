@@ -18,6 +18,8 @@ final class KuduConnector extends AzureConnector
         ClientCredentialsTokenFetcher $fetcher,
         public readonly string $appName,
     ) {
+        self::assertHostLabel($appName, 'app name');
+
         $host = $appName.'.scm.azurewebsites.net';
 
         parent::__construct($config, $tokens, $fetcher, TokenAudience::Kudu, $host);
