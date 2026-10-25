@@ -8,6 +8,7 @@ use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
 use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\NullAuthenticator;
+use SensitiveParameter;
 
 /**
  * @internal
@@ -19,7 +20,7 @@ final class OpenAiConnector extends AzureConnector
         TokenRepository $tokens,
         ClientCredentialsTokenFetcher $fetcher,
         public readonly string $accountName,
-        public readonly ?string $apiKey = null,
+        #[SensitiveParameter] public readonly ?string $apiKey = null,
     ) {
         self::assertHostLabel($accountName, 'account name');
 

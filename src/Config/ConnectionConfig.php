@@ -3,6 +3,7 @@
 namespace CodebarAg\MicrosoftAzure\Config;
 
 use InvalidArgumentException;
+use SensitiveParameter;
 
 /**
  * Typed, validated configuration for a single Azure connection (tenant/environment).
@@ -19,7 +20,7 @@ final class ConnectionConfig
         public readonly string $name,
         public readonly string $tenantId,
         public readonly string $clientId,
-        public readonly string $clientSecret,
+        #[SensitiveParameter] public readonly string $clientSecret,
         public readonly string $subscriptionId,
         public readonly string $cacheDriver,
         public readonly int $cacheLifetimeInSeconds,
@@ -44,7 +45,7 @@ final class ConnectionConfig
      *
      * @param  array<string, mixed>  $attrs
      */
-    public static function for(string $name, array $attrs): self
+    public static function for(string $name, #[SensitiveParameter] array $attrs): self
     {
         return self::make($name, $attrs);
     }
@@ -52,7 +53,7 @@ final class ConnectionConfig
     /**
      * @param  array<string, mixed>  $attrs
      */
-    public static function make(string $name, array $attrs): self
+    public static function make(string $name, #[SensitiveParameter] array $attrs): self
     {
         return new self(
             name: $name,

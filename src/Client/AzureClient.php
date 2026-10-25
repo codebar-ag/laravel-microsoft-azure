@@ -17,6 +17,7 @@ use CodebarAg\MicrosoftAzure\Transport\KuduConnector;
 use CodebarAg\MicrosoftAzure\Transport\LogAnalyticsConnector;
 use CodebarAg\MicrosoftAzure\Transport\OpenAiConnector;
 use CodebarAg\MicrosoftAzure\Transport\StorageQueueConnector;
+use SensitiveParameter;
 
 final class AzureClient
 {
@@ -126,7 +127,7 @@ final class AzureClient
         );
     }
 
-    public function openAiConnector(string $accountName, ?string $apiKey = null): OpenAiConnector
+    public function openAiConnector(string $accountName, #[SensitiveParameter] ?string $apiKey = null): OpenAiConnector
     {
         $cacheKey = $accountName.':'.($apiKey ?? '');
 
@@ -139,7 +140,7 @@ final class AzureClient
         );
     }
 
-    public function foundryConnector(string $accountName, string $projectName, ?string $apiKey = null): FoundryConnector
+    public function foundryConnector(string $accountName, string $projectName, #[SensitiveParameter] ?string $apiKey = null): FoundryConnector
     {
         $cacheKey = $accountName.':'.$projectName.':'.($apiKey ?? '');
 
@@ -153,7 +154,7 @@ final class AzureClient
         );
     }
 
-    public function functionRuntimeConnector(string $appName, ?string $hostKey = null): FunctionRuntimeConnector
+    public function functionRuntimeConnector(string $appName, #[SensitiveParameter] ?string $hostKey = null): FunctionRuntimeConnector
     {
         $cacheKey = $appName.':'.($hostKey ?? '');
 
@@ -166,7 +167,7 @@ final class AzureClient
         );
     }
 
-    public function storageQueue(string $accountName, ?string $accountKey = null): StorageQueueConnector
+    public function storageQueue(string $accountName, #[SensitiveParameter] ?string $accountKey = null): StorageQueueConnector
     {
         $cacheKey = $accountName.':'.($accountKey ?? '');
 
