@@ -51,3 +51,50 @@ it('redacts nested arrays via redactArray', function (): void {
         'nested' => ['client_secret' => '[REDACTED]'],
     ]);
 });
+
+it('redacts azure account keys and api keys in json strings', function (): void {
+    $redactor = new Redactor;
+
+    $body = '{"key1":"cog-1","key2":"cog-2","primaryKey":"apim-1","secondaryKey":"apim-2",'
+        .'"primarySharedKey":"law-1","masterKey":"func-1","credentials":{"type":"ApiKey","key":"foundry-1"},'
+        .'"connectionString":"Endpoint=sb://x/;SharedAccessKey=abc","keyName":"key1","name":"visible"}';
+
+    $redacted = $redactor->string($body);
+
+    expect($redacted)
+        ->not->toContain('cog-1')
+        ->not->toContain('cog-2')
+        ->not->toContain('apim-1')
+        ->not->toContain('apim-2')
+        ->not->toContain('law-1')
+        ->not->toContain('func-1')
+        ->not->toContain('foundry-1')
+        ->not->toContain('SharedAccessKey=abc')
+        ->toContain('"keyName":"key1"')
+        ->toContain('"name":"visible"');
+});
+
+it('redacts sas signatures and storage account keys in query and connection strings', function (): void {
+    $redactor = new Redactor;
+
+    expect($redactor->string('https://acc.blob.core.windows.net/c?sv=2024-01-01&sig=abc%2Bdef&se=2026'))
+        ->toBe('https://acc.blob.core.windows.net/c?sv=2024-01-01&sig=[REDACTED]&se=2026')
+        ->and($redactor->string('DefaultEndpointsProtocol=https;AccountName=acc;AccountKey=c2VjcmV0'))
+        ->toBe('DefaultEndpointsProtocol=https;AccountName=acc;AccountKey=[REDACTED]');
+});
+
+it('redacts api key headers in arrays', function (): void {
+    $redactor = new Redactor;
+
+    expect($redactor->redactArray([
+        'api-key' => 'secret',
+        'x-functions-key' => 'secret',
+        'Ocp-Apim-Subscription-Key' => 'secret',
+        'x-ms-request-id' => 'visible',
+    ]))->toBe([
+        'api-key' => '[REDACTED]',
+        'x-functions-key' => '[REDACTED]',
+        'Ocp-Apim-Subscription-Key' => '[REDACTED]',
+        'x-ms-request-id' => 'visible',
+    ]);
+});
