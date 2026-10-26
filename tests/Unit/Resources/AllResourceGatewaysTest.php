@@ -114,6 +114,7 @@ it('covers remaining arm resource gateways', function (): void {
         ->and($client->resourceGroups('sub-1')->createOrUpdate('rg-test', 'westeurope'))->toBeInstanceOf(ResourceGroupData::class)
         ->and($client->roleAssignments('/subscriptions/sub-1')->create('abc', 'role-id', 'principal-id'))->toBeInstanceOf(RoleAssignmentData::class)
         ->and($client->deletedVaults('sub-1')->list('westeurope')->first())->toBeInstanceOf(DeletedVaultData::class)
+        ->and($client->deletedVaults('sub-1')->list())->toHaveCount(1)
         ->and($client->deletedCognitiveServices('sub-1')->list('westeurope')->first())->toBeInstanceOf(DeletedCognitiveServicesAccountData::class)
         ->and($client->sql('sub-1', 'rg-test', 'sql1')->createOrUpdate('rule', '1.1.1.1', '1.1.1.1'))->toBeInstanceOf(SqlFirewallRuleData::class)
         ->and($client->sqlDatabases('sub-1', 'rg-test', 'sql1')->get('datalogs'))->toBeInstanceOf(SqlDatabaseData::class)
