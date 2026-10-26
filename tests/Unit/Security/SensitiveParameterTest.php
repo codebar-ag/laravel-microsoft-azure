@@ -49,6 +49,9 @@ it('marks secret parameters as sensitive', function (string $class, string $meth
 })->with('secret parameters');
 
 it('keeps the client secret out of exception stack traces', function (): void {
+    // Production php.ini (e.g. on CI runners) drops all trace arguments; collect them so the redaction is observable.
+    $ignoreArgs = ini_set('zend.exception_ignore_args', '0');
+
     try {
         ConnectionConfig::make('default', ['clientSecret' => 'super-secret-value']);
     } catch (InvalidArgumentException $exception) {
@@ -59,6 +62,8 @@ it('keeps the client secret out of exception stack traces', function (): void {
             ->and($exception->getTraceAsString())->not->toContain('super-secret-value');
 
         return;
+    } finally {
+        ini_set('zend.exception_ignore_args', (string) $ignoreArgs);
     }
 
     test()->fail('Expected an InvalidArgumentException.');
