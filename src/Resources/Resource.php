@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
+use SensitiveParameter;
 
 abstract class Resource
 {
@@ -51,7 +52,7 @@ abstract class Resource
         return $this->send($request, $this->client->kudu($appName));
     }
 
-    protected function sendOpenAi(Request $request, string $accountName, ?string $apiKey = null): Response
+    protected function sendOpenAi(Request $request, string $accountName, #[SensitiveParameter] ?string $apiKey = null): Response
     {
         return $this->send($request, $this->client->openAiConnector($accountName, $apiKey));
     }
@@ -60,17 +61,17 @@ abstract class Resource
         Request $request,
         string $accountName,
         string $projectName,
-        ?string $apiKey = null,
+        #[SensitiveParameter] ?string $apiKey = null,
     ): Response {
         return $this->send($request, $this->client->foundryConnector($accountName, $projectName, $apiKey));
     }
 
-    protected function sendFunctionRuntime(Request $request, string $appName, ?string $hostKey = null): Response
+    protected function sendFunctionRuntime(Request $request, string $appName, #[SensitiveParameter] ?string $hostKey = null): Response
     {
         return $this->send($request, $this->client->functionRuntimeConnector($appName, $hostKey));
     }
 
-    protected function sendStorageQueue(Request $request, string $accountName, ?string $accountKey = null): Response
+    protected function sendStorageQueue(Request $request, string $accountName, #[SensitiveParameter] ?string $accountKey = null): Response
     {
         return $this->send($request, $this->client->storageQueue($accountName, $accountKey));
     }

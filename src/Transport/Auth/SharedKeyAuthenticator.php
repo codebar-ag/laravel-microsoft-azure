@@ -4,6 +4,7 @@ namespace CodebarAg\MicrosoftAzure\Transport\Auth;
 
 use Saloon\Contracts\Authenticator;
 use Saloon\Http\PendingRequest;
+use SensitiveParameter;
 
 /**
  * Azure Storage "Shared Key" (Full) request signing for Blob/Queue/File services.
@@ -14,7 +15,7 @@ final class SharedKeyAuthenticator implements Authenticator
 {
     public function __construct(
         private readonly string $accountName,
-        private readonly string $accountKey,
+        #[SensitiveParameter] private readonly string $accountKey,
     ) {}
 
     public function set(PendingRequest $pendingRequest): void

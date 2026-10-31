@@ -6,6 +6,7 @@ use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Schedules\GetScheduleRun;
 use CodebarAg\MicrosoftAzure\Requests\Foundry\Schedules\ListScheduleRuns;
 use Illuminate\Support\Collection;
+use SensitiveParameter;
 
 final class FoundryScheduleRunsResource extends Resource
 {
@@ -13,7 +14,7 @@ final class FoundryScheduleRunsResource extends Resource
         AzureClient $client,
         private readonly string $accountName,
         private readonly string $projectName,
-        private readonly ?string $apiKey,
+        #[SensitiveParameter] private readonly ?string $apiKey,
         private readonly string $scheduleId,
     ) {
         parent::__construct($client);

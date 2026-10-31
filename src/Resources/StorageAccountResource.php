@@ -14,6 +14,7 @@ use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\DeleteStorageAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\GetStorageAccount;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\ListStorageAccountKeys;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Storage\RegenerateStorageAccountKey;
+use SensitiveParameter;
 
 final class StorageAccountResource extends Resource
 {
@@ -141,7 +142,7 @@ final class StorageAccountResource extends Resource
         );
     }
 
-    public function queue(string $queueName, ?string $accountKey = null): StorageQueueResource
+    public function queue(string $queueName, #[SensitiveParameter] ?string $accountKey = null): StorageQueueResource
     {
         return new StorageQueueResource(
             $this->client,

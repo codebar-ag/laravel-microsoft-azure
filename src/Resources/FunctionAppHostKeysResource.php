@@ -8,6 +8,7 @@ use CodebarAg\MicrosoftAzure\Data\Payload\FunctionKeyPayload;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\CreateOrUpdateHostKey;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\DeleteHostKey;
 use CodebarAg\MicrosoftAzure\Requests\Arm\Web\Keys\ListHostKeys;
+use SensitiveParameter;
 
 final class FunctionAppHostKeysResource extends Resource
 {
@@ -31,7 +32,7 @@ final class FunctionAppHostKeysResource extends Resource
         return HostKeysData::fromAzure($this->jsonArray($response));
     }
 
-    public function createOrUpdate(string $keyName, string $value): HostKeysData
+    public function createOrUpdate(string $keyName, #[SensitiveParameter] string $value): HostKeysData
     {
         $response = $this->sendArm(new CreateOrUpdateHostKey(
             $this->subscriptionId,

@@ -9,6 +9,7 @@ use CodebarAg\MicrosoftAzure\Requests\StorageQueue\DeleteMessage;
 use CodebarAg\MicrosoftAzure\Requests\StorageQueue\ReceiveMessages;
 use CodebarAg\MicrosoftAzure\Requests\StorageQueue\SendMessage;
 use Illuminate\Support\Collection;
+use SensitiveParameter;
 
 final class StorageQueueResource extends Resource
 {
@@ -16,7 +17,7 @@ final class StorageQueueResource extends Resource
         AzureClient $client,
         private readonly string $accountName,
         private readonly string $queueName,
-        private readonly ?string $accountKey = null,
+        #[SensitiveParameter] private readonly ?string $accountKey = null,
     ) {
         parent::__construct($client);
     }

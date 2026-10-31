@@ -14,6 +14,7 @@ use CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecrets;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\ListSecretVersions;
 use CodebarAg\MicrosoftAzure\Requests\KeyVault\SetSecret;
 use Illuminate\Support\Collection;
+use SensitiveParameter;
 
 final class SecretsResource extends Resource
 {
@@ -59,7 +60,7 @@ final class SecretsResource extends Resource
     /**
      * @param  array<string, mixed>  $attributes
      */
-    public function set(string $secretName, string $value, array $attributes = []): SecretData
+    public function set(string $secretName, #[SensitiveParameter] string $value, array $attributes = []): SecretData
     {
         $response = $this->sendKeyVault(
             new SetSecret($secretName, new SetSecretPayload($value, $attributes)),

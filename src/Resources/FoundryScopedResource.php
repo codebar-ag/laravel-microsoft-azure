@@ -7,6 +7,7 @@ use CodebarAg\MicrosoftAzure\Contracts\FoundryFeatureRequest;
 use CodebarAg\MicrosoftAzure\Enums\FoundryFeature;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
+use SensitiveParameter;
 
 /**
  * @phpstan-consistent-constructor
@@ -20,7 +21,7 @@ abstract class FoundryScopedResource extends Resource
         AzureClient $client,
         protected readonly string $accountName,
         protected readonly string $projectName,
-        protected readonly ?string $apiKey = null,
+        #[SensitiveParameter] protected readonly ?string $apiKey = null,
         protected readonly array $foundryFeatures = [],
         protected readonly ?string $agentName = null,
         protected readonly ?string $agentVersion = null,

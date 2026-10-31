@@ -5,13 +5,14 @@ namespace CodebarAg\MicrosoftAzure\Resources;
 use CodebarAg\MicrosoftAzure\Client\AzureClient;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
+use SensitiveParameter;
 
 abstract class FunctionRuntimeScopedResource extends Resource
 {
     public function __construct(
         AzureClient $client,
         protected readonly string $appName,
-        protected readonly ?string $hostKey = null,
+        #[SensitiveParameter] protected readonly ?string $hostKey = null,
     ) {
         parent::__construct($client);
     }

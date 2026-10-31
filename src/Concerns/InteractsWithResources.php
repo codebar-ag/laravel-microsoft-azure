@@ -37,6 +37,7 @@ use CodebarAg\MicrosoftAzure\Resources\StorageAccountsResource;
 use CodebarAg\MicrosoftAzure\Resources\SubscriptionAliasesResource;
 use CodebarAg\MicrosoftAzure\Resources\SubscriptionsResource;
 use CodebarAg\MicrosoftAzure\Resources\VaultResource;
+use SensitiveParameter;
 
 trait InteractsWithResources
 {
@@ -137,17 +138,17 @@ trait InteractsWithResources
         return new ApiManagementResource($this->resourceClient(), $subscriptionId, $resourceGroup);
     }
 
-    public function openAi(string $accountName, ?string $apiKey = null): OpenAiResource
+    public function openAi(string $accountName, #[SensitiveParameter] ?string $apiKey = null): OpenAiResource
     {
         return new OpenAiResource($this->resourceClient(), $accountName, $apiKey);
     }
 
-    public function foundry(string $accountName, string $projectName, ?string $apiKey = null): FoundryResource
+    public function foundry(string $accountName, string $projectName, #[SensitiveParameter] ?string $apiKey = null): FoundryResource
     {
         return new FoundryResource($this->resourceClient(), $accountName, $projectName, $apiKey);
     }
 
-    public function functionRuntime(string $appName, ?string $hostKey = null): FunctionRuntimeResource
+    public function functionRuntime(string $appName, #[SensitiveParameter] ?string $hostKey = null): FunctionRuntimeResource
     {
         return new FunctionRuntimeResource($this->resourceClient(), $appName, $hostKey);
     }

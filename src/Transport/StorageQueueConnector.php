@@ -9,6 +9,7 @@ use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\SharedKeyAuthenticator;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
 use Saloon\Contracts\Authenticator;
+use SensitiveParameter;
 
 /**
  * @internal
@@ -20,8 +21,10 @@ final class StorageQueueConnector extends AzureConnector
         TokenRepository $tokens,
         ClientCredentialsTokenFetcher $fetcher,
         public readonly string $accountName,
-        public readonly ?string $accountKey = null,
+        #[SensitiveParameter] public readonly ?string $accountKey = null,
     ) {
+        self::assertHostLabel($accountName, 'account name');
+
         parent::__construct($config, $tokens, $fetcher, TokenAudience::StorageDataPlane);
     }
 

@@ -2,11 +2,13 @@
 
 namespace CodebarAg\MicrosoftAzure\Data\Payload;
 
+use SensitiveParameter;
+
 final class ClientCredentialsTokenPayload extends AzurePayload
 {
     public function __construct(
         public readonly string $clientId,
-        public readonly string $clientSecret,
+        #[SensitiveParameter] public readonly string $clientSecret,
         public readonly string $scope,
     ) {}
 

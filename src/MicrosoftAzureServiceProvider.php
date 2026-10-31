@@ -2,10 +2,10 @@
 
 namespace CodebarAg\MicrosoftAzure;
 
+use CodebarAg\MicrosoftAzure\Config\ContainerConfigRepository;
 use CodebarAg\MicrosoftAzure\Transport\Auth\ClientCredentialsTokenFetcher;
 use CodebarAg\MicrosoftAzure\Transport\Auth\EncryptedCacheTokenRepository;
 use CodebarAg\MicrosoftAzure\Transport\Auth\TokenRepository;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -25,7 +25,7 @@ class MicrosoftAzureServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(MicrosoftAzureManager::class, function (Application $app): MicrosoftAzureManager {
             return new MicrosoftAzureManager(
-                $app->make(ConfigRepository::class),
+                new ContainerConfigRepository,
                 $app->make(TokenRepository::class),
                 $app->make(ClientCredentialsTokenFetcher::class),
             );
